@@ -5,7 +5,7 @@ public class App {
         Board b = new Board();
         // The following four statements are equivalent, all check if a rook move from a1 to a8 is allowed
         System.out.println("Rook moves from a1 to a8:");
-        System.out.println(b.getSquare(0, 0).getPiece().legalMove(b, b.getSquare(0, 0), b.getSquare(7, 0)));
+        System.out.println(b.getSquare(0, 0).getPiece().legalMove(b, b.getSquare(0, 0), b.getSquare(0, 7)));
         System.out.println(b.getSquare("a1").getPiece().legalMove(b, b.getSquare("a1"), b.getSquare("a8")));
         System.out.println(b.getPiece(0, 0).legalMove(b, "a1", "a8"));
         System.out.println(b.getPiece("a1").legalMove(b, "a1", "a8"));

@@ -84,4 +84,12 @@ public class Board {
         board[6][7] = new Square(6, 7, new Knight('B'));
         board[7][7] = new Square(7, 7, new Rook('B'));
     }
+
+    public Square[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(Square[][] board) {
+        this.board = board;
+    }
 }
