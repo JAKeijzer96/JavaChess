@@ -23,22 +23,22 @@ public abstract class Piece {
     /**
      * Abstract Piece method
      * @param board the Board the piece is on
-     * @param start the moves starting Square
-     * @param end the Square to move to
+     * @param startSquare the moves starting Square
+     * @param endSquare the Square to move to
      * @return true if the move is a legal move, false otherwise
      */
-    public abstract boolean legalMove(Board board, Square start, Square end);
+    public abstract boolean legalMove(Board board, Square startSquare, Square endSquare);
 
     /**
-     * Abstract Piece method, re-implementation of legalMove(Board, Square, Square)
-     * This method calls board.getSquare with the strings start and end, then
-     * returns legalMove(Board, Square, Square) with the found Squares as arguments
+     * Abstract Piece method
+     * This convenience method gets the Squares described by the Strings,
+     * then calls legalMove(Board, Square, Square)
      * @param board the Board the piece is on
      * @param start a String representation of the moves starting Square
      * @param end a String representation of the Square to move to
      * @return true if the move is a legal move, false otherwise
      */
-    public abstract boolean legalMove(Board board, String start, String end);
+    public abstract boolean legalMove(Board board, String startSquare, String endSquare);
 
     public boolean isSameColor(Piece other) {
         return (this.color == other.color);

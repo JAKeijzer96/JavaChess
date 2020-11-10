@@ -14,9 +14,9 @@ public class Rook extends Piece {
      * legalMove method for the Rook class
      * Rooks move horizontally along ranks and vertically along files
      * A Rook move is legal if startFile == endFile or startRank == endRank
-     * @param board the board the game is played on
-     * @param startSquare the square the Rook is on
-     * @param endSquare the square the Rook tries to move to
+     * @param board the Board the game is played on
+     * @param startSquare the Square the Rook is on
+     * @param endSquare the Square the Rook tries to move to
      * @return true if the move from startSquare to endSquare is legal, false otherwise
      */
     public boolean legalMove(Board board, Square startSquare, Square endSquare) {
@@ -46,9 +46,9 @@ public class Rook extends Piece {
     /**
      * Convenience method, gets the squares indicated by the Strings,
      * then calls legalMove(Board, Square, Square)
-     * @param board the board the game is played on
-     * @param startSquare String representation of the square the Rook is on
-     * @param endSquare String representation of the square the Rook tries to move to
+     * @param board the Board the game is played on
+     * @param startSquare String representation of the Square the Rook is on
+     * @param endSquare String representation of the Square the Rook tries to move to
      */
     public boolean legalMove(Board board, String startSquare, String endSquare) {
         return this.legalMove(board, board.getSquare(startSquare), board.getSquare(endSquare));
@@ -69,7 +69,7 @@ public class Rook extends Piece {
         // Check if there are any pieces in the way when moving vertically,
         // starting at the rank with the highest numerical value, then moving down
         for (int i = lowRank; i < highRank; i++) {
-            if(board.getBoard()[file][i].getPiece() != null)
+            if(board.getSquare(file, i).getPiece() != null)
                 return false;
         }
         return true;
@@ -90,7 +90,7 @@ public class Rook extends Piece {
         // Check if there are any pieces in the way when moving horizontally,
         // starting at the file with the highest numerical value, then moving left
         for(int i = lowFile; i < highFile; i++) {
-            if(board.getBoard()[i][rank].getPiece() != null)
+            if(board.getSquare(i, rank).getPiece() != null)
                 return false;
         }
         return true;
