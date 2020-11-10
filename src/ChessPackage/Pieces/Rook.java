@@ -56,9 +56,9 @@ public class Rook extends Piece {
 
     /**
      * Check if there are any pieces in the way when moving vertically,
-     * starting at the rank with the highest numerical value, then moving down
-     * Note that if the rook is moving up, we still check ranks from the highest
-     * to the lowest value, this for code reusability and for-loop readability
+     * starting at the rank with the lowest numerical value, then moving up
+     * Note that if the rook is moving down, we still check ranks from the lowest
+     * to the highest value, this for code reusability and for-loop readability
      * @param board the Board the Game is played on
      * @param file the file the Rook is moving on
      * @param highRank the rank with the highest numerical value
@@ -77,9 +77,9 @@ public class Rook extends Piece {
 
     /**
      * Check if there are any pieces in the way when moving horizontally,
-     * starting at the file with the highest numerical value, then moving left
-     * Note that if the rook is moving right, we still check files from the highest
-     * to the lowest value, this for code reusability and for-loop readability
+     * starting at the file with the lowest numerical value, then moving right
+     * Note that if the rook is moving left, we still check files from the lowest
+     * to the highest value, this for code reusability and for-loop readability
      * @param board the Board the Game is played on
      * @param rank the rank the Rook is moving on
      * @param highFile the file with the highest numerical value
