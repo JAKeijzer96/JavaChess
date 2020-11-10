@@ -34,6 +34,20 @@ public class Board {
             throw new ArrayIndexOutOfBoundsException("Rank index out of bounds");
         return board[file][rank];
     }
+
+    public Piece getPiece(int file, int rank) {
+        return this.getSquare(file, rank).getPiece();
+    }
+
+    /**
+     * Method to get a piece from a square directly instead of having to invoke
+     * the lenghtier board.getSquare.getPiece()
+     * @param square String representation of the Square
+     * @return the Piece on the given Square
+     */
+    public Piece getPiece(String square) {
+        return this.getSquare(square).getPiece();
+    }
     
     void newBoard() {
         board = new Square[boardSize][boardSize];

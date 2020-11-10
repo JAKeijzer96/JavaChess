@@ -15,7 +15,8 @@ public class Queen extends Piece {
          * Queens move along diagonals, ranks and files
          * If a move is legal for a bishop or a rook, it's legal for a Queen
          */
-        if (start.equals(end))
+        // Disallow 'moving' to the start square or to a square with a friendly piece
+        if (start.equals(end) || (end.getPiece() != null && this.color == end.getPiece().getColor()))
             return false;
         // Allow horizontal and vertical moves
         if ( (start.getFile() == end.getFile()) || (start.getRank() == end.getRank()) )

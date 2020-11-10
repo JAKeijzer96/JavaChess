@@ -17,7 +17,8 @@ public class Rook extends Piece {
          * if start.rank == end.rank its gucci
          * 'moving' to the same square is not allowed
          */
-        if (start.equals(end))
+        // Disallow 'moving' to the start square or to a square with a friendly piece
+        if (start.equals(end) || (end.getPiece() != null && this.color == end.getPiece().getColor()))
             return false;
         if ( (start.getFile() == end.getFile()) || (start.getRank() == end.getRank()) )
             return true;

@@ -40,6 +40,10 @@ public abstract class Piece {
      */
     public abstract boolean legalMove(Board board, String start, String end);
 
+    public boolean isSameColor(Piece other) {
+        return (this.color == other.color);
+    } 
+
     @Override
     public String toString() {
         return name;
