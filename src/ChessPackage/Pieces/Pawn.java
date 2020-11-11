@@ -45,7 +45,8 @@ public class Pawn extends Piece {
     }
 
     /**
-     * 
+     * A Pawn can move one square ahead, two squares ahead if it's the first
+     * move, or one square diagonally ahead by capturing an opponents Piece
      * @param board the Board the game is played on
      * @param startSquare the Square the Pawn is on
      * @param endSquare the Square the Pawn tries to move to
