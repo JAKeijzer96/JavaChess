@@ -49,11 +49,11 @@ public class Bishop extends Piece {
      * Convenience method, gets the squares indicated by the Strings,
      * then calls legalMove(Board, Square, Square)
      * @param board the Board the game is played on
-     * @param startSquare String representation of the Square the Bishop is on
-     * @param endSquare String representation of the Square the Bishop tries to move to
+     * @param startString String representation of the Square the Bishop is on
+     * @param endString String representation of the Square the Bishop tries to move to
      */
-    public boolean legalMove(Board board, String startSquare, String endSquare) {
-        return this.legalMove(board, board.getSquare(startSquare), board.getSquare(endSquare));
+    public boolean legalMove(Board board, String startString, String endString) {
+        return this.legalMove(board, board.getSquare(startString), board.getSquare(endString));
     }
 
     /**

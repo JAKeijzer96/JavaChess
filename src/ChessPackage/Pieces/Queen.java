@@ -58,8 +58,15 @@ public class Queen extends Piece {
             return Bishop.checkForObstructions(board, startFile, endFile, startRank);
         return false;
     }
-
-    public boolean legalMove(Board board, String start, String end) {
-        return this.legalMove(board, board.getSquare(start), board.getSquare(end));
+    
+    /**
+     * Convenience method, gets the squares indicated by the Strings,
+     * then calls legalMove(Board, Square, Square)
+     * @param board the Board the game is played on
+     * @param startString String representation of the Square the Queen is on
+     * @param endString String representation of the Square the Queen tries to move to
+     */
+    public boolean legalMove(Board board, String startString, String endString) {
+        return this.legalMove(board, board.getSquare(startString), board.getSquare(endString));
     }
 }

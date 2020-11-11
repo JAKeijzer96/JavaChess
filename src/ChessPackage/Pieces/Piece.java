@@ -34,11 +34,11 @@ public abstract class Piece {
      * This convenience method gets the Squares described by the Strings,
      * then calls legalMove(Board, Square, Square)
      * @param board the Board the piece is on
-     * @param start a String representation of the moves starting Square
-     * @param end a String representation of the Square to move to
+     * @param startString a String representation of the moves starting Square
+     * @param endString a String representation of the Square to move to
      * @return true if the move is a legal move, false otherwise
      */
-    public abstract boolean legalMove(Board board, String startSquare, String endSquare);
+    public abstract boolean legalMove(Board board, String startString, String endString);
 
     public boolean isSameColor(Piece other) {
         return (this.color == other.color);

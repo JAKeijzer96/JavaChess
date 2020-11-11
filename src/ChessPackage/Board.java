@@ -22,12 +22,12 @@ public class Board {
         return board[file][rank];
     }
 
-    public Square getSquare(String square) {
-        if (square.length() != 2)
+    public Square getSquare(String squareString) {
+        if (squareString.length() != 2)
             throw new IllegalArgumentException("Please provide a valid square on a chessboard");
         // Convert the chars to file and rank ints using their ASCII value
-        int file = Character.toLowerCase(square.charAt(0)) - 97;
-        int rank = square.charAt(1) - 49;
+        int file = Character.toLowerCase(squareString.charAt(0)) - 97;
+        int rank = squareString.charAt(1) - 49;
         if (file < 0 || file > 7)
             throw new ArrayIndexOutOfBoundsException("File index out of bounds");
         if (rank < 0 || rank > 7)
@@ -42,11 +42,11 @@ public class Board {
     /**
      * Method to get a piece from a square directly instead of having to invoke
      * the lenghtier board.getSquare.getPiece()
-     * @param square String representation of the Square
+     * @param squareString String representation of the Square
      * @return the Piece on the given Square
      */
-    public Piece getPiece(String square) {
-        return this.getSquare(square).getPiece();
+    public Piece getPiece(String squareString) {
+        return this.getSquare(squareString).getPiece();
     }
     
     void newBoard() {

@@ -24,11 +24,25 @@ public class App {
         System.out.println("W queen from e2 to e7: " + b.getPiece("d1").legalMove(b, "e2", "e7"));
         System.out.println("B queen from e2 to e7: " + b.getPiece("d8").legalMove(b, "e2", "e7"));
         System.out.println("W queen from e2 to a6: " + b.getPiece("d1").legalMove(b, "e2", "a6"));
-        // System.out.println("Queen moves:");
-        // Piece p = b.getSquare("d1").getPiece();
-        // System.out.println(p);
-        // System.out.println(p.legalMove(b, "d1", "f3"));
-        
+
+        System.out.println("W pawn from e2 to e4 first move: " + b.getPiece("e2").legalMove(b, "e2", "e4"));
+        System.out.println("W pawn from e2 to e3: " + b.getPiece("e2").legalMove(b, "e2", "e3"));
+        System.out.println("B pawn from e7 to e6: " + b.getPiece("e7").legalMove(b, "e7", "e6"));
+        System.out.println("B pawn from e7 to e5 second move: " + b.getPiece("e7").legalMove(b, "e7", "e5"));
+        System.out.println("B pawn from e4 to e2 first move:" + b.getPiece("a7").legalMove(b, "e4", "e2"));
+
+        System.out.println("W pawn from e5 to d6: " + b.getPiece("e2").legalMove(b, "e5", "d6"));
+        System.out.println("W pawn from e6 to e7: " + b.getPiece("e2").legalMove(b, "e6", "e7"));
+        System.out.println("W pawn from e6 to d7: " + b.getPiece("e2").legalMove(b, "e6", "d7"));
+        System.out.println("W pawn from e6 to f7: " + b.getPiece("e2").legalMove(b, "e6", "f7"));
+
+        System.out.println("B pawn from e4 to d3: " + b.getPiece("e7").legalMove(b, "e4", "d3"));
+        System.out.println("B pawn from e3 to e2: " + b.getPiece("e7").legalMove(b, "e3", "e2"));
+        System.out.println("B pawn from e3 to d2: " + b.getPiece("e7").legalMove(b, "e3", "d2"));
+        System.out.println("B pawn from e3 to f2: " + b.getPiece("e7").legalMove(b, "e3", "f2"));
+
+
+
         // System.out.println("Pawn moves:");
         // System.out.println(b.getPiece("e2").legalMove(b, "e2", "e4"));
         // System.out.println(b.getPiece("e2").legalMove(b, "e2", "e3"));
