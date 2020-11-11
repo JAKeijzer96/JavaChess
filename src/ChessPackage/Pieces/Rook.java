@@ -11,7 +11,7 @@ public class Rook extends Piece {
     }
 
     /**
-     * legalMove method for the Rook class
+     * legalMove method for the Rook class.
      * Rooks move horizontally along ranks and vertically along files
      * A Rook move is legal if startFile == endFile or startRank == endRank
      * @param board the Board the game is played on
@@ -33,13 +33,13 @@ public class Rook extends Piece {
             return checkSameFileObstructions(board, startFile, startRank, endRank);
         // Going up the board, check if there are any pieces in the way
         if (startFile == endFile && endRank > startRank)
-            checkSameFileObstructions(board, startFile, endRank, startRank);
+            return checkSameFileObstructions(board, startFile, endRank, startRank);
         // Going left on the board, check if there are any pieces in the way
         if (startRank == endRank && startFile > endFile)
-            return sameRank(board, startRank, startFile, endFile);
+            return checkSameRankObstructions(board, startRank, startFile, endFile);
         // Going right on the board, check if there are any pieces in the way
         if (startRank == endRank && endFile > startFile)
-            return sameRank(board, startRank, endFile, startFile);
+            return checkSameRankObstructions(board, startRank, endFile, startFile);
         return false;
     }
 
@@ -65,10 +65,10 @@ public class Rook extends Piece {
      * @param lowRank the rank with the lowest numerical value
      * @return true if there are no pieces in the way, false otherwise
      */
-    private boolean checkSameFileObstructions(Board board, int file, int highRank, int lowRank) {
-        // Check if there are any pieces in the way when moving vertically,
-        // starting at the rank with the highest numerical value, then moving down
-        for (int i = lowRank; i < highRank; i++) {
+    public static boolean checkSameFileObstructions(Board board, int file, int highRank, int lowRank) {
+        // Add 1 to lowRank so we don't collide with ourselves. If the endSquare
+        // is at lowRank, we already checked for friendly pieces.
+        for (int i = lowRank + 1; i < highRank; i++) {
             if(board.getSquare(file, i).getPiece() != null)
                 return false;
         }
@@ -86,10 +86,10 @@ public class Rook extends Piece {
      * @param lowFile the file with the lowest numerical value
      * @return true if there are no pieces in the way, false otherwise
      */
-    private boolean sameRank(Board board, int rank, int highFile, int lowFile) {
-        // Check if there are any pieces in the way when moving horizontally,
-        // starting at the file with the highest numerical value, then moving left
-        for(int i = lowFile; i < highFile; i++) {
+    public static boolean checkSameRankObstructions(Board board, int rank, int highFile, int lowFile) {
+        // Add 1 to lowFile so we don't collide with ourselves. If the endSquare
+        // is at lowFile, we already checked for friendly pieces.
+        for(int i = lowFile + 1; i < highFile; i++) {
             if(board.getSquare(i, rank).getPiece() != null)
                 return false;
         }

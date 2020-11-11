@@ -11,7 +11,7 @@ public class Bishop extends Piece {
     }
     
     /**
-     * legalMove method for the Bishop class
+     * legalMove method for the Bishop class.
      * Bishops move diagonally. A Bishop move is legal if
      * Math.abs( (difference in file) / (difference in rank) ) == 1
      * @param board the Board the game is played on
@@ -68,8 +68,10 @@ public class Bishop extends Piece {
      * @param lowRank the moves rank with the lowest numerical value
      * @return true if there are no pieces obstructing the move, false otherwise
      */
-    public boolean checkForObstructions(Board board, int highFile, int lowFile, int lowRank) {
-        for(int file = lowFile, rank = lowRank; file < highFile; file++, rank++) {
+    public static boolean checkForObstructions(Board board, int highFile, int lowFile, int lowRank) {
+        // Add 1 to lowFile and lowRank so we don't collide with ourselves. If the 
+        // endSquare is at lowFile or lowRank, we already checked for friendly pieces.
+        for(int file = lowFile + 1, rank = lowRank + 1; file < highFile; file++, rank++) {
             if(board.getSquare(file, rank).getPiece() != null) {
                 return false;
             }
