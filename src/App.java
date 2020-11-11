@@ -42,13 +42,30 @@ public class App {
         System.out.println("B pawn from e3 to f2: " + b.getPiece("e7").legalMove(b, "e3", "f2"));
 
 
-
+        System.out.println(b.getPiece("e7").legalMove(b, "e7", "e8"));
+        // Board test = new Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+        // for(int i = 0; i < test.getBoard().length; i++) {
+        //     for(int j = 0; j < test.getBoard().length; j++) {
+        //         System.out.println(test.getSquare(j, i));
+        //     }
+        // }
+        Board test2 = new Board("5k2/ppp5/4P3/3R3p/6P1/1K2Nr2/PP3P2/8");
+        for(int i = 0; i < test2.getBoard().length; i++) {
+            for(int j = 0; j < test2.getBoard().length; j++) {
+                System.out.println(test2.getSquare(j, i));
+            }
+        }
+        // Board test3 = new Board("r4rk1/1p3p2/pp3qpp/4p3/3n4/3Q1P1P/PP3P2/R2B1R1K");
+        // for(int i = 0; i < test3.getBoard().length; i++) {
+        //     for(int j = 0; j < test3.getBoard().length; j++) {
+        //         System.out.println(test3.getSquare(j, i));
+        //     }
+        // }
         // System.out.println("Pawn moves:");
         // System.out.println(b.getPiece("e2").legalMove(b, "e2", "e4"));
         // System.out.println(b.getPiece("e2").legalMove(b, "e2", "e3"));
         // System.out.println(b.getPiece("e2").legalMove(b, "e2", "e1"));
         // System.out.println(b.getPiece("e7").legalMove(b, "e7", "e5"));
-        // System.out.println(b.getPiece("e7").legalMove(b, "e7", "e8"));
 
         // System.out.println(b.getPiece("e1").legalMove(b, "e2", "e1"));
         // System.out.println(b.getPiece("f3"));
