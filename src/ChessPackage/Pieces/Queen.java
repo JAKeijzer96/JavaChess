@@ -7,7 +7,10 @@ public class Queen extends Piece {
     
     public Queen (char color) {
         super(color);
-        this.name = "Queen";
+        if (color == 'W')
+            this.name = 'Q';
+        else
+            this.name = 'q';
     }
 
     /**

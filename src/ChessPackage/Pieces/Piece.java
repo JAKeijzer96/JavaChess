@@ -14,7 +14,7 @@ public abstract class Piece {
      */
 
     char color;
-    String name;
+    char name;
 
     public Piece(char color) {
         this.color = color;
@@ -46,7 +46,7 @@ public abstract class Piece {
 
     @Override
     public String toString() {
-        return name;
+        return Character.toString(name);
     }
 
     public char getColor() {

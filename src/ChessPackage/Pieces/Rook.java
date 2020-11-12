@@ -7,7 +7,10 @@ public class Rook extends Piece {
 
     public Rook (char color) {
         super(color);
-        this.name = "Rook";
+        if (color == 'W')
+            this.name = 'R';
+        else
+            this.name = 'r';
     }
 
     /**

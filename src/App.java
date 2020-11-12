@@ -49,12 +49,19 @@ public class App {
         //         System.out.println(test.getSquare(j, i));
         //     }
         // }
+        // Complete FEN: 5k2/ppp5/4P3/3R3p/6P1/1K2Nr2/PP3P2/8 b - - 1 32
         Board test2 = new Board("5k2/ppp5/4P3/3R3p/6P1/1K2Nr2/PP3P2/8");
         for(int i = 0; i < test2.getBoard().length; i++) {
             for(int j = 0; j < test2.getBoard().length; j++) {
                 System.out.println(test2.getSquare(j, i));
             }
         }
+        System.out.println(test2);
+
+        Player white = new Player('W');
+        Player black = new Player('B');
+        Game game = new Game(white, black);
+        System.out.println(game.getBoard());
         // Board test3 = new Board("r4rk1/1p3p2/pp3qpp/4p3/3n4/3Q1P1P/PP3P2/R2B1R1K");
         // for(int i = 0; i < test3.getBoard().length; i++) {
         //     for(int j = 0; j < test3.getBoard().length; j++) {

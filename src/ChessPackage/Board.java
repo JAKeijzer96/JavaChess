@@ -192,6 +192,40 @@ public class Board {
         }
     }
 
+    /**
+     * Returns part of the FEN notation of the Board
+     * @return a String containing the FEN notation of the Board
+     */
+    @Override
+    public String toString() {
+        String rankString = "";
+        String endString = "";
+        int emptySquares;
+        for(int rank = boardSize - 1; rank >= 0; rank--) {
+            emptySquares = 0;
+            rankString = "";
+            for(int file = 0; file < boardSize; file++) {
+                Piece piece = this.getPiece(file, rank);
+                if (piece == null)
+                    emptySquares++;
+                else {
+                    if (emptySquares > 0) {
+                        rankString += emptySquares;
+                        emptySquares = 0;
+                    }
+                    rankString += piece;
+                }
+            }
+            if (emptySquares > 0)
+                rankString += emptySquares;
+            if (rank == 7)
+                endString = rankString;
+            else
+                endString += "/" + rankString;
+        }
+        return endString;
+    }
+
     public Square[][] getBoard() {
         return board;
     }

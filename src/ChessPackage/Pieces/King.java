@@ -9,7 +9,10 @@ public class King extends Piece {
 
     public King (char color) {
         super(color);
-        this.name = "King";
+        if (color == 'W')
+            this.name = 'K';
+        else
+            this.name = 'k';
         this.canCastle = true;
     }
 

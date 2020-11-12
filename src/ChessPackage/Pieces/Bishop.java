@@ -7,7 +7,10 @@ public class Bishop extends Piece {
     
     public Bishop (char color) {
         super(color);
-        this.name = "Bishop";
+        if (color == 'W')
+            this.name = 'B';
+        else
+            this.name = 'b';
     }
     
     /**
