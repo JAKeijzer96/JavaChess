@@ -3,7 +3,7 @@ import ChessPackage.*;
 public class App {
     public static void main(String[] args) throws Exception {
         // Board b = new Board();
-        // The following four statements are equivalent, all check if a rook move from a1 to a8 is allowed
+        // // The following four statements are equivalent, all check if a rook move from a1 to a8 is allowed
         // System.out.println("Rook moves from a1 to a8:");
         // System.out.println(b.getSquare(0, 0).getPiece().legalMove(b, b.getSquare(0, 0), b.getSquare(0, 7)));
         // System.out.println(b.getSquare("a1").getPiece().legalMove(b, b.getSquare("a1"), b.getSquare("a8")));
@@ -14,7 +14,7 @@ public class App {
         // System.out.println("W Rook from e3 to e7: " + b.getPiece("a1").legalMove(b, "e3", "e7"));
         // System.out.println("W Rook from e2 to e7: " + b.getPiece("a1").legalMove(b, "e2", "e7"));
         // System.out.println("W Rook from e7 to e3: " + b.getPiece("a1").legalMove(b, "e7", "e3"));
-        // // System.out.println("B rook from e6 to e3: " + b.getPiece("a8").legalMove(b, "e6", "e3"));
+        // System.out.println("B rook from e6 to e3: " + b.getPiece("a8").legalMove(b, "e6", "e3"));
 
         // System.out.println("W bishop from e3 to h6: " + b.getPiece("c1").legalMove(b, "e3", "h6"));
         // System.out.println("W bishop from e4 to h7: " + b.getPiece("c1").legalMove(b, "e4", "h7"));

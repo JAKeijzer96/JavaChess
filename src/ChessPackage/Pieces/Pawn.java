@@ -29,9 +29,9 @@ public class Pawn extends Piece {
      */
     public boolean legalMove(Board board, Square startSquare, Square endSquare) {
         if (this.color == 'W')
-            return pawnMove(board, startSquare, endSquare, 1);
+            return pawnMove(board, startSquare, endSquare, (byte) 1);
         if (this.color == 'B')
-            return pawnMove(board, startSquare, endSquare, -1);
+            return pawnMove(board, startSquare, endSquare, (byte) -1);
         throw new UnsupportedOperationException(
             "Something has gone wrong; pawn is a currently unsupported color");
     }
@@ -56,16 +56,16 @@ public class Pawn extends Piece {
      * @param direction the direction the Pawn moves in; 1 if white Pawn, -1 if black
      * @return true if the move from startSquare to endSquare is legal, false otherwise
      */
-    private boolean pawnMove(Board board, Square startSquare, Square endSquare, int direction) {
+    private boolean pawnMove(Board board, Square startSquare, Square endSquare, byte direction) {
         Piece endPiece = endSquare.getPiece();
         // Disallow 'moving' to the start square or to a square with a friendly piece
         if (startSquare.equals(endSquare) || (endPiece != null && this.color == endPiece.getColor()))
         return false;
         // we leave en passant for later
-        int startFile = startSquare.getFile();
-        int startRank = startSquare.getRank();
-        int endFile = endSquare.getFile();
-        int endRank = endSquare.getRank();
+        byte startFile = startSquare.getFile();
+        byte startRank = startSquare.getRank();
+        byte endFile = endSquare.getFile();
+        byte endRank = endSquare.getRank();
         // Move 1 ahead
         if (startFile == endFile && endRank - startRank == 1 * direction
             && endPiece == null) {

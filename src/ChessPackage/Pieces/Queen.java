@@ -7,10 +7,7 @@ public class Queen extends Piece {
     
     public Queen (char color) {
         super(color);
-        if (color == 'W')
-            this.name = 'Q';
-        else
-            this.name = 'q';
+        this.name = (color == 'W') ? 'Q' : 'q';
     }
 
     /**
@@ -26,10 +23,10 @@ public class Queen extends Piece {
         // Disallow 'moving' to the startSquare square or to a square with a friendly piece
         if (startSquare.equals(endSquare) || (endSquare.getPiece() != null && this.color == endSquare.getPiece().getColor()))
             return false;
-        int startFile = startSquare.getFile();
-        int startRank = startSquare.getRank();
-        int endFile = endSquare.getFile();
-        int endRank = endSquare.getRank();
+        byte startFile = startSquare.getFile();
+        byte startRank = startSquare.getRank();
+        byte endFile = endSquare.getFile();
+        byte endRank = endSquare.getRank();
         // Check for Rook-like moves
         // Going down the board, check if there are any pieces in the way
         if (startFile == endFile && startRank > endRank)

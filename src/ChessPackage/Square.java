@@ -30,20 +30,20 @@ public class Square {
      */
     // Use ints instead of bytes for now so we don't have to cast everytime
     // we construct a new Square.
-    int file;
-    int rank;
+    byte file;
+    byte rank;
     Piece piece;
     // something color;
 
     public Square(int file, int rank) {
-        this.file = file;
-        this.rank = rank;
+        this.file = (byte)file;
+        this.rank = (byte)rank;
         this.piece = null;
     }
 
     public Square(int file, int rank, Piece piece) {
-        this.file = file;
-        this.rank = rank;
+        this.file = (byte)file;
+        this.rank = (byte)rank;
         this.piece = piece;
     }
 
@@ -59,29 +59,30 @@ public class Square {
         return ( (this.getFile() == s.getFile()) && (this.getRank() == s.getRank()) );
     }
 
+    /**
+     * Return the chess notation of the Square
+     */
     @Override
     public String toString() {
-        String pieceInformation = "";
-        if (this.piece != null) {
-            pieceInformation = " with piece " +  this.piece.getColor() + " " + this.piece;
-        }
-        return ("Square at [" + this.file + "][" + this.rank + "]" + pieceInformation);
+        char file = (char) (this.file + 'a');
+        char rank = (char) (this.rank + '1');
+        return Character.toString(file) + Character.toString(rank);
     }
 
-    public int getRank() {
+    public byte getRank() {
         return rank;
     }
 
     public void setRank(int rank) {
-        this.rank = rank;
+        this.rank = (byte)rank;
     }
 
-    public int getFile() {
+    public byte getFile() {
         return file;
     }
 
     public void setFile(int file) {
-        this.file = file;
+        this.file = (byte)file;
     }
 
     public Piece getPiece() {

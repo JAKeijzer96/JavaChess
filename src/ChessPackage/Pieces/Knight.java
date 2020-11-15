@@ -7,10 +7,7 @@ public class Knight extends Piece {
     
     public Knight (char color) {
         super(color);
-        if (color == 'W')
-            this.name = 'N';
-        else
-            this.name = 'n';
+        this.name = (color == 'W') ? 'N' : 'n';
     }
 
     /**

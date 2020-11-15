@@ -7,10 +7,7 @@ public class Rook extends Piece {
 
     public Rook (char color) {
         super(color);
-        if (color == 'W')
-            this.name = 'R';
-        else
-            this.name = 'r';
+        this.name = (color == 'W') ? 'R' : 'r';
     }
 
     /**
@@ -27,10 +24,10 @@ public class Rook extends Piece {
         if (startSquare.equals(endSquare) ||
             (endSquare.getPiece() != null && this.color == endSquare.getPiece().getColor()))
             return false;
-        int startFile = startSquare.getFile();
-        int startRank = startSquare.getRank();
-        int endFile = endSquare.getFile();
-        int endRank = endSquare.getRank();
+        byte startFile = startSquare.getFile();
+        byte startRank = startSquare.getRank();
+        byte endFile = endSquare.getFile();
+        byte endRank = endSquare.getRank();
         // Going down the board, check if there are any pieces in the way
         if (startFile == endFile && startRank > endRank)
             return checkSameFileObstructions(board, startFile, startRank, endRank);
@@ -68,10 +65,10 @@ public class Rook extends Piece {
      * @param lowRank the rank with the lowest numerical value
      * @return true if there are no pieces in the way, false otherwise
      */
-    public static boolean checkSameFileObstructions(Board board, int file, int highRank, int lowRank) {
+    public static boolean checkSameFileObstructions(Board board, byte file, byte highRank, byte lowRank) {
         // Add 1 to lowRank so we don't collide with ourselves. If the endSquare
         // is at lowRank, we already checked for friendly pieces.
-        for (int i = lowRank + 1; i < highRank; i++) {
+        for (byte i = (byte) (lowRank + 1); i < highRank; i++) {
             if(board.getSquare(file, i).getPiece() != null)
                 return false;
         }
@@ -89,10 +86,10 @@ public class Rook extends Piece {
      * @param lowFile the file with the lowest numerical value
      * @return true if there are no pieces in the way, false otherwise
      */
-    public static boolean checkSameRankObstructions(Board board, int rank, int highFile, int lowFile) {
+    public static boolean checkSameRankObstructions(Board board, byte rank, byte highFile, byte lowFile) {
         // Add 1 to lowFile so we don't collide with ourselves. If the endSquare
         // is at lowFile, we already checked for friendly pieces.
-        for(int i = lowFile + 1; i < highFile; i++) {
+        for(byte i = (byte) (lowFile + 1); i < highFile; i++) {
             if(board.getSquare(i, rank).getPiece() != null)
                 return false;
         }

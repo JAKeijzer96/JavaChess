@@ -7,10 +7,7 @@ public class Bishop extends Piece {
     
     public Bishop (char color) {
         super(color);
-        if (color == 'W')
-            this.name = 'B';
-        else
-            this.name = 'b';
+        this.name = (color == 'W') ? 'B' : 'b';
     }
     
     /**
@@ -27,10 +24,10 @@ public class Bishop extends Piece {
         if (startSquare.equals(endSquare) ||
             (endSquare.getPiece() != null && this.color == endSquare.getPiece().getColor()))
             return false;
-        int startFile = startSquare.getFile();
-        int startRank = startSquare.getRank();
-        int endFile = endSquare.getFile();
-        int endRank = endSquare.getRank();
+        byte startFile = startSquare.getFile();
+        byte startRank = startSquare.getRank();
+        byte endFile = endSquare.getFile();
+        byte endRank = endSquare.getRank();
         // Check if move is a proper diagonal move
         if ( Math.abs( (startFile - endFile) / (startRank - endRank) ) != 1 )
             return false;
@@ -71,10 +68,10 @@ public class Bishop extends Piece {
      * @param lowRank the moves rank with the lowest numerical value
      * @return true if there are no pieces obstructing the move, false otherwise
      */
-    public static boolean checkForObstructions(Board board, int highFile, int lowFile, int lowRank) {
+    public static boolean checkForObstructions(Board board, byte highFile, byte lowFile, byte lowRank) {
         // Add 1 to lowFile and lowRank so we don't collide with ourselves. If the 
         // endSquare is at lowFile or lowRank, we already checked for friendly pieces.
-        for(int file = lowFile + 1, rank = lowRank + 1; file < highFile; file++, rank++) {
+        for(byte file = (byte)(lowFile + 1), rank = (byte)(lowRank + 1); file < highFile; file++, rank++) {
             if(board.getSquare(file, rank).getPiece() != null) {
                 return false;
             }
