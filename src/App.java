@@ -61,20 +61,10 @@ public class App {
         Player white = new Player('W', "Jasper");
         Player black = new Player('B', "Computer");
         Game game = new Game(white, black);
-        System.out.println(game.getBoard());
-        Move e4 = new Move(white, game.getBoard().getSquare("e2"), game.getBoard().getSquare("e4"));
-        game.makeMove(e4, white);
-        System.out.println(game.getBoard());
-        // Move e5 = new Move(black, game.getBoard().getSquare("e7"), game.getBoard().getSquare("e5"));
-        // game.makeMove(e5, black);
-        // System.out.println(game.getBoard());
-        Move d5 = new Move(black, game.getBoard().getSquare("d7"), game.getBoard().getSquare("d5"));
-        game.makeMove(d5, black);
-        System.out.println(game.getBoard());
-        Move exd5 = new Move(white, game.getBoard().getSquare("e4"), game.getBoard().getSquare("d5"));
-        game.makeMove(exd5, white);
-        System.out.println(game.getBoard());
-        
+        System.out.println(game);
+        game.makeMove("e2", "e4");
+        System.out.println(game);
+        System.out.println(game.getMoveList());
         // Board test3 = new Board("r4rk1/1p3p2/pp3qpp/4p3/3n4/3Q1P1P/PP3P2/R2B1R1K");
         // for(int i = 0; i < test3.getBoard().length; i++) {
         //     for(int j = 0; j < test3.getBoard().length; j++) {
