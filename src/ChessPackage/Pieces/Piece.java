@@ -56,4 +56,12 @@ public abstract class Piece {
     public void setColor(char color) {
         this.color = color;
     }
+
+    public char getName() {
+        return name;
+    }
+
+    public void setName(char name) {
+        this.name = name;
+    }
 }

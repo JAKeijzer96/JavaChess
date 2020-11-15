@@ -33,18 +33,19 @@ public class Bishop extends Piece {
             return false;
         // Moving right and up
         if (endFile > startFile && endRank > startRank)
-            return checkForObstructions(board, endFile, startFile, startRank);
-        // Moving right and down
-        if (endFile > startFile && startRank > endRank)
-            return checkForObstructions(board, endFile, startFile, endRank);
+            return checkRightLeaningDiagObstructions(board, endFile, startFile, startRank);
         // Moving left and down
         if (startFile > endFile && startRank > endRank)
-            return checkForObstructions(board, startFile, endFile, endRank);
+            return checkRightLeaningDiagObstructions(board, startFile, endFile, endRank);
+        // Moving right and down
+        if (endFile > startFile && startRank > endRank)
+            return checkLeftLeaningDiagObstructions(board, startRank, endFile, endRank);
         // Moving left and up
         if (startFile > endFile && endRank > startRank)
-            return checkForObstructions(board, startFile, endFile, startRank);
+            return checkLeftLeaningDiagObstructions(board, endRank, startFile, startRank);
         return false;
     }
+
     /**
      * Convenience method, gets the squares indicated by the Strings,
      * then calls legalMove(Board, Square, Square)
@@ -57,9 +58,9 @@ public class Bishop extends Piece {
     }
 
     /**
-     * Method to check if there are any pieces in the way. Checks squares
-     * starting at the lowest numerical file and rank values in the proposed
-     * move, then moves towards the highest numerical file and rank values
+     * Method to check if there are any pieces in the way along right-leaning diagonals.
+     * Checks squares starting at the lowest numerical file and rank values in the
+     * proposed move, then moves towards the highest numerical file and rank values
      * @param board the Board the game is played on
      * @param highFile value used to terminate the for-loop. Comparing lowFile
      * and highFile vs lowRank and highRank makes technically makes no difference.
@@ -68,13 +69,34 @@ public class Bishop extends Piece {
      * @param lowRank the moves rank with the lowest numerical value
      * @return true if there are no pieces obstructing the move, false otherwise
      */
-    public static boolean checkForObstructions(Board board, byte highFile, byte lowFile, byte lowRank) {
+    public static boolean checkRightLeaningDiagObstructions(Board board, byte highFile, byte lowFile, byte lowRank) {
         // Add 1 to lowFile and lowRank so we don't collide with ourselves. If the 
         // endSquare is at lowFile or lowRank, we already checked for friendly pieces.
         for(byte file = (byte)(lowFile + 1), rank = (byte)(lowRank + 1); file < highFile; file++, rank++) {
-            if(board.getSquare(file, rank).getPiece() != null) {
+            if(board.getSquare(file, rank).getPiece() != null)
                 return false;
-            }
+        }
+        return true;
+    }
+
+    /**
+     * Method to check if there are any pieces in the way along left-leaning diagonals.
+     * Checks squares starting at the lowest numerical file and rank values in the
+     * proposed move, then moves towards the highest numerical file and rank values
+     * @param board the Board the game is played on
+     * @param highRank value used to terminate the for-loop. 
+     * @param highFile the moves file with the highest numerical value
+     * @param lowRank the moves rank with the lowest numerical value
+     * @return true if there are no pieces obstructing the move, false otherwise
+     */
+    public static boolean checkLeftLeaningDiagObstructions(Board board, byte highRank, byte highFile, byte lowRank) {
+        // Start at bottom right, move to top left. this means we go lowRank to highRank
+        // but highFile to lowFile. Sub 1 from highFile and add 1 to lowRank so
+        // we don't collide with ourselves. If the endSquare is at lowRank, we
+        // already checked for friendly pieces
+        for(byte file = (byte)(highFile - 1), rank = (byte)(lowRank + 1); rank < highRank; file--, rank++) {
+            if(board.getSquare(file, rank).getPiece() != null)
+                return false;
         }
         return true;
     }

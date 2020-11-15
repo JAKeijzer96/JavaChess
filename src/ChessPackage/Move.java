@@ -1,5 +1,6 @@
 package ChessPackage;
 
+import ChessPackage.Pieces.Pawn;
 import ChessPackage.Pieces.Piece;
 
 public class Move {
@@ -16,43 +17,30 @@ public class Move {
      * Piece that's captured?
      */
 
-    // Do we need to explicitly define the player in the Move class,
-    // or can we keep track of it well enough in the Game class
-    // Moving back and forth through moves, showing in the proper
-    // place in the GUI, etc.
-    // Keeping track of Player here could add a relatively high amount
-    // of memory usage, referencing the same two Player objects many times
-    // But as long as we don't create new Player objects each time it
-    // should be fine?
-    // Need to decide on pros vs cons later.
-    Player player;
+    // Don't think keeping track of Player here is necessary
     Square startSquare;
     Square endSquare;
     Piece startPiece;
     Piece endPiece;
+    boolean isCheck;
+    boolean isCheckMate;
 
-    public Move(Player player, Square startSquare, Square endSquare) {
-        this.player = player;
+    public Move(Square startSquare, Square endSquare) {
         this.startSquare = startSquare;
         this.endSquare = endSquare;
-        this.startPiece = this.getStartPiece();
-        this.endPiece = this.getEndPiece();
+        this.startPiece = this.startSquare.getPiece();
+        this.endPiece = this.endSquare.getPiece();
     }
 
-    public Piece getStartPiece() {
-        return this.startSquare.getPiece();
-    }
-
-    public Piece getEndPiece() {
-        return this.endSquare.getPiece();
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
+    @Override
+    public String toString() {
+        String piece = "";
+        if (!(this.startPiece instanceof Pawn))
+            piece = Character.toString(this.startPiece.getName()).toUpperCase();
+        String takes = (this.endPiece != null) ? "x" : "";
+        String check = (isCheck) ? "+" : "";
+        String checkMate = (isCheckMate) ? "#" : "";
+        return piece + takes + this.endSquare.toString() + check + checkMate;
     }
 
     public Square getStartSquare() {
@@ -71,5 +59,35 @@ public class Move {
         this.endSquare = endSquare;
     }
 
-    
+    public boolean isCheck() {
+        return isCheck;
+    }
+
+    public void setCheck(boolean isCheck) {
+        this.isCheck = isCheck;
+    }
+
+    public boolean isCheckMate() {
+        return isCheckMate;
+    }
+
+    public void setCheckMate(boolean isCheckMate) {
+        this.isCheckMate = isCheckMate;
+    }
+
+    public Piece getStartPiece() {
+        return startPiece;
+    }
+
+    public void setStartPiece(Piece startPiece) {
+        this.startPiece = startPiece;
+    }
+
+    public Piece getEndPiece() {
+        return endPiece;
+    }
+
+    public void setEndPiece(Piece endPiece) {
+        this.endPiece = endPiece;
+    }
 }

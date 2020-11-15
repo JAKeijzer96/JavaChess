@@ -46,16 +46,16 @@ public class Queen extends Piece {
             return false;
         // Moving right and up
         if (endFile > startFile && endRank > startRank)
-            return Bishop.checkForObstructions(board, endFile, startFile, startRank);
-        // Moving right and down
-        if (endFile > startFile && startRank > endRank)
-            return Bishop.checkForObstructions(board, endFile, startFile, endRank);
+            return Bishop.checkRightLeaningDiagObstructions(board, endFile, startFile, startRank);
         // Moving left and down
         if (startFile > endFile && startRank > endRank)
-            return Bishop.checkForObstructions(board, startFile, endFile, endRank);
+            return Bishop.checkRightLeaningDiagObstructions(board, startFile, endFile, endRank);
+        // Moving right and down
+        if (endFile > startFile && startRank > endRank)
+            return Bishop.checkLeftLeaningDiagObstructions(board, startRank, endFile, endRank);
         // Moving left and up
         if (startFile > endFile && endRank > startRank)
-            return Bishop.checkForObstructions(board, startFile, endFile, startRank);
+            return Bishop.checkLeftLeaningDiagObstructions(board, endRank, startFile, startRank);
         return false;
     }
     

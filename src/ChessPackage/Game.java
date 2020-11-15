@@ -42,7 +42,7 @@ public class Game {
         if (!startPiece.legalMove(board, startSquare, endSquare))
             return false;
         
-        Move move = new Move(currentTurn, startSquare, endSquare);
+        Move move = new Move(startSquare, endSquare);
         this.moveList.add(move);
         
         endSquare.setPiece(startPiece);

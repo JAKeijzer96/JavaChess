@@ -61,10 +61,20 @@ public class App {
         Player white = new Player('W', "Jasper");
         Player black = new Player('B', "Computer");
         Game game = new Game(white, black);
-        System.out.println(game);
         game.makeMove("e2", "e4");
-        System.out.println(game);
+        game.makeMove("e7", "e5");
+        game.makeMove("g1", "f3");
+        game.makeMove("b8", "c6");
+        // System.out.println(game.getBoard().getPiece("f1").legalMove(game.getBoard(), "f1", "c4"));
+        // System.out.println(game.getBoard().getPiece("f1"));
+        // System.out.println(game.getBoard().getPiece("e2"));
+        // System.out.println(game.getBoard().getPiece("d3"));
+        // System.out.println(game.getBoard().getPiece("c4"));
+        game.makeMove("f1", "c4");
+        game.makeMove("g8", "f6");
+        game.makeMove("f3", "g5");
         System.out.println(game.getMoveList());
+        System.out.println(game);
         // Board test3 = new Board("r4rk1/1p3p2/pp3qpp/4p3/3n4/3Q1P1P/PP3P2/R2B1R1K");
         // for(int i = 0; i < test3.getBoard().length; i++) {
         //     for(int j = 0; j < test3.getBoard().length; j++) {
