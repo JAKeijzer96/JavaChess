@@ -10,6 +10,12 @@ public class Player {
         this.playerName = playerName;
     }
 
+    /**
+     * Compares two players, they are equal if they have the same name and color
+     * @param other the Object to compare to
+     * @return true if this Player is the same as the Object argument,
+     * false otherwise
+     */
     @Override
     public boolean equals(Object other) {
         if (this == other) {

@@ -5,7 +5,7 @@ package ChessPackage;
 import java.util.ArrayList;
 import java.util.List;
 
-import ChessPackage.Pieces.Piece;
+import ChessPackage.Pieces.*;
 
 public class Game {
     /**
@@ -22,12 +22,16 @@ public class Game {
     Player currentTurn;
     Board board;
     List<Move> moveList;
+    int halfMoveCounter; // halfMoveCounter used for fifty-move rule
+    int fullMoveCounter; // fullMoveCounter to track amount of full Moves
 
     public Game(Player white, Player black) {
         this.whitePlayer = white;
         this.blackPlayer = black;
         board = new Board();
         moveList = new ArrayList<Move>(); // check this
+        this.halfMoveCounter = 0;
+        this.fullMoveCounter = 1;
         this.currentTurn = white;
     }
 
@@ -44,21 +48,39 @@ public class Game {
         
         Move move = new Move(startSquare, endSquare);
         this.moveList.add(move);
+
+        if (startPiece instanceof Pawn || endSquare.getPiece() != null)
+            this.halfMoveCounter = 0;
+        else
+            this.halfMoveCounter++;
         
         endSquare.setPiece(startPiece);
         startSquare.setPiece(null);
 
         if (currentTurn.equals(whitePlayer))
             currentTurn = blackPlayer;
-        else
+        else { // increment fullMovecounter after black move
             currentTurn = whitePlayer;
+            this.fullMoveCounter++;
+        }
 
         return true;
     }
 
+    /**
+     * Converts the current state of the Game to FEN notation.
+     * Needs more work, currently disables castling and en passant by default.
+     * @return the FEN notation of the current gamestate
+     */
     @Override
     public String toString() {
-        return this.board.toString();
+        char turn = (currentTurn.equals(whitePlayer)) ? 'w' : 'b';
+        // castling availability for both sides
+        String castling = "-";
+        // en passant square
+        String enPassant = "-";
+        return (this.board.toString() + " " + turn + " " + castling + " "
+            + enPassant + " " + this.halfMoveCounter + " " + this.fullMoveCounter);
     }
 
     public Player getWhitePlayer() {

@@ -35,11 +35,15 @@ public class Move {
     @Override
     public String toString() {
         String piece = "";
+        // Don't add Piece notation if the Piece is a Pawn ...
         if (!(this.startPiece instanceof Pawn))
             piece = Character.toString(this.startPiece.getName()).toUpperCase();
+        // .. except when the Pawn captures a Piece, in that case add file
+        else if (this.startPiece instanceof Pawn && this.endPiece != null)
+            piece = Character.toString(this.startSquare.getFile() + 'a');
         String takes = (this.endPiece != null) ? "x" : "";
-        String check = (isCheck) ? "+" : "";
-        String checkMate = (isCheckMate) ? "#" : "";
+        String check = (this.isCheck) ? "+" : "";
+        String checkMate = (this.isCheckMate) ? "#" : "";
         return piece + takes + this.endSquare.toString() + check + checkMate;
     }
 
