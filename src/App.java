@@ -73,10 +73,14 @@ public class App {
         game.makeMove("f6", "d5");
         game.makeMove("g5", "f7");
         game.makeMove("e8", "f7");
+        game.setCastlingAvailability("KQ");
         game.makeMove("d1", "f3");
         game.makeMove("f7", "g8");
         System.out.println(game.getMoveList());
         System.out.println(game);
+
+        Game game2 = new Game("r1bq1bkr/ppp3pp/2n5/3np3/2B5/5Q2/PPPP1PPP/RNB1K2R w KQ - 2 8");
+        System.out.println(game2);
         // Board test3 = new Board("r4rk1/1p3p2/pp3qpp/4p3/3n4/3Q1P1P/PP3P2/R2B1R1K");
         // for(int i = 0; i < test3.getBoard().length; i++) {
         //     for(int j = 0; j < test3.getBoard().length; j++) {

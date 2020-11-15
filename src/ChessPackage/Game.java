@@ -24,15 +24,48 @@ public class Game {
     List<Move> moveList;
     int halfMoveCounter; // halfMoveCounter used for fifty-move rule
     int fullMoveCounter; // fullMoveCounter to track amount of full Moves
+    // Might want to change way to save castling and en passant later
+    String castlingAvailability; // String for FEN notation
+    String enPassantSquare; // String for FEN notation
+
+
+    public Game() {
+        this.whitePlayer = new Player('W', "White");
+        this.blackPlayer = new Player('B', "Black");
+        this.moveList = new ArrayList<Move>();
+        this.board = new Board();
+        this.castlingAvailability = "KQkq";
+        this.enPassantSquare = "-";
+        this.halfMoveCounter = 0;
+        this.fullMoveCounter = 1;
+        this.currentTurn = this.whitePlayer;
+    }
 
     public Game(Player white, Player black) {
         this.whitePlayer = white;
         this.blackPlayer = black;
-        board = new Board();
-        moveList = new ArrayList<Move>(); // check this
+        this.moveList = new ArrayList<Move>();
+        this.board = new Board();
+        this.castlingAvailability = "KQkq";
+        this.enPassantSquare = "-";
         this.halfMoveCounter = 0;
         this.fullMoveCounter = 1;
-        this.currentTurn = white;
+        this.currentTurn = this.whitePlayer;
+    }
+
+    public Game(String fenNotation) {
+        String[] arrOfStr = fenNotation.split(" ");
+        if (arrOfStr.length != 6)
+            throw new IllegalArgumentException("Invalid FEN notation");
+        this.whitePlayer = new Player('W', "White");
+        this.blackPlayer = new Player('B', "Black");
+        this.moveList = new ArrayList<Move>();
+        this.board = new Board(arrOfStr[0]);
+        this.currentTurn = (arrOfStr[1].equals("w")) ? this.whitePlayer : this.blackPlayer;
+        this.castlingAvailability = arrOfStr[2];
+        this.enPassantSquare = arrOfStr[3];
+        this.halfMoveCounter = Integer.parseInt(arrOfStr[4]);
+        this.fullMoveCounter = Integer.parseInt(arrOfStr[5]);
     }
 
     public boolean makeMove(String startString, String endString) {
@@ -75,12 +108,8 @@ public class Game {
     @Override
     public String toString() {
         char turn = (currentTurn.equals(whitePlayer)) ? 'w' : 'b';
-        // castling availability for both sides
-        String castling = "-";
-        // en passant square
-        String enPassant = "-";
-        return (this.board.toString() + " " + turn + " " + castling + " "
-            + enPassant + " " + this.halfMoveCounter + " " + this.fullMoveCounter);
+        return (board.toString() + " " + turn + " " + castlingAvailability + " "
+            + enPassantSquare + " " + halfMoveCounter + " " + fullMoveCounter);
     }
 
     public Player getWhitePlayer() {
@@ -115,5 +144,43 @@ public class Game {
         this.moveList = moves;
     }
 
-    
+    public Player getCurrentTurn() {
+        return currentTurn;
+    }
+
+    public void setCurrentTurn(Player currentTurn) {
+        this.currentTurn = currentTurn;
+    }
+
+    public int getHalfMoveCounter() {
+        return halfMoveCounter;
+    }
+
+    public void setHalfMoveCounter(int halfMoveCounter) {
+        this.halfMoveCounter = halfMoveCounter;
+    }
+
+    public int getFullMoveCounter() {
+        return fullMoveCounter;
+    }
+
+    public void setFullMoveCounter(int fullMoveCounter) {
+        this.fullMoveCounter = fullMoveCounter;
+    }
+
+    public String getCastlingAvailability() {
+        return castlingAvailability;
+    }
+
+    public void setCastlingAvailability(String castlingAvailability) {
+        this.castlingAvailability = castlingAvailability;
+    }
+
+    public String getEnPassantSquare() {
+        return enPassantSquare;
+    }
+
+    public void setEnPassantSquare(String enPassantSquare) {
+        this.enPassantSquare = enPassantSquare;
+    }
 }
