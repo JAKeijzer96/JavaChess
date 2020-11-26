@@ -4,7 +4,6 @@ import ChessPackage.Board;
 import ChessPackage.Square;
 
 public class King extends Piece {
-
     boolean canCastle;
 
     public King (char color) {

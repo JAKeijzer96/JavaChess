@@ -4,7 +4,6 @@ import ChessPackage.Board;
 import ChessPackage.Square;
 
 public class Bishop extends Piece {
-    
     public Bishop (char color) {
         super(color);
         this.name = (color == 'W') ? 'B' : 'b';

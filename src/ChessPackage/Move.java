@@ -32,6 +32,13 @@ public class Move {
         this.endPiece = this.endSquare.getPiece();
     }
 
+    /**
+     * Get the standard chess notation of a chess move.
+     * Generally speaking this includes the Piece that's moving,
+     * the Square it's moving to, and extra characters to indicate if it has
+     * captured (x) a Piece, given check (+) or delivered checkmate (#)
+     * @return String containing standard chess notation of the Move
+     */
     @Override
     public String toString() {
         String piece = "";

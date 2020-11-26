@@ -1,5 +1,3 @@
-// Inspiration: https://www.geeksforgeeks.org/design-a-chess-game/
-
 package ChessPackage;
 
 import java.util.ArrayList;
@@ -20,8 +18,10 @@ public class Game {
     Player whitePlayer;
     Player blackPlayer;
     Player currentTurn;
-    Board board;
     List<Move> moveList;
+    Board board;
+    Square[] whitePiecesSquares; // list of all Squares with white Pieces
+    Square[] blackPiecesSquares; // list of all Squares with black Pieces
     int halfMoveCounter; // halfMoveCounter used for fifty-move rule
     int fullMoveCounter; // fullMoveCounter to track amount of full Moves
     // Might want to change way to save castling and en passant later
@@ -29,11 +29,16 @@ public class Game {
     String enPassantSquare; // String for FEN notation
 
 
+    /**
+     * Constructor to make a new Game with default Players
+     */
     public Game() {
         this.whitePlayer = new Player('W', "White");
         this.blackPlayer = new Player('B', "Black");
         this.moveList = new ArrayList<Move>();
         this.board = new Board();
+        this.whitePiecesSquares = this.board.getSquaresOfPlayerColor('W');
+        this.blackPiecesSquares = this.board.getSquaresOfPlayerColor('B');
         this.castlingAvailability = "KQkq";
         this.enPassantSquare = "-";
         this.halfMoveCounter = 0;
@@ -41,11 +46,18 @@ public class Game {
         this.currentTurn = this.whitePlayer;
     }
 
+    /**
+     * Constructor to make a new Game with custom Players
+     * @param white Player with the white pieces
+     * @param black Player with the black pieces
+     */
     public Game(Player white, Player black) {
         this.whitePlayer = white;
         this.blackPlayer = black;
         this.moveList = new ArrayList<Move>();
         this.board = new Board();
+        this.whitePiecesSquares = this.board.getSquaresOfPlayerColor('W');
+        this.blackPiecesSquares = this.board.getSquaresOfPlayerColor('B');
         this.castlingAvailability = "KQkq";
         this.enPassantSquare = "-";
         this.halfMoveCounter = 0;
@@ -53,6 +65,11 @@ public class Game {
         this.currentTurn = this.whitePlayer;
     }
 
+    /**
+     * Constructor to make the game represented by the given FEN notation.
+     * This uses default Players for white and black.
+     * @param fenNotation String containing valid FEN notation
+     */
     public Game(String fenNotation) {
         String[] arrOfStr = fenNotation.split(" ");
         if (arrOfStr.length != 6)
@@ -61,13 +78,21 @@ public class Game {
         this.blackPlayer = new Player('B', "Black");
         this.moveList = new ArrayList<Move>();
         this.board = new Board(arrOfStr[0]);
-        this.currentTurn = (arrOfStr[1].equals("w")) ? this.whitePlayer : this.blackPlayer;
+        this.currentTurn = (arrOfStr[1].toLowerCase().equals("w")) ? this.whitePlayer : this.blackPlayer;
         this.castlingAvailability = arrOfStr[2];
         this.enPassantSquare = arrOfStr[3];
         this.halfMoveCounter = Integer.parseInt(arrOfStr[4]);
         this.fullMoveCounter = Integer.parseInt(arrOfStr[5]);
     }
 
+    /**
+     * Method to make a move on the Board
+     * This method checks if the move is valid, moves the Piece, adds the Move
+     * to the moveList, increments halfMoveCounter if needed and switches turns
+     * @param startString String representation of the start Square
+     * @param endString String representation of the end Square
+     * @return true if the move was successful, false otherwise
+     */
     public boolean makeMove(String startString, String endString) {
         Square startSquare = board.getSquare(startString);
         Square endSquare = board.getSquare(endString);
@@ -89,20 +114,25 @@ public class Game {
         
         endSquare.setPiece(startPiece);
         startSquare.setPiece(null);
+        switchTurn();
+        return true;
+    }
 
+    /**
+     * Switch whose turn it is
+     */
+    public void switchTurn() {
         if (currentTurn.equals(whitePlayer))
             currentTurn = blackPlayer;
         else { // increment fullMovecounter after black move
             currentTurn = whitePlayer;
             this.fullMoveCounter++;
         }
-
-        return true;
     }
 
     /**
      * Converts the current state of the Game to FEN notation.
-     * Needs more work, currently disables castling and en passant by default.
+     * Needs more work
      * @return the FEN notation of the current gamestate
      */
     @Override

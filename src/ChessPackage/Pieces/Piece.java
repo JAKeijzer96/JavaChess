@@ -12,7 +12,6 @@ public abstract class Piece {
      *          Use chars ('w', 'b' / 'W', 'B')
      *          Use booleans (true, false)
      */
-
     char color;
     char name;
 

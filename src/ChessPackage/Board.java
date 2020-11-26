@@ -3,19 +3,25 @@ package ChessPackage;
 import ChessPackage.Pieces.*;
 
 public class Board {
-    /**
-     * 2D array of Squares
-     */
-
     Square[][] board;
     private static final int boardSize = 8;
 
+    /**
+     * Default constructor to make a new Board object with
+     * the default starting position
+     */
     public Board() {
         this.newBoard();
     }
 
-    public Board(String fenNotation) {
-        this.newBoard(fenNotation);
+    /**
+     * Constructor to make a new board based on the given String.
+     * This String should contain only the first part of a FEN notation,
+     * the part that describes the position of the Pieces on the Board.
+     * @param partialFenNotation a String containing the part of the FEN notation
+     */
+    public Board(String partialFenNotation) {
+        this.newBoard(partialFenNotation);
     }
 
     /**
@@ -72,6 +78,28 @@ public class Board {
     }
     
     /**
+     * Get an array of all Squares that have a Piece of the given Player
+     * Array length is 2 * boardSize = 16. If the Player has less than 16 Pieces
+     * the rest of the array is filled with null values
+     * @param playerColor char representation of the color of the Players Pieces
+     * @return a Square[] containing the Squares the Player has Pieces on
+     */
+    public Square[] getSquaresOfPlayerColor(char playerColor) {
+        Square[] squareArray = new Square[2 * boardSize];
+        int i = 0;
+        for(Square[] file : this.board) {
+            for(Square square : file) {
+                Piece piece = square.getPiece();
+                if (piece != null && piece.getColor() == playerColor) {
+                    squareArray[i] = square;
+                    i++;
+                }
+            }
+        }
+        return squareArray;
+    }
+
+    /**
      * Initializes a new board with the default starting position
      */
     void newBoard() {
@@ -111,11 +139,12 @@ public class Board {
     }
 
     /**
-     * Initializes a new board based on the given FEN notation.
-     * Currently only supports piece placement
-     * @param fenNotation a String containing (part of) a valid FEN notation
+     * Initializes a new board based on the given String.
+     * This String should contain only the first part of a FEN notation,
+     * the part that describes the position of the Pieces on the Board.
+     * @param partialFenNotation a String containing the part of the FEN notation
      */
-    void newBoard(String fenNotation) {
+    void newBoard(String partialFenNotation) {
         // FEN notation moves backwards from rank 8 to rank 1
         // Each rank is described from the a-file through the h-file
         // Uppercase letters are white pieces, lowercase == black
@@ -126,8 +155,8 @@ public class Board {
         int rank = 7;
         int file = 0;
         
-        for(int i = 0; i < fenNotation.length(); i++) {
-            currentChar = fenNotation.charAt(i);
+        for(int i = 0; i < partialFenNotation.length(); i++) {
+            currentChar = partialFenNotation.charAt(i);
             // Go to next rank and reset file on '/' character
             if (currentChar == '/') {
                 rank--;

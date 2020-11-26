@@ -3,50 +3,39 @@ package ChessPackage;
 import ChessPackage.Pieces.Piece;
 
 public class Square {
-    /**
-     * Color
-     *      How do we represent a color?
-     *          Use Strings ("white", "black")
-     *          Use ints (bytes) (0, 1)
-     *          Use chars ('w', 'b' / 'W', 'B')
-     *          Use booleans (true, false)
-     *      Does color of the square matter for game functionality
-     *      or is it just for GUI?
-     * 
-     * Position in board
-     *      How do we represent the position on the board?
-     *          Use ints (bytes) (0,4)
-     *          Use chars + bytes ('a', 4)
-     *          Use Strings ("a4")
-     *      Our board will be a 2D array
-     *      Using [][] referencing Strings are a bad idea or just impossible
-     *      Use bytes 0-7
-     *      Files and ranks; file = column, rank = row.
-     *      Might seem unintuitive, but we use [file][rank]
-     *      This is to match standard chess notation for squares
-     *      e4 would be the e-file (index 4) and 4th rank (index 3) 
-     *      Exception handling happens in board
-     * Piece currently on square
-     */
-    // Use ints instead of bytes for now so we don't have to cast everytime
-    // we construct a new Square.
+    // No color variable as that's for GUI only, might add later if necessary
     byte file;
     byte rank;
     Piece piece;
-    // something color;
 
+    /**
+     * Constructor for Squares that have no Piece on them
+     * @param file int index of the Boards file the Square is on
+     * @param rank int index of the Boards rank the Square is on
+     */
     public Square(int file, int rank) {
         this.file = (byte)file;
         this.rank = (byte)rank;
         this.piece = null;
     }
 
+    /**
+     * Constructor for Squares that have a Piece on them
+     * @param file int index of the Boards file the Square is on
+     * @param rank int index of the Boards rank the Square is on
+     * @param piece the Piece that's on the Square
+     */
     public Square(int file, int rank, Piece piece) {
         this.file = (byte)file;
         this.rank = (byte)rank;
         this.piece = piece;
     }
 
+    /**
+     * Compares two Squares, they are equal if they have the same file and rank
+     * @param other the Object to compare to
+     * @return true if this Square is equal to the Object argument, false otherwise
+     */
     @Override
     public boolean equals(Object other) {
         if (this == other) {
@@ -60,7 +49,8 @@ public class Square {
     }
 
     /**
-     * Return the chess notation of the Square
+     * Get the default chess notation of this Square as a String
+     * @return the chess notation of the Square
      */
     @Override
     public String toString() {
@@ -92,6 +82,4 @@ public class Square {
     public void setPiece(Piece piece) {
         this.piece = piece;
     }
-
-    
 }

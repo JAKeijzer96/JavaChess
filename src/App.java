@@ -1,4 +1,7 @@
+// Inspiration: https://www.geeksforgeeks.org/design-a-chess-game/
+
 import ChessPackage.*;
+// import ChessPackage.Pieces.Piece;
 // import ChessPackage.Pieces.*;
 public class App {
     public static void main(String[] args) throws Exception {
@@ -61,6 +64,12 @@ public class App {
         Player white = new Player('W', "Jasper");
         Player black = new Player('B', "Computer");
         Game game = new Game(white, black);
+        for(Square s : game.getBoard().getSquaresOfPlayerColor('W'))
+            System.out.print(s + "-" + s.getPiece() + ", ");
+        System.out.println();
+        for(Square s : game.getBoard().getSquaresOfPlayerColor('B'))
+            System.out.print(s + "-" + s.getPiece() + ", ");
+        System.out.println();
         game.makeMove("e2", "e4");
         game.makeMove("e7", "e5");
         game.makeMove("g1", "f3");

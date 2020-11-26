@@ -9,10 +9,7 @@ public class Pawn extends Piece {
     
     public Pawn (char color) {
         super(color);
-        if (color == 'W')
-            this.name = 'P';
-        else
-            this.name = 'p';
+        this.name = (color == 'W') ? 'P' : 'p';
         this.isFirstMove = true;
     }
 

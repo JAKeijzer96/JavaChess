@@ -22,11 +22,11 @@ public class Knight extends Piece {
      * @param endSquare the Square the Knight tries to move to
      * @return true if the move from startSquare to endSquare is legal, false otherwise
      */
-    public boolean legalMove(Board board, Square start, Square end) {
+    public boolean legalMove(Board board, Square startSquare, Square endSquare) {
         // Disallow 'moving' to the start square or to a square with a friendly piece
-        if (start.equals(end) || (end.getPiece() != null && this.color == end.getPiece().getColor()))
+        if (startSquare.equals(endSquare) || (endSquare.getPiece() != null && this.color == endSquare.getPiece().getColor()))
             return false;
-        if ( Math.abs( (start.getFile() - end.getFile()) * (start.getRank() - end.getRank()) ) == 2 )
+        if ( Math.abs( (startSquare.getFile() - endSquare.getFile()) * (startSquare.getRank() - endSquare.getRank()) ) == 2 )
             return true;
         return false;
     }
