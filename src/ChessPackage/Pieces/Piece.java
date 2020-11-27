@@ -16,7 +16,7 @@ public abstract class Piece {
     char name;
 
     public Piece(char color) {
-        this.color = color;
+        this.color = Character.toUpperCase(color);
     }
 
     /**

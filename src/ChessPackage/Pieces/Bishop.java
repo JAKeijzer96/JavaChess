@@ -27,8 +27,8 @@ public class Bishop extends Piece {
         byte startRank = startSquare.getRank();
         byte endFile = endSquare.getFile();
         byte endRank = endSquare.getRank();
-        // Check if move is a proper diagonal move
-        if ( Math.abs( (startFile - endFile) / (startRank - endRank) ) != 1 )
+        // Check if move is a proper diagonal move while avoiding division by 0
+        if ( (startRank == endRank) || Math.abs( (startFile - endFile) / (startRank - endRank) ) != 1 )
             return false;
         // Moving right and up
         if (endFile > startFile && endRank > startRank)
