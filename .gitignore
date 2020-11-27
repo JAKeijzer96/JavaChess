@@ -1,2 +1,5 @@
 *.class
-JavaFXTest/
+/img/*.zip
+/img/sources.txt
+HelloFX.java
+JavaFX4.java
