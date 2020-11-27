@@ -61,35 +61,73 @@ public class App {
         // }
         // System.out.println(test2);
 
-        Player white = new Player('W', "Jasper");
-        Player black = new Player('B', "Computer");
-        Game game = new Game(white, black);
-        for(Square s : game.getBoard().getSquaresOfPlayerColor('W'))
-            System.out.print(s + "-" + s.getPiece() + ", ");
-        System.out.println();
-        for(Square s : game.getBoard().getSquaresOfPlayerColor('B'))
-            System.out.print(s + "-" + s.getPiece() + ", ");
-        System.out.println();
-        game.makeMove("e2", "e4");
-        game.makeMove("e7", "e5");
-        game.makeMove("g1", "f3");
-        game.makeMove("b8", "c6");
-        game.makeMove("f1", "c4");
-        game.makeMove("g8", "f6");
-        game.makeMove("f3", "g5");
-        game.makeMove("d7", "d5");
-        game.makeMove("e4", "d5");
-        game.makeMove("f6", "d5");
-        game.makeMove("g5", "f7");
-        game.makeMove("e8", "f7");
-        game.setCastlingAvailability("KQ");
-        game.makeMove("d1", "f3");
-        game.makeMove("f7", "g8");
-        System.out.println(game.getMoveList());
-        System.out.println(game);
+        // Player white = new Player('W', "Jasper");
+        // Player black = new Player('B', "Computer");
+        // Game game = new Game(white, black);
+        // for(Square s : game.getBoard().getSquaresOfPlayerColor('W'))
+        //     System.out.print(s + "-" + s.getPiece() + ", ");
+        // System.out.println();
+        // for(Square s : game.getBoard().getSquaresOfPlayerColor('B'))
+        //     System.out.print(s + "-" + s.getPiece() + ", ");
+        // System.out.println();
+        // game.makeMove("e2", "e4");
+        // game.makeMove("e7", "e5");
+        // game.makeMove("g1", "f3");
+        // game.makeMove("b8", "c6");
+        // game.makeMove("f1", "c4");
+        // game.makeMove("g8", "f6");
+        // game.makeMove("f3", "g5");
+        // game.makeMove("d7", "d5");
+        // game.makeMove("e4", "d5");
+        // game.makeMove("f6", "d5");
+        // game.makeMove("g5", "f7");
+        // game.makeMove("e8", "f7");
+        // game.setCastlingAvailability("KQ");
+        // game.makeMove("d1", "f3");
+        // game.makeMove("f7", "g8");
+        // System.out.println(game.getMoveList());
+        // System.out.println(game);
 
-        Game game2 = new Game("r1bq1bkr/ppp3pp/2n5/3np3/2B5/5Q2/PPPP1PPP/RNB1K2R w KQ - 2 8");
-        System.out.println(game2);
+        // Game game2 = new Game("r1bq1bkr/ppp3pp/2n5/3np3/2B5/5Q2/PPPP1PPP/RNB1K2R w KQ - 2 8");
+        // System.out.println(game2);
+        Game checkFromRight = new Game("rnbqkbn1/pppppppp/8/3NR3/3B4/8/PPPPPPPr/RNBQK3 b Qq - 0 1");
+        checkFromRight.makeMove("h2", "h1");
+        Game checkFromLeft = new Game("rnbqkbn1/pppppppp/8/3NR3/2RBN3/3BQ3/rPPPPPP1/4K3 b q - 0 1");
+        checkFromLeft.makeMove("a2", "a1");
+        Game checkFromUp = new Game("rkb2r2/pppp1ppp/np6/Pb2K3/qn6/QB6/PPPP1PPP/RNB3NR b - - 0 1");
+        checkFromUp.makeMove("f8", "e8");
+        Game checkFromDown = new Game("rkb5/pppp1ppp/np6/Pb2K3/qn6/QB6/PPPP1PPP/RNB2rNR b - - 0 1");
+        checkFromDown.makeMove("f1", "e1");
+        Game checkFromUpRightDiag = new Game("2B5/7B/8/3k4/B7/8/8/K4B2 w - - 0 1");
+        checkFromUpRightDiag.makeMove("h7", "g8");
+        Game checkFromDownLeftDiag = new Game("2B5/7B/8/3k4/B7/8/8/K4B2 w - - 0 1");
+        checkFromDownLeftDiag.makeMove("a4", "b3");
+        Game checkFromUpLeftDiag = new Game("2B5/7B/8/3k4/B7/8/8/K4B2 w - - 0 1");
+        checkFromUpLeftDiag.makeMove("c8", "b7");
+        Game checkFromDownRightDiag = new Game("2B5/7B/8/3k4/B7/8/8/K4B2 w - - 0 1");
+        checkFromDownRightDiag.makeMove("f1", "g2");
+        Game knight1 = new Game("8/2n1n3/8/n5n1/3K4/n5n1/8/2n1n2k b - - 0 1");
+        knight1.makeMove("c7", "e6");
+        Game knight2 = new Game("8/2n1n3/8/n5n1/3K4/n5n1/8/2n1n2k b - - 0 1");
+        knight2.makeMove("g3", "f5");
+        Game knight3 = new Game("8/2n1n3/8/n5n1/3K4/n5n1/8/2n1n2k b - - 0 1");
+        knight3.makeMove("g5", "f3");
+        Game knight4 = new Game("8/2n1n3/8/n5n1/3K4/n5n1/8/2n1n2k b - - 0 1");
+        knight4.makeMove("c1", "e2");
+        Game knight5 = new Game("8/2n1n3/8/n5n1/3K4/n5n1/8/2n1n2k b - - 0 1");
+        knight5.makeMove("e1", "c2");
+        Game knight6 = new Game("8/2n1n3/8/n5n1/3K4/n5n1/8/2n1n2k b - - 0 1");
+        knight6.makeMove("a5", "b3");
+        Game knight7 = new Game("8/2n1n3/8/n5n1/3K4/n5n1/8/2n1n2k b - - 0 1");
+        knight7.makeMove("a3", "b5");
+        Game knight8 = new Game("8/2n1n3/8/n5n1/3K4/n5n1/8/2n1n2k b - - 0 1");
+        knight8.makeMove("e7", "c6");
+        
+        Game checkUnpin = new Game("2B3B1/5R2/8/3k4/B7/8/8/K4B2 w - - 0 1");
+        checkUnpin.makeMove("f7", "d7");
+        Game checkKnightUnping = new Game("8/3r4/8/3n4/8/3K4/8/7k b - - 0 1");
+        checkKnightUnping.makeMove("d5", "f4");
+
         // Board test3 = new Board("r4rk1/1p3p2/pp3qpp/4p3/3n4/3Q1P1P/PP3P2/R2B1R1K");
         // for(int i = 0; i < test3.getBoard().length; i++) {
         //     for(int j = 0; j < test3.getBoard().length; j++) {

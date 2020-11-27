@@ -4,7 +4,7 @@ import ChessPackage.Pieces.*;
 
 public class Board {
     Square[][] board;
-    private static final int boardSize = 8;
+    public static final int boardSize = 8;
 
     /**
      * Default constructor to make a new Board object with
@@ -114,17 +114,17 @@ public class Board {
         board[6][0] = new Square(6, 0, new Knight('W'));
         board[7][0] = new Square(7, 0, new Rook('W'));
         // Initialize a2 through h2 with the white pawns
-        for (int file = 0; file < 8; file++) {
+        for (int file = 0; file < boardSize; file++) {
             board[file][1] = new Square(file, 1, new Pawn('W'));
         }
         // Initialize the 3rd, 4th, 5th and 6th rank without any pieces
         for (int rank = 2; rank < 6; rank++) {
-            for(int file = 0; file < 8; file++) {
+            for(int file = 0; file < boardSize; file++) {
                 board[file][rank] = new Square(file, rank);
             }
         }
         // Initialize a7 through h7 with the black pawns
-        for (int file = 0; file < 8; file++) {
+        for (int file = 0; file < boardSize; file++) {
             board[file][6] = new Square(file, 6, new Pawn('B'));
         }
         // Initialize a8 through h8 with the black pieces

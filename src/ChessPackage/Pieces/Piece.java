@@ -59,6 +59,10 @@ public abstract class Piece {
     public char getName() {
         return name;
     }
+    
+    public char getUpperCaseName() {
+        return Character.toUpperCase(name);
+    }
 
     public void setName(char name) {
         this.name = name;
