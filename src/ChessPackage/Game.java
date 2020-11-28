@@ -106,7 +106,7 @@ public class Game {
     }
 
     /**
-     * Method to make a move on the Board
+     * Makes a move on the Board <p>
      * This method checks if the move is valid, moves the Piece, adds the Move
      * to the moveList, increments halfMoveCounter if needed and switches turns
      * @param startString String representation of the start Square
@@ -133,7 +133,7 @@ public class Game {
             this.halfMoveCounter++;
         endSquare.setPiece(startPiece);
         startSquare.setPiece(null);
-        int amountOfCheckingPieces = checkCheck();
+        int amountOfCheckingPieces = calculateChecks();
         if(amountOfCheckingPieces > 0) {
             System.out.println(amountOfCheckingPieces + " check(s)! " + startString + "->" + endString);
         }
@@ -142,207 +142,101 @@ public class Game {
         return true;
     }
 
-    public int checkCheck() {
-        // lets say white has moved. then we need to test if black king is in check
+    /**
+     * Calculates how many Pieces are giving check <p>
+     * Calculation starts at the Kings Square, then loops outwards in all
+     * 8 directions. If an unobstructed opponents Piece is found with a
+     * legalMove to the Kings Square, it is checking the King. After the
+     * 8 directions, look for possible Knights around the King.
+     * @return the amount of Pieces giving check, can be 0, 1 or 2
+     */
+    public int calculateChecks() {
+        // lets say white has moved. then we need to test if black King is in check
         Square kingSquare = (currentTurn.equals(whitePlayer)) ? blackKingSquare : whiteKingSquare;
         int file = kingSquare.getFile();
         int rank = kingSquare.getRank();
         // return amount of Pieces giving check, either 0, 1 or 2
         // if it's 2, no need to check if Piece capture is possible on the next move
-        int returnValue = 0;
-        
+        int nrOfCheckingPieces = 0;
 
-        // check if were white to move again, they could capture the black king
-        // do this by looping in all 8 directions + closest squares that could be
-        // occupied by opponents knights. If we find an >>unobstructed<< Piece there
-        // with a legalMove to the current kings square, it is check
-        // in 8 directions: if there is a friendly piece in the way, break
-        // in 8 directions: if there is an opponents piece, check if it has a legalMove
-        // if not, break: any pieces behind it are blocked
-        // knight squares: no need to check for obstructions
-
-        // how do we make sure we dont go out of the board?
-        // boardSize-1
-
-        // check from rank right
-        // add 1 to file so we dont check starting square
-        for(int f = file + 1; f < Board.boardSize; f++) {
-            Square s = board.getSquare(f, rank);
-            Piece p = s.getPiece();
-            // continue loop if we find no piece
-            if(p == null)
-                continue;
-            // break loop if we find a piece of the same color as the king we are checking for
-            if(p.getColor() == kingSquare.getPiece().getColor())
-                break;
-            // if there is a Piece with a legalMove to the kingSquare, add it
-            // to the returnValue and break out of the current loop
-            if (p.legalMove(board, s, kingSquare)) {
-                returnValue++;
-                break;
-            }
-            // This part is only reached when there is an opponents Piece in the
-            // way with no valid move to the kingSquare. This Piece blocks any
-            // Pieces behind it, so no need to check further in this direction
-            break;
-        }
-        // check from rank left
-        // subtract 1 from file so we dont check starting square
-        for(int f = file - 1; f > -1; f--) {
-            Square s = board.getSquare(f, rank);
-            Piece p = s.getPiece();
-            // continue loop if we find no piece
-            if(p == null)
-                continue;
-            // break loop if we find a piece of the same color as the king we are checking for
-            if(p.getColor() == kingSquare.getPiece().getColor())
-                break;
-            if (p.legalMove(board, s, kingSquare)) {
-                returnValue++;
-                break;
-            }
-            break;
-        }
-        // check from file up
-        // add 1 to rank so we dont check starting square
-        for(int r = rank + 1; r < Board.boardSize; r++) {
-            Square s = board.getSquare(file, r);
-            Piece p = s.getPiece();
-            // continue loop if we find no piece
-            if(p == null)
-                continue;
-            // break loop if we find a piece of the same color as the king we are checking for
-            if(p.getColor() == kingSquare.getPiece().getColor())
-                break;
-            if (p.legalMove(board, s, kingSquare)) {
-                returnValue++;
-                break;
-            }
-            break;
-        }
-        // check from file down
-        // subtract 1 from rank so we dont check starting square
-        for(int r = rank - 1; r > -1; r--) {
-            Square s = board.getSquare(file, r);
-            Piece p = s.getPiece();
-            // continue loop if we find no piece
-            if(p == null)
-                continue;
-            // break loop if we find a piece of the same color as the king we are checking for
-            if(p.getColor() == kingSquare.getPiece().getColor())
-                break;
-            if (p.legalMove(board, s, kingSquare)) {
-                returnValue++;
-                break;
-            }
-            break;
-        }
-        // check from diag up right
-        // Add 1 to file and rank so we don't collide with ourselves.
-        for(int f = file + 1, r = rank + 1; f < Board.boardSize && r < Board.boardSize; f++, r++) {
-            Square s = board.getSquare(f, r);
-            Piece p = s.getPiece();
-            // continue loop if we find no piece
-            if(p == null)
-                continue;
-            // break loop if we find a piece of the same color as the king we are checking for
-            if(p.getColor() == kingSquare.getPiece().getColor())
-                break;
-            if (p.legalMove(board, s, kingSquare)) {
-                returnValue++;
-                break;
-            }
-            break;
-        }
-        // check from diag down left
-        // subtract 1 from file and rank so we don't collide with ourselves.
-        for(int f = file - 1, r = rank - 1; f > -1 && r > -1; f--, r--) {
-            Square s = board.getSquare(f, r);
-            Piece p = s.getPiece();
-            // continue loop if we find no piece
-            if(p == null)
-                continue;
-            // break loop if we find a piece of the same color as the king we are checking for
-            if(p.getColor() == kingSquare.getPiece().getColor())
-                break;
-            if (p.legalMove(board, s, kingSquare)) {
-                returnValue++;
-                break;
-            }
-            break;
-        }
-        // check from diag up left
-        // subtract 1 from file and add 1 to rank so we don't collide with ourselves.
-        for(int f = file - 1, r = rank + 1; f > -1 && r < Board.boardSize; f--, r++) {
-            Square s = board.getSquare(f, r);
-            Piece p = s.getPiece();
-            // continue loop if we find no piece
-            if(p == null)
-                continue;
-            // break loop if we find a piece of the same color as the king we are checking for
-            if(p.getColor() == kingSquare.getPiece().getColor())
-                break;
-            if (p.legalMove(board, s, kingSquare)) {
-                returnValue++;
-                break;
-            }
-            break;
-        }
-        // check from diag down right
-        // add 1 to file and subtract 1 from rank so we don't collide with ourselves.
-        for(int f = file + 1, r = rank - 1; f < Board.boardSize && r > -1; f++, r--) {
-            Square s = board.getSquare(f, r);
-            Piece p = s.getPiece();
-            // continue loop if we find no piece
-            if(p == null)
-                continue;
-            // break loop if we find a piece of the same color as the king we are checking for
-            if(p.getColor() == kingSquare.getPiece().getColor())
-                break;
-            if (p.legalMove(board, s, kingSquare)) {
-                returnValue++;
-                break;
-            }
-            break;
-        }
-
-
-        // 2B5/2N1N2B/1N3N2/3k4/BN3N2/2N1N3/8/K4B2 b - - 0 1
-        // and now for testing if there are any knights giving check..
-        // make an array with all possible offsets
-        // file+1, rank+2 >^^
-        // file+2, rank+1 >>^
-        // file+2, rank-1 >>v
-        // file+1, rank-2 >vv
-        // file-1, rank-2 <vv
-        // file-2, rank-1 <<v
-        // file-2, rank+1 <<^
-        // file-1, rank+2 <^^
-        byte[][] knightOffsets = {{1, 2}, {2, 1}, {2, -1},
-            {1, -2}, {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}};
-        
-        for(byte[] offset : knightOffsets) {
-            // avoid IndexErrors
+        // check for checks in all 8 directions, starting with straight up
+        // and moving clockwise
+        nrOfCheckingPieces += checkLoop(kingSquare, file, rank, 0, 1);
+        nrOfCheckingPieces += checkLoop(kingSquare, file, rank, 1, 1);
+        nrOfCheckingPieces += checkLoop(kingSquare, file, rank, 1, 0);
+        nrOfCheckingPieces += checkLoop(kingSquare, file, rank, 1, -1);
+        nrOfCheckingPieces += checkLoop(kingSquare, file, rank, 0, -1);
+        nrOfCheckingPieces += checkLoop(kingSquare, file, rank, -1, -1);
+        nrOfCheckingPieces += checkLoop(kingSquare, file, rank, -1, 0);
+        nrOfCheckingPieces += checkLoop(kingSquare, file, rank, -1, 1);
+        // check for any Knights giving check
+        for(byte[] offset : Board.knightOffsets) {
             if (file + offset[0] < 0 || file + offset[0] > 7
                 || rank + offset[1] < 0 || rank + offset[1] > 7)
                 continue;
             Piece p = board.getPiece(file+offset[0], rank+offset[1]);
-            // there can only be one knight at a time giving check, so can break when we find one
-            if (p != null && p.getUpperCaseName() == 'N' && p.getColor() != kingSquare.getPiece().getColor()) {
-                returnValue++;
-                break;
-            }
+            // There can only be one Knight at a time giving check. Because we
+            // already checked for other Pieces, we can return immediately
+            if (p != null && p.getUpperCaseName() == 'N' && p.getColor() != kingSquare.getPieceColor())
+                return nrOfCheckingPieces + 1;
         }
-        return returnValue;
+        return nrOfCheckingPieces;
+    }
+
+    /**
+     * Loop from the Kings Square outwards in a given direction until a Piece
+     * is found, or until the edge of the Board is hit. <p>
+     * Below is a grid showing the file/rank offsets viewed from the kingSquare
+     * <pre>
+     *+---+---+---+
+     *|-/+|0/+|+/+|
+     *+---+---+---+
+     *|-/0| K |+/0|
+     *+---+---+---+
+     *|-/-|0/-|+/-|
+     *+---+---+---+
+     * </pre>
+     * @param kingSquare the Square the King is on
+     * @param file the file of the kingSquare
+     * @param rank the rank of the kingSquare
+     * @param fileOffset the amount to offset the file by every iteration
+     * @param rankOffset the amount to offset the rank by every iteration
+     * @return 1 if there is a Piece checking the King, 0 otherwise
+     */
+    private int checkLoop(Square kingSquare, int file, int rank, int fileOffset, int rankOffset) {
+        // add offsets to file and rank so we dont check starting Square
+        for(int f = file + fileOffset, r = rank + rankOffset;
+         f > -1 && f < Board.boardSize && r > -1 && r < Board.boardSize;
+         f += fileOffset, r += rankOffset) {
+            Square s = board.getSquare(f, r);
+            Piece p = s.getPiece();
+            // continue loop if we find no piece
+            if(p == null)
+                continue;
+            // return 0 if we find a Piece of the same color as the King we are checking for,
+            // any Pieces behind it will be blocked and unable to check the King
+            if(p.getColor() == kingSquare.getPieceColor())
+                return 0;
+            // return 1 if there is a Piece with a legalMove to the kingSquare
+            if (p.legalMove(board, s, kingSquare)) {
+                return 1;
+            }
+            // This part is only reached when there is an opponents Piece in the
+            // way with no valid move to the kingSquare. This Piece blocks any
+            // Pieces behind it, so no need to check further in this direction
+            return 0;
+        }
+        return 0;
     }
 
     /**
      * Switch whose turn it is
+     * Increment fullMoveCounter after black move
      */
     public void switchTurn() {
         if (currentTurn.equals(whitePlayer))
             currentTurn = blackPlayer;
-        else { // increment fullMovecounter after black move
+        else {
             currentTurn = whitePlayer;
             this.fullMoveCounter++;
         }

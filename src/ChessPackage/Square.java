@@ -59,6 +59,13 @@ public class Square {
         return Character.toString(file) + Character.toString(rank);
     }
 
+    public char getPieceColor() throws NullPointerException{
+        if(this.piece != null)
+            return this.piece.getColor();
+        throw new NullPointerException("Square " + this.toString()
+            + " has no Piece to get the color of");
+    }
+
     public byte getRank() {
         return rank;
     }

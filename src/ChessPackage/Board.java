@@ -5,6 +5,10 @@ import ChessPackage.Pieces.*;
 public class Board {
     Square[][] board;
     public static final int boardSize = 8;
+    // 2D array with all 8 possible offsets to find the surrounding Squares
+    // that a Knight can be on to attack the current Square
+    public static final byte[][] knightOffsets = {{1, 2}, {2, 1}, {2, -1},
+        {1, -2}, {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}};
 
     /**
      * Default constructor to make a new Board object with
