@@ -31,9 +31,9 @@ public class Pawn extends Piece {
      */
     public boolean legalMove(Board board, Square startSquare, Square endSquare) {
         if (this.color == 'W')
-            return pawnMove(board, startSquare, endSquare, (byte) 1);
+            return pawnMove(board, startSquare, endSquare, 1);
         if (this.color == 'B')
-            return pawnMove(board, startSquare, endSquare, (byte) -1);
+            return pawnMove(board, startSquare, endSquare, -1);
         throw new UnsupportedOperationException(
             "Something has gone wrong; pawn is a currently unsupported color");
     }

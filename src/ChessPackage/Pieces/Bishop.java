@@ -28,10 +28,10 @@ public class Bishop extends Piece {
         if (startSquare.equals(endSquare) ||
             (endSquare.getPiece() != null && this.color == endSquare.getPiece().getColor()))
             return false;
-        byte startFile = startSquare.getFile();
-        byte startRank = startSquare.getRank();
-        byte endFile = endSquare.getFile();
-        byte endRank = endSquare.getRank();
+        int startFile = startSquare.getFile();
+        int startRank = startSquare.getRank();
+        int endFile = endSquare.getFile();
+        int endRank = endSquare.getRank();
         // Check if move is a proper diagonal move while avoiding division by 0
         if ( (startRank == endRank) || Math.abs( (startFile - endFile) / (startRank - endRank) ) != 1 )
             return false;
@@ -74,8 +74,8 @@ public class Bishop extends Piece {
      * @param fileIncrement 1 if moving up the Board, -1 if moving down the Board
      * @return true if there are no Pieces in the way, false otherwise
      */
-    public static boolean checkForObstructions(Board board, byte lowFile,
-      byte lowRank, byte highFile, byte highRank, int fileIncrement) {
+    public static boolean checkForObstructions(Board board, int lowFile,
+      int lowRank, int highFile, int highRank, int fileIncrement) {
         int file = (fileIncrement == 1) ? lowFile : highFile;
         int rank;
         for (file += fileIncrement, rank = lowRank + 1;

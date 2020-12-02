@@ -28,10 +28,10 @@ public class Rook extends Piece {
         if (startSquare.equals(endSquare) ||
             (endSquare.getPiece() != null && this.color == endSquare.getPiece().getColor()))
             return false;
-        byte startFile = startSquare.getFile();
-        byte startRank = startSquare.getRank();
-        byte endFile = endSquare.getFile();
-        byte endRank = endSquare.getRank();
+        int startFile = startSquare.getFile();
+        int startRank = startSquare.getRank();
+        int endFile = endSquare.getFile();
+        int endRank = endSquare.getRank();
         // Going up the board, check if there are any pieces in the way
         if (startFile == endFile && endRank > startRank)
             return checkForObstructions(board, startFile, startRank, endFile, endRank);
@@ -70,7 +70,7 @@ public class Rook extends Piece {
      * @param highRank the moves rank with the highest numerical value
      * @return true if there are no Pieces in the way, false otherwise
      */
-    public static boolean checkForObstructions(Board board, byte lowFile, byte lowRank, byte highFile, byte highRank) {
+    public static boolean checkForObstructions(Board board, int lowFile, int lowRank, int highFile, int highRank) {
         int fileIncrement = 0;
         int rankIncrement = 0;
         // Going up or down the Board
