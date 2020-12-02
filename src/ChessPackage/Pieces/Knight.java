@@ -5,13 +5,17 @@ import ChessPackage.Square;
 
 public class Knight extends Piece {
     
+    /**
+     * Knight object for a game of Chess
+     * @param color the color of the Knight, either 'W' or 'B'
+     */
     public Knight (char color) {
         super(color);
         this.name = (color == 'W') ? 'N' : 'n';
     }
 
     /**
-     * legalMove method for the Knight class.
+     * Checks if a move from startSquare to endSquare is legal for a Knight. <p>
      * Knights can move two Squares horizontally and one Square vertically,
      * or two Squares vertically and one Square Horizontally, in the shape of
      * an L. Knights are the only Pieces that can jump over other Pieces, so
@@ -24,15 +28,16 @@ public class Knight extends Piece {
      */
     public boolean legalMove(Board board, Square startSquare, Square endSquare) {
         // Disallow 'moving' to the start square or to a square with a friendly piece
-        if (startSquare.equals(endSquare) || (endSquare.getPiece() != null && this.color == endSquare.getPiece().getColor()))
+        if (startSquare.equals(endSquare)
+          || (endSquare.getPiece() != null && this.color == endSquare.getPiece().getColor()))
             return false;
-        if ( Math.abs( (startSquare.getFile() - endSquare.getFile()) * (startSquare.getRank() - endSquare.getRank()) ) == 2 )
-            return true;
-        return false;
+        return Math.abs(
+            (startSquare.getFile() - endSquare.getFile()) *
+            (startSquare.getRank() - endSquare.getRank()) ) == 2;
     }
 
     /**
-     * Convenience method, gets the squares indicated by the Strings,
+     * Convenience method, gets the Squares indicated by the Strings,
      * then calls legalMove(Board, Square, Square)
      * @param board the Board the game is played on
      * @param startString String representation of the Square the Knight is on

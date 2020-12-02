@@ -4,23 +4,19 @@ import ChessPackage.Board;
 import ChessPackage.Square;
 
 public abstract class Piece {
-    /**
-     * Color
-     *      How do we represent a color?
-     *          Use Strings ("white", "black")
-     *          Use ints (bytes) (0, 1)
-     *          Use chars ('w', 'b' / 'W', 'B')
-     *          Use booleans (true, false)
-     */
     char color;
     char name;
 
+    /**
+     * Abstract Piece object for a game of Chess
+     * @param color the color of the Piece, either 'W' or 'B'
+     */
     public Piece(char color) {
         this.color = Character.toUpperCase(color);
     }
 
     /**
-     * Abstract Piece method
+     * Abstract method to check if a move from startSquare to endSquare is legal
      * @param board the Board the piece is on
      * @param startSquare the moves starting Square
      * @param endSquare the Square to move to
@@ -29,7 +25,7 @@ public abstract class Piece {
     public abstract boolean legalMove(Board board, Square startSquare, Square endSquare);
 
     /**
-     * Abstract Piece method
+     * Abstract method to check if a move from startSquare to endSquare is legal <p>
      * This convenience method gets the Squares described by the Strings,
      * then calls legalMove(Board, Square, Square)
      * @param board the Board the piece is on
@@ -39,10 +35,19 @@ public abstract class Piece {
      */
     public abstract boolean legalMove(Board board, String startString, String endString);
 
+    /**
+     * Tests if two Pieces have the same color
+     * @param other the Piece to compare to
+     * @return true if the color is the same, false otherwise
+     */
     public boolean isSameColor(Piece other) {
         return (this.color == other.color);
     } 
 
+    /**
+     * Get the char variable 'name' as a String
+     * @return the name of the Piece as a String
+     */
     @Override
     public String toString() {
         return Character.toString(name);

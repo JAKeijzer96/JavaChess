@@ -6,6 +6,10 @@ import ChessPackage.Square;
 public class King extends Piece {
     boolean canCastle;
 
+    /**
+     * King object for a game of Chess
+     * @param color the color of the King, either 'W' or 'B'
+     */
     public King (char color) {
         super(color);
         this.name = (color == 'W') ? 'K' : 'k';
@@ -13,7 +17,7 @@ public class King extends Piece {
     }
 
     /**
-     * legalMove method for the King class.
+     * Checks if a move from startSquare to endSquare is legal for a King. <p>
      * Kings can move along diagonals, files and ranks, but only one Square at
      * a time. A King move is legal if the difference in file is 0 or 1 and
      * the difference in rank is 0 or 1
@@ -34,7 +38,7 @@ public class King extends Piece {
     }
 
     /**
-     * Convenience method, gets the squares indicated by the Strings,
+     * Convenience method, gets the Squares indicated by the Strings,
      * then calls legalMove(Board, Square, Square)
      * @param board the Board the game is played on
      * @param startString String representation of the Square the King is on

@@ -4,13 +4,18 @@ import ChessPackage.Board;
 import ChessPackage.Square;
 
 public class Rook extends Piece {
+
+    /**
+     * Rook object for a game of Chess
+     * @param color the color of the Rook, either 'W' or 'B'
+     */
     public Rook (char color) {
         super(color);
         this.name = (color == 'W') ? 'R' : 'r';
     }
 
     /**
-     * legalMove method for the Rook class.
+     * Checks if a move from startSquare to endSquare is legal for a Rook. <p>
      * Rooks move horizontally along ranks and vertically along files
      * A Rook move is legal if startFile == endFile or startRank == endRank
      * @param board the Board the game is played on
@@ -27,23 +32,23 @@ public class Rook extends Piece {
         byte startRank = startSquare.getRank();
         byte endFile = endSquare.getFile();
         byte endRank = endSquare.getRank();
-        // Going down the board, check if there are any pieces in the way
-        if (startFile == endFile && startRank > endRank)
-            return checkSameFileObstructions(board, startFile, startRank, endRank);
         // Going up the board, check if there are any pieces in the way
         if (startFile == endFile && endRank > startRank)
-            return checkSameFileObstructions(board, startFile, endRank, startRank);
-        // Going left on the board, check if there are any pieces in the way
-        if (startRank == endRank && startFile > endFile)
-            return checkSameRankObstructions(board, startRank, startFile, endFile);
+            return checkForObstructions(board, startFile, startRank, endFile, endRank);
+        // Going down the board, check if there are any pieces in the way
+        if (startFile == endFile && startRank > endRank)
+            return checkForObstructions(board, startFile, endRank, endFile, startRank);
         // Going right on the board, check if there are any pieces in the way
         if (startRank == endRank && endFile > startFile)
-            return checkSameRankObstructions(board, startRank, endFile, startFile);
+            return checkForObstructions(board, startFile, startRank, endFile, endRank);
+        // Going left on the board, check if there are any pieces in the way
+        if (startRank == endRank && startFile > endFile)
+            return checkForObstructions(board, endFile, startRank, startFile, endRank);
         return false;
     }
 
     /**
-     * Convenience method, gets the squares indicated by the Strings,
+     * Convenience method, gets the Squares indicated by the Strings,
      * then calls legalMove(Board, Square, Square)
      * @param board the Board the game is played on
      * @param startString String representation of the Square the Rook is on
@@ -54,42 +59,30 @@ public class Rook extends Piece {
     }
 
     /**
-     * Check if there are any pieces in the way when moving vertically,
-     * starting at the rank with the lowest numerical value, then moving up
-     * Note that if the rook is moving down, we still check ranks from the lowest
-     * to the highest value, this for code reusability and for-loop readability
+     * Check if there are any Pieces in the way <p>
+     * Loop from the Square closest to a1 to the Square closest to h8. This method
+     * doesn't check the startSquare and endSquare as that is already handled in
+     * legalMove, instead it checks all the Squares in between them.
      * @param board the Board the Game is played on
-     * @param file the file the Rook is moving on
-     * @param highRank the rank with the highest numerical value
-     * @param lowRank the rank with the lowest numerical value
-     * @return true if there are no pieces in the way, false otherwise
+     * @param lowFile the moves file with the lowest numerical value
+     * @param lowRank the moves rank with the lowest numerical value
+     * @param highFile the moves file with the highest numerical value
+     * @param highRank the moves rank with the highest numerical value
+     * @return true if there are no Pieces in the way, false otherwise
      */
-    public static boolean checkSameFileObstructions(Board board, byte file, byte highRank, byte lowRank) {
-        // Add 1 to lowRank so we don't collide with ourselves. If the endSquare
-        // is at lowRank, we already checked for friendly pieces.
-        for (byte i = (byte) (lowRank + 1); i < highRank; i++) {
-            if(board.getSquare(file, i).getPiece() != null)
-                return false;
-        }
-        return true;
-    }
-
-    /**
-     * Check if there are any pieces in the way when moving horizontally,
-     * starting at the file with the lowest numerical value, then moving right
-     * Note that if the rook is moving left, we still check files from the lowest
-     * to the highest value, this for code reusability and for-loop readability
-     * @param board the Board the Game is played on
-     * @param rank the rank the Rook is moving on
-     * @param highFile the file with the highest numerical value
-     * @param lowFile the file with the lowest numerical value
-     * @return true if there are no pieces in the way, false otherwise
-     */
-    public static boolean checkSameRankObstructions(Board board, byte rank, byte highFile, byte lowFile) {
-        // Add 1 to lowFile so we don't collide with ourselves. If the endSquare
-        // is at lowFile, we already checked for friendly pieces.
-        for(byte i = (byte) (lowFile + 1); i < highFile; i++) {
-            if(board.getSquare(i, rank).getPiece() != null)
+    public static boolean checkForObstructions(Board board, byte lowFile, byte lowRank, byte highFile, byte highRank) {
+        int fileIncrement = 0;
+        int rankIncrement = 0;
+        // Going up or down the Board
+        if (lowFile == highFile)
+            rankIncrement = (lowRank < highRank) ? 1 : -1;
+        // Going left or right on the Board
+        if (lowRank == highRank)
+            fileIncrement = (lowFile < highFile) ? 1 : -1;
+        for(int file = lowFile + fileIncrement, rank = lowRank + rankIncrement;
+          (file > lowFile && file < highFile) || (rank > lowRank && rank < highRank);
+          file += fileIncrement, rank += rankIncrement) {
+            if (board.getPiece(file, rank) != null)
                 return false;
         }
         return true;

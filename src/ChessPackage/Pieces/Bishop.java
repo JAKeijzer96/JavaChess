@@ -4,13 +4,18 @@ import ChessPackage.Board;
 import ChessPackage.Square;
 
 public class Bishop extends Piece {
+
+    /**
+     * Bishop object for a game of Chess
+     * @param color the color of the Bishop, either 'W' or 'B'
+     */
     public Bishop (char color) {
         super(color);
         this.name = (color == 'W') ? 'B' : 'b';
     }
     
     /**
-     * legalMove method for the Bishop class.
+     * Checks if a move from startSquare to endSquare is legal for a Bishop. <p>
      * Bishops move diagonally. A Bishop move is legal if
      * Math.abs( (difference in file) / (difference in rank) ) == 1
      * @param board the Board the game is played on
@@ -32,21 +37,21 @@ public class Bishop extends Piece {
             return false;
         // Moving right and up
         if (endFile > startFile && endRank > startRank)
-            return checkRightLeaningDiagObstructions(board, endFile, startFile, startRank);
+            return checkForObstructions(board, startFile, startRank, endFile, endRank, 1);
         // Moving left and down
         if (startFile > endFile && startRank > endRank)
-            return checkRightLeaningDiagObstructions(board, startFile, endFile, endRank);
+            return checkForObstructions(board, endFile, endRank, startFile, startRank, 1);
         // Moving right and down
         if (endFile > startFile && startRank > endRank)
-            return checkLeftLeaningDiagObstructions(board, startRank, endFile, endRank);
+            return checkForObstructions(board, startFile, endRank, endFile, startRank, -1);
         // Moving left and up
         if (startFile > endFile && endRank > startRank)
-            return checkLeftLeaningDiagObstructions(board, endRank, startFile, startRank);
+            return checkForObstructions(board, endFile, startRank, startFile, endRank, -1);
         return false;
     }
 
     /**
-     * Convenience method, gets the squares indicated by the Strings,
+     * Convenience method, gets the Squares indicated by the Strings,
      * then calls legalMove(Board, Square, Square)
      * @param board the Board the game is played on
      * @param startString String representation of the Square the Bishop is on
@@ -57,47 +62,28 @@ public class Bishop extends Piece {
     }
 
     /**
-     * Method to check if there are any pieces in the way along right-leaning diagonals.
-     * Checks squares starting at the lowest numerical file and rank values in the
-     * proposed move, then moves towards the highest numerical file and rank values
-     * @param board the Board the game is played on
-     * @param highFile value used to terminate the for-loop. Comparing lowFile
-     * and highFile vs lowRank and highRank makes technically makes no difference.
-     * In this implementation checking files was chosen
+     * Checks if there are any Pieces in between the in the way <p>
+     * Loop over the Board from left to right, meaning from lowRank to highRank.
+     * Loop from lowFile to highFile if fileIncrement == 1, loop from highFile
+     * to lowFile if fileIncrement == -1
+     * @param board the Board the Game is played on
      * @param lowFile the moves file with the lowest numerical value
      * @param lowRank the moves rank with the lowest numerical value
-     * @return true if there are no pieces obstructing the move, false otherwise
-     */
-    public static boolean checkRightLeaningDiagObstructions(Board board, byte highFile, byte lowFile, byte lowRank) {
-        // Add 1 to lowFile and lowRank so we don't collide with ourselves. If the 
-        // endSquare is at lowFile or lowRank, we already checked for friendly pieces.
-        for(byte file = (byte)(lowFile + 1), rank = (byte)(lowRank + 1); file < highFile; file++, rank++) {
-            if(board.getSquare(file, rank).getPiece() != null)
-                return false;
-        }
-        return true;
-    }
-
-    /**
-     * Method to check if there are any pieces in the way along left-leaning diagonals.
-     * Checks squares starting at the lowest numerical file and rank values in the
-     * proposed move, then moves towards the highest numerical file and rank values
-     * @param board the Board the game is played on
-     * @param highRank value used to terminate the for-loop. 
      * @param highFile the moves file with the highest numerical value
-     * @param lowRank the moves rank with the lowest numerical value
-     * @return true if there are no pieces obstructing the move, false otherwise
+     * @param highRank the moves rank with the highest numerical value
+     * @param fileIncrement 1 if moving up the Board, -1 if moving down the Board
+     * @return true if there are no Pieces in the way, false otherwise
      */
-    public static boolean checkLeftLeaningDiagObstructions(Board board, byte highRank, byte highFile, byte lowRank) {
-        // Start at bottom right, move to top left. this means we go lowRank to highRank
-        // but highFile to lowFile. Sub 1 from highFile and add 1 to lowRank so
-        // we don't collide with ourselves. If the endSquare is at lowRank, we
-        // already checked for friendly pieces
-        for(byte file = (byte)(highFile - 1), rank = (byte)(lowRank + 1); rank < highRank; file--, rank++) {
-            if(board.getSquare(file, rank).getPiece() != null)
+    public static boolean checkForObstructions(Board board, byte lowFile,
+      byte lowRank, byte highFile, byte highRank, int fileIncrement) {
+        int file = (fileIncrement == 1) ? lowFile : highFile;
+        int rank;
+        for (file += fileIncrement, rank = lowRank + 1;
+          file > lowFile && file < highFile; file += fileIncrement, rank++) {
+            if (board.getPiece(file, rank) != null)
                 return false;
         }
-        return true;
+        return rank == highRank;
     }
 }
 
