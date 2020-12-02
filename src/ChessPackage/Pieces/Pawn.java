@@ -58,16 +58,16 @@ public class Pawn extends Piece {
      * @param direction the direction the Pawn moves in; 1 if white Pawn, -1 if black
      * @return true if the move from startSquare to endSquare is legal, false otherwise
      */
-    private boolean pawnMove(Board board, Square startSquare, Square endSquare, byte direction) {
+    private boolean pawnMove(Board board, Square startSquare, Square endSquare, int direction) {
         Piece endPiece = endSquare.getPiece();
         // Disallow 'moving' to the start Square or to a Square with a friendly Piece
         if (startSquare.equals(endSquare) || (endPiece != null && this.color == endPiece.getColor()))
             return false;
         // we leave en passant for later
-        byte startFile = startSquare.getFile();
-        byte startRank = startSquare.getRank();
-        byte endFile = endSquare.getFile();
-        byte endRank = endSquare.getRank();
+        int startFile = startSquare.getFile();
+        int startRank = startSquare.getRank();
+        int endFile = endSquare.getFile();
+        int endRank = endSquare.getRank();
         // Move 1 ahead
         if (startFile == endFile && endRank - startRank == 1 * direction && endPiece == null) {
             this.isFirstMove = false;
