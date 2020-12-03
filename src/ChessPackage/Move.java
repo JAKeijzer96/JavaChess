@@ -23,20 +23,22 @@ public class Move {
     Piece startPiece;
     Piece endPiece;
     boolean isCheck;
-    boolean isCheckMate;
+    boolean isMate;
 
-    public Move(Square startSquare, Square endSquare) {
+    public Move(Square startSquare, Piece startPiece, Square endSquare, Piece endPiece, boolean isCheck, boolean isMate) {
         this.startSquare = startSquare;
+        this.startPiece = startPiece;
         this.endSquare = endSquare;
-        this.startPiece = this.startSquare.getPiece();
-        this.endPiece = this.endSquare.getPiece();
+        this.endPiece = endPiece;
+        this.isCheck = isCheck;
+        this.isMate = isMate;
     }
 
     /**
-     * Get the standard chess notation of a chess move.
+     * Get the standard chess notation of a chess move. <p>
      * Generally speaking this includes the Piece that's moving,
      * the Square it's moving to, and extra characters to indicate if it has
-     * captured (x) a Piece, given check (+) or delivered checkmate (#)
+     * captured a Piece (x), given check (+) or delivered checkmate (#)
      * @return String containing standard chess notation of the Move
      */
     @Override
@@ -50,8 +52,8 @@ public class Move {
             piece = Character.toString(this.startSquare.getFile() + 'a');
         String takes = (this.endPiece != null) ? "x" : "";
         String check = (this.isCheck) ? "+" : "";
-        String checkMate = (this.isCheckMate) ? "#" : "";
-        return piece + takes + this.endSquare.toString() + check + checkMate;
+        String mate = (this.isMate) ? "#" : "";
+        return piece + takes + this.endSquare + check + mate;
     }
 
     public Square getStartSquare() {
@@ -78,12 +80,12 @@ public class Move {
         this.isCheck = isCheck;
     }
 
-    public boolean isCheckMate() {
-        return isCheckMate;
+    public boolean isMate() {
+        return isMate;
     }
 
-    public void setCheckMate(boolean isCheckMate) {
-        this.isCheckMate = isCheckMate;
+    public void setMate(boolean isMate) {
+        this.isMate = isMate;
     }
 
     public Piece getStartPiece() {

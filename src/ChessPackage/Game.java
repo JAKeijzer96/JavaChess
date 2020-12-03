@@ -6,33 +6,24 @@ import java.util.List;
 import ChessPackage.Pieces.*;
 
 public class Game {
-    /**
-     * Player white
-     * Player black
-     * Board (which is a 2D array of Squares, which in thurn have Pieces on them)
-     * List of Moves so we can go back
-     * Current state? (ongoing, checkmate, stalemate, (check?))
-     * 
-     */
-
+    Board board;
+    List<Move> moveList;
     Player whitePlayer;
     Player blackPlayer;
     Player currentTurn;
-    List<Move> moveList;
-    Board board;
-    Square[] whitePiecesSquares; // list of all Squares with white Pieces
-    Square[] blackPiecesSquares; // list of all Squares with black Pieces
+    List<Square> whitePiecesSquares; // list of all Squares with white Pieces
+    List<Square> blackPiecesSquares; // list of all Squares with black Pieces
     Square whiteKingSquare;
     Square blackKingSquare;
+    boolean isCheck;
+    boolean isMate;
     int halfMoveCounter; // halfMoveCounter used for fifty-move rule
     int fullMoveCounter; // fullMoveCounter to track amount of full Moves
-    // Might want to change way to save castling and en passant later
     String castlingAvailability; // String for FEN notation
-    String enPassantSquare; // String for FEN notation
-
+    Square enPassantSquare; // For FEN notation
 
     /**
-     * Constructor to make a new Game with default Players
+     * Constructs a Chess Game with default Players and starting position
      */
     public Game() {
         this.whitePlayer = new Player('W', "White");
@@ -40,7 +31,7 @@ public class Game {
         this.moveList = new ArrayList<Move>();
         this.board = new Board();
         this.castlingAvailability = "KQkq";
-        this.enPassantSquare = "-";
+        this.enPassantSquare = null;
         this.halfMoveCounter = 0;
         this.fullMoveCounter = 1;
         this.currentTurn = this.whitePlayer;
@@ -51,7 +42,7 @@ public class Game {
     }
 
     /**
-     * Constructor to make a new Game with custom Players
+     * Constructs a new Chess Game with the standard starting position
      * @param white Player with the white pieces
      * @param black Player with the black pieces
      */
@@ -61,7 +52,7 @@ public class Game {
         this.moveList = new ArrayList<Move>();
         this.board = new Board();
         this.castlingAvailability = "KQkq";
-        this.enPassantSquare = "-";
+        this.enPassantSquare = null;
         this.halfMoveCounter = 0;
         this.fullMoveCounter = 1;
         this.currentTurn = this.whitePlayer;
@@ -72,37 +63,50 @@ public class Game {
     }
 
     /**
-     * Constructor to make the game represented by the given FEN notation.
+     * Constructor to make the game represented by the given FEN notation. <p>
      * This uses default Players for white and black.
      * @param fenNotation String containing valid FEN notation
+     * @throws IllegalArgumentException if the FEN notation is not valid
      */
     public Game(String fenNotation) {
         String[] arrOfStr = fenNotation.split(" ");
         if (arrOfStr.length != 6)
-            throw new IllegalArgumentException("Invalid FEN notation");
+            throw new IllegalArgumentException("Invalid FEN notation: " +
+                "too many or too few spaces");
         this.whitePlayer = new Player('W', "White");
         this.blackPlayer = new Player('B', "Black");
         this.moveList = new ArrayList<Move>();
         this.board = new Board(arrOfStr[0]);
-        this.currentTurn = (arrOfStr[1].toLowerCase().equals("w")) ? this.whitePlayer : this.blackPlayer;
+        String turn = arrOfStr[1].toLowerCase();
+        if (turn.equals("w"))
+            this.currentTurn = this.whitePlayer;
+        else if (turn.equals("b"))
+            this.currentTurn = this.blackPlayer;
+        else
+            throw new IllegalArgumentException("Invalid turn indicator in FEN");
         this.castlingAvailability = arrOfStr[2];
-        this.enPassantSquare = arrOfStr[3];
+        String enPassant = arrOfStr[3];
+        this.enPassantSquare = (enPassant.equals("-")) ? null : board.getSquare(enPassant);
         this.halfMoveCounter = Integer.parseInt(arrOfStr[4]);
         this.fullMoveCounter = Integer.parseInt(arrOfStr[5]);
         this.whitePiecesSquares = this.board.getSquaresOfPlayerColor('W');
         this.blackPiecesSquares = this.board.getSquaresOfPlayerColor('B');
-        for(Square s : whitePiecesSquares) {
-            if(s.getPiece().getName() == 'K') {
-                this.whiteKingSquare = s;
+        for(Square square : whitePiecesSquares) {
+            if(square.getPiece().getName() == 'K') {
+                this.whiteKingSquare = square;
                 break;
             }
         }
-        for(Square s : blackPiecesSquares) {
-            if(s.getPiece().getName() == 'k') {
-                this.blackKingSquare = s;
+        for(Square square : blackPiecesSquares) {
+            if(square.getPiece().getName() == 'k') {
+                this.blackKingSquare = square;
                 break;
             }
         }
+        if (this.whiteKingSquare == null)
+            throw new IllegalArgumentException("No white king found in FEN notation");
+        if (this.blackKingSquare == null)
+            throw new IllegalArgumentException("No black king found in FEN notation");
     }
 
     /**
@@ -114,73 +118,210 @@ public class Game {
      * @return true if the move was successful, false otherwise
      */
     public boolean makeMove(String startString, String endString) {
+        if (isMate)
+            return false;
         Square startSquare = board.getSquare(startString);
         Square endSquare = board.getSquare(endString);
         Piece startPiece = startSquare.getPiece();
+        Piece endPiece = endSquare.getPiece();
+        Square kingSquare = (currentTurn.equals(whitePlayer)) ? whiteKingSquare : blackKingSquare;
         if (startPiece == null)
             return false;
         if (startPiece.getColor() != currentTurn.getPlayerColor())
             return false;
         if (!startPiece.legalMove(board, startSquare, endSquare))
             return false;
-        // might need to move (haha) this down to allow adding check notation
-        Move move = new Move(startSquare, endSquare);
-        this.moveList.add(move);
+        if (isPinned(kingSquare, startSquare, endSquare))
+            return false;
 
-        if (startPiece instanceof Pawn || endSquare.getPiece() != null)
+        if (startPiece instanceof Pawn || endPiece != null)
             this.halfMoveCounter = 0;
         else
             this.halfMoveCounter++;
+        // move the Piece
         endSquare.setPiece(startPiece);
         startSquare.setPiece(null);
-        int amountOfCheckingPieces = calculateChecks();
-        if(amountOfCheckingPieces > 0) {
-            System.out.println(amountOfCheckingPieces + " check(s)! " + startString + "->" + endString);
+        // update King Square
+        if(startPiece instanceof King) {
+            if (currentTurn.equals(whitePlayer))
+                whiteKingSquare = endSquare;
+            if(currentTurn.equals(blackPlayer))
+                blackKingSquare = endSquare;
         }
+        updateGameVariables();
+
+        Move move = new Move(startSquare, startPiece, endSquare, endPiece, isCheck, isMate);
+        this.moveList.add(move);
 
         switchTurn();
         return true;
     }
 
+    public void updateGameVariables() {
+        // update piecesSquares lists. always update both in case of capture
+        this.whitePiecesSquares = this.board.getSquaresOfPlayerColor('W');
+        this.blackPiecesSquares = this.board.getSquaresOfPlayerColor('B');
+        // change kingSquare to the other Players kingSquare to see if it's in check
+        // move to seperate function?
+        Square kingSquare = (currentTurn.equals(whitePlayer)) ? blackKingSquare : whiteKingSquare;
+        Square checkingSquare = calculateChecks(kingSquare);
+        if (checkingSquare != null) {
+            this.isCheck = true;
+            if (! canRemoveCheck(kingSquare, checkingSquare)) {
+                this.isCheck = false;
+                this.isMate = true;
+            }
+        }
+        else {
+            this.isCheck = false;
+            this.isMate = false;
+        }
+    }
+
+    /**
+     * Tests if there are any legalMoves that can remove check <p>
+     * Check can be removed in three different ways:
+     * <ul>
+     * <li> By moving the King away </li>
+     * <li> By capturing the Piece giving check - except if there are two attackers </li>
+     * <li> By blocking the Piece giving check - except if there are two attackers
+     *      or if the attacker is a Knight </li>
+     * </ul>
+     * If none of these are possible, it is checkmate
+     * @param kingSquare the Square the king is on
+     * @param checkingSquare the Square from which check is given. This can be:
+     * <ul>
+     * <li> null - no check given
+     * <li> a Square on the Board from which check is given
+     * <li> kingSquare - meaning there are two Pieces giving check at the same time
+     * </ul>
+     * @return true if there is a move which removes check, false otherwise
+     */
+    public boolean canRemoveCheck(Square kingSquare, Square checkingSquare) {
+        if (checkingSquare == null)
+            return true;
+        Piece king = kingSquare.getPiece();
+        int kingFile = kingSquare.getFile();
+        int kingRank = kingSquare.getRank();
+        // calculate if the King can move to a different Square
+        for (byte[] offsets : Board.squareOffsets) {
+            if (kingFile + offsets[0] < 0 || kingFile + offsets[0] > 7
+            || kingRank + offsets[1] < 0 || kingRank + offsets[1] > 7)
+                continue;
+            Square tempSquare = board.getSquare(kingFile+offsets[0], kingRank+offsets[1]);
+            if (king.legalMove(board, kingSquare, tempSquare)) {
+                if (isPinned(kingSquare, kingSquare, tempSquare))
+                    continue;
+                return true;
+            }
+        }
+        // if we reach this when there are two attackers, return false
+        if (checkingSquare.equals(kingSquare))
+            return false;
+        // get PiecesSquares of the Player in check
+        List<Square> friendlyPiecesSquares =
+            (currentTurn.equals(whitePlayer)) ? blackPiecesSquares: whitePiecesSquares;
+        // calculate if the checking Piece can be captured
+        for(Square friendlySquare : friendlyPiecesSquares) {
+            if (friendlySquare.getPiece().legalMove(board, friendlySquare, checkingSquare)) {
+                if (isPinned(kingSquare, friendlySquare, checkingSquare))
+                    continue;
+                return true;
+            }
+        }
+        // if the attacker is a Knight and it can't be captured or moved away from
+        if (checkingSquare.getPiece() instanceof Knight)
+            return false;
+        // calculate offsets used in for loop
+        int attackerFile = checkingSquare.getFile();
+        int attackerRank = checkingSquare.getRank();
+        int fileOffset = 0;
+        int rankOffset = 0;
+        if (kingFile > attackerFile)
+            fileOffset = 1;
+        else if (kingFile < attackerFile)
+            fileOffset = -1;
+        if (kingRank > attackerRank)
+            rankOffset = 1;
+        else if (kingRank < attackerRank)
+            rankOffset = -1;
+        // for each friendly Piece, test if it can block check by moving to any
+        // Square between attacker and King
+        for(Square friendlySquare : friendlyPiecesSquares) {
+            if (friendlySquare.equals(kingSquare))
+                continue;
+            Piece friendlyPiece = friendlySquare.getPiece();
+            for(int f = attackerFile + fileOffset, r = attackerRank + rankOffset;
+              !(f == kingFile && r == kingRank); f += fileOffset, r += rankOffset) {
+                Square tempSquare = board.getSquare(f, r);
+                if (friendlyPiece.legalMove(board, friendlySquare, tempSquare)) {
+                    if (isPinned(kingSquare, friendlySquare, tempSquare))
+                        continue;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Test if a Piece is pinned <p>
+     * Try to move from currentSquare to tempSquare, then see if the king is in check.
+     * Moves Pieces back to their original positions before returning.
+     * @param kingSquare the Square the King is on
+     * @param currentSquare the Square the Piece is currently on
+     * @param tempSquare the Square the Piece tries to move to
+     * @return true if the Piece is pinned, false if it's not
+     */
+    public boolean isPinned(Square kingSquare, Square currentSquare, Square tempSquare) {
+        Piece currentPiece = currentSquare.getPiece();
+        Piece tempPiece = tempSquare.getPiece();
+        currentSquare.setPiece(null);
+        tempSquare.setPiece(currentPiece);
+        Square isCheckFromSquare = (kingSquare.equals(currentSquare)) ?
+            calculateChecks(tempSquare) : calculateChecks(kingSquare);
+        currentSquare.setPiece(currentPiece);
+        tempSquare.setPiece(tempPiece);
+        return isCheckFromSquare != null;
+    }
+
     /**
      * Calculates how many Pieces are giving check <p>
      * Calculation starts at the Kings Square, then loops outwards in all
-     * 8 directions. If an unobstructed opponents Piece is found with a
-     * legalMove to the Kings Square, it is checking the King. After the
-     * 8 directions, look for possible Knights around the King.
-     * @return the amount of Pieces giving check, can be 0, 1 or 2
+     * 8 directions. After this, look for possible Knights around the King.
+     * @param kingSquare the Square the King is on
+     * @return the Square from which check is given. If there are two Pieces giving
+     * check, return the kingSquare instead. Returns null if there is no check
      */
-    public int calculateChecks() {
-        // lets say white has moved. then we need to test if black King is in check
-        Square kingSquare = (currentTurn.equals(whitePlayer)) ? blackKingSquare : whiteKingSquare;
+    public Square calculateChecks(Square kingSquare) {
         int file = kingSquare.getFile();
         int rank = kingSquare.getRank();
-        // return amount of Pieces giving check, either 0, 1 or 2
-        // if it's 2, no need to check if Piece capture is possible on the next move
-        int nrOfCheckingPieces = 0;
-
-        // check for checks in all 8 directions, starting with straight up
+        // check for checks in all 8 directions, starting with diagonal up right
         // and moving clockwise
-        nrOfCheckingPieces += checkLoop(kingSquare, file, rank, 0, 1);
-        nrOfCheckingPieces += checkLoop(kingSquare, file, rank, 1, 1);
-        nrOfCheckingPieces += checkLoop(kingSquare, file, rank, 1, 0);
-        nrOfCheckingPieces += checkLoop(kingSquare, file, rank, 1, -1);
-        nrOfCheckingPieces += checkLoop(kingSquare, file, rank, 0, -1);
-        nrOfCheckingPieces += checkLoop(kingSquare, file, rank, -1, -1);
-        nrOfCheckingPieces += checkLoop(kingSquare, file, rank, -1, 0);
-        nrOfCheckingPieces += checkLoop(kingSquare, file, rank, -1, 1);
+        Square attackerSquare = null;
+        Square currentSquare;
+        for (byte[] offsets : Board.squareOffsets) {
+            currentSquare = checkLoop(kingSquare, file, rank, offsets[0], offsets[1]);
+            // update the attackerSquare
+            if (attackerSquare == null)
+                attackerSquare = currentSquare;
+            // if attackerSquare != null and currentSquare != null, return kingSquare
+            else if (currentSquare != null)
+                return kingSquare;
+        }
         // check for any Knights giving check
         for(byte[] offset : Board.knightOffsets) {
             if (file + offset[0] < 0 || file + offset[0] > 7
                 || rank + offset[1] < 0 || rank + offset[1] > 7)
                 continue;
-            Piece p = board.getPiece(file+offset[0], rank+offset[1]);
+            currentSquare = board.getSquare(file+offset[0], rank+offset[1]);
+            Piece p = currentSquare.getPiece();
             // There can only be one Knight at a time giving check. Because we
             // already checked for other Pieces, we can return immediately
             if (p != null && p.getUpperCaseName() == 'N' && p.getColor() != kingSquare.getPieceColor())
-                return nrOfCheckingPieces + 1;
+                return (attackerSquare == null) ? currentSquare : kingSquare;
         }
-        return nrOfCheckingPieces;
+        return attackerSquare;
     }
 
     /**
@@ -201,37 +342,67 @@ public class Game {
      * @param rank the rank of the kingSquare
      * @param fileOffset the amount to offset the file by every iteration
      * @param rankOffset the amount to offset the rank by every iteration
-     * @return 1 if there is a Piece checking the King, 0 otherwise
+     * @return the Square of the checking Piece if there is one, null otherwise
      */
-    private int checkLoop(Square kingSquare, int file, int rank, int fileOffset, int rankOffset) {
-        // add offsets to file and rank so we dont check starting Square
+    private Square checkLoop(Square kingSquare, int file, int rank, int fileOffset, int rankOffset) {
+        // add offsets to file and rank so we dont test starting Square
         for(int f = file + fileOffset, r = rank + rankOffset;
          f > -1 && f < Board.boardSize && r > -1 && r < Board.boardSize;
          f += fileOffset, r += rankOffset) {
-            Square s = board.getSquare(f, r);
-            Piece p = s.getPiece();
+            Square currentSquare = board.getSquare(f, r);
+            Piece piece = currentSquare.getPiece();
             // continue loop if we find no piece
-            if(p == null)
+            if(piece == null)
                 continue;
-            // return 0 if we find a Piece of the same color as the King we are checking for,
-            // any Pieces behind it will be blocked and unable to check the King
-            if(p.getColor() == kingSquare.getPieceColor())
-                return 0;
+            // return null if we find a Piece of the same color as the King,
+            // any Pieces behind it will be blocked and unable to give check
+            if(piece.getColor() == kingSquare.getPieceColor())
+                return null;
             // return 1 if there is a Piece with a legalMove to the kingSquare
-            if (p.legalMove(board, s, kingSquare)) {
-                return 1;
+            if (piece.legalMove(board, currentSquare, kingSquare)) {
+                return currentSquare;
             }
             // This part is only reached when there is an opponents Piece in the
             // way with no valid move to the kingSquare. This Piece blocks any
-            // Pieces behind it, so no need to check further in this direction
-            return 0;
+            // Pieces behind it, so no need to test further in this direction
+            return null;
         }
-        return 0;
+        return null;
     }
 
     /**
-     * Switch whose turn it is
-     * Increment fullMoveCounter after black move
+     * Reverses the last move made in the Game
+     */
+    public void reverseLastMove() {
+        int index = moveList.size() - 1;
+        Move move = moveList.get(index);
+        moveList.remove(index);
+        Square startSquare = move.getStartSquare();
+        Piece startPiece = move.getStartPiece();
+        Square endSquare = move.getEndSquare();
+        Piece endPiece = move.getEndPiece();
+        // move the Pieces back
+        startSquare.setPiece(startPiece);
+        endSquare.setPiece(endPiece);
+        if (this.halfMoveCounter > 0)
+            this.halfMoveCounter--;
+        if (currentTurn.equals(whitePlayer)) {
+            currentTurn = blackPlayer;
+            this.fullMoveCounter--;
+        } else
+            currentTurn = whitePlayer;
+        // update King Square, check currentTurn again after changing it
+        if(startPiece instanceof King) {
+            if (currentTurn.equals(whitePlayer))
+                whiteKingSquare = startSquare;
+            else
+                blackKingSquare = startSquare;
+        }
+        updateGameVariables();
+    }
+
+    /**
+     * Switch whose turn it is and increment fullMoveCounter after black move
      */
     public void switchTurn() {
         if (currentTurn.equals(whitePlayer))
@@ -244,14 +415,14 @@ public class Game {
 
     /**
      * Converts the current state of the Game to FEN notation.
-     * Needs more work
      * @return the FEN notation of the current gamestate
      */
     @Override
     public String toString() {
         char turn = (currentTurn.equals(whitePlayer)) ? 'w' : 'b';
+        String enPassant = (enPassantSquare != null) ? enPassantSquare.toString() : "-";
         return (board.toString() + " " + turn + " " + castlingAvailability + " "
-            + enPassantSquare + " " + halfMoveCounter + " " + fullMoveCounter);
+            + enPassant + " " + halfMoveCounter + " " + fullMoveCounter);
     }
 
     public Player getWhitePlayer() {
@@ -318,11 +489,11 @@ public class Game {
         this.castlingAvailability = castlingAvailability;
     }
 
-    public String getEnPassantSquare() {
+    public Square getEnPassantSquare() {
         return enPassantSquare;
     }
 
-    public void setEnPassantSquare(String enPassantSquare) {
+    public void setEnPassantSquare(Square enPassantSquare) {
         this.enPassantSquare = enPassantSquare;
     }
 }

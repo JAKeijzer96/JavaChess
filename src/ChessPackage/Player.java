@@ -5,7 +5,7 @@ public class Player {
     String playerName;
 
     /**
-     * Constructor
+     * Player object to be used in a game of Chess
      * @param playerColor char representing the Players color.
      * @param playerName the Players name
      * @throws IllegalArgumentException if playerColor is not 'W', 'w', 'B' or 'b'
@@ -26,15 +26,18 @@ public class Player {
      */
     @Override
     public boolean equals(Object other) {
-        if (this == other) {
+        if (this == other)
             return true;
-        }
-        if (!(other instanceof Player)) {
+        if (!(other instanceof Player))
             return false;
-        }
         Player p = (Player) other;
         return ( (this.getPlayerColor() == p.getPlayerColor())
             && (this.getPlayerName() == p.getPlayerName()) );
+    }
+
+    @Override
+    public String toString() {
+        return Character.toString(this.getPlayerColor());
     }
 
     public char getPlayerColor() {

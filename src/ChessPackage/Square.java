@@ -4,30 +4,30 @@ import ChessPackage.Pieces.Piece;
 
 public class Square {
     // No color variable as that's for GUI only, might add later if necessary
-    byte file;
-    byte rank;
+    int file;
+    int rank;
     Piece piece;
 
     /**
-     * Constructor for Squares that have no Piece on them
+     * Square object to be used in a game of Chess with no Piece on it
      * @param file int index of the Boards file the Square is on
      * @param rank int index of the Boards rank the Square is on
      */
     public Square(int file, int rank) {
-        this.file = (byte)file;
-        this.rank = (byte)rank;
+        this.file = file;
+        this.rank = rank;
         this.piece = null;
     }
 
     /**
-     * Constructor for Squares that have a Piece on them
+     * Square object to be used in a game of Chess with the given Piece on it
      * @param file int index of the Boards file the Square is on
      * @param rank int index of the Boards rank the Square is on
      * @param piece the Piece that's on the Square
      */
     public Square(int file, int rank, Piece piece) {
-        this.file = (byte)file;
-        this.rank = (byte)rank;
+        this.file = file;
+        this.rank = rank;
         this.piece = piece;
     }
 
@@ -38,12 +38,10 @@ public class Square {
      */
     @Override
     public boolean equals(Object other) {
-        if (this == other) {
+        if (this == other)
             return true;
-        }
-        if (!(other instanceof Square)) {
+        if (!(other instanceof Square))
             return false;
-        }
         Square s = (Square) other;
         return ( (this.getFile() == s.getFile()) && (this.getRank() == s.getRank()) );
     }
@@ -59,6 +57,11 @@ public class Square {
         return Character.toString(file) + Character.toString(rank);
     }
 
+    /**
+     * Get the color of the Piece on the Square
+     * @return the color of the Piece
+     * @throws NullPointerException if there is no Piece on the Square
+     */
     public char getPieceColor() throws NullPointerException{
         if(this.piece != null)
             return this.piece.getColor();
@@ -66,20 +69,20 @@ public class Square {
             + " has no Piece to get the color of");
     }
 
-    public byte getRank() {
+    public int getRank() {
         return rank;
     }
 
     public void setRank(int rank) {
-        this.rank = (byte)rank;
+        this.rank = rank;
     }
 
-    public byte getFile() {
+    public int getFile() {
         return file;
     }
 
     public void setFile(int file) {
-        this.file = (byte)file;
+        this.file = file;
     }
 
     public Piece getPiece() {

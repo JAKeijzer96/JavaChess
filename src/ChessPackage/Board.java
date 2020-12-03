@@ -1,5 +1,8 @@
 package ChessPackage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ChessPackage.Pieces.*;
 
 public class Board {
@@ -9,19 +12,29 @@ public class Board {
     // that a Knight can be on to attack the current Square
     public static final byte[][] knightOffsets = {{1, 2}, {2, 1}, {2, -1},
         {1, -2}, {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}};
+    // 2D array with all 8 possible offsets of the surrounding Squares
+    // compared to the current Square
+    public static final byte[][] squareOffsets = {{1, 1}, {1, 0}, {1, -1},
+        {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}, {0, 1}};
 
     /**
-     * Default constructor to make a new Board object with
-     * the default starting position
+     * Board object on which a game of Chess can be played <p>
+     * This constructor creates a new chessboard with the default starting
+     * position. The Board is a 2D 8x8 Array of Squares. Pieces on the Board
+     * can be accessed through the Squares they are on.
      */
     public Board() {
         this.newBoard();
     }
 
     /**
-     * Constructor to make a new board based on the given String.
-     * This String should contain only the first part of a FEN notation,
-     * the part that describes the position of the Pieces on the Board.
+     * Board object on which a game of Chess can be played <p>
+     * This constructor creates a new chessboard based on a String containing
+     * partial FEN notation of a position. This String should only contain the
+     * first part of a proper FEN notation. For the starting position, this
+     * would be rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR.
+     * The Board is a 2D 8x8 Array of Squares. Pieces on the Board can be
+     * accessed through the Squares they are on
      * @param partialFenNotation a String containing the part of the FEN notation
      */
     public Board(String partialFenNotation) {
@@ -29,16 +42,17 @@ public class Board {
     }
 
     /**
-     * Method to get the Square at [file][rank]
+     * Gets the Square at [file][rank]
      * @param file the file of the Square
      * @param rank the rank of the Square
      * @return the Square at board[file][rank]
+     * @throws ArrayIndexOutOfBoundsException if the Square is not on the Board
      */
-    public Square getSquare(int file, int rank) {
+    public Square getSquare(int file, int rank) throws ArrayIndexOutOfBoundsException {
         if (file < 0 || file > 7)
-            throw new ArrayIndexOutOfBoundsException("File index out of bounds");
+            throw new ArrayIndexOutOfBoundsException("File index [" + file + "]out of bounds");
         if (rank < 0 || rank > 7)
-            throw new ArrayIndexOutOfBoundsException("Rank index out of bounds");
+            throw new ArrayIndexOutOfBoundsException("Rank index [" + rank + "]out of bounds");
         return board[file][rank];
     }
 
@@ -46,23 +60,24 @@ public class Board {
      * Method to get a Square using its String representation
      * @param squareString the String representation of the Square
      * @return the Boards Square described by squareString
+     * @throws IllegalArgumentException if the String is not of length 2
+     * @throws ArrayIndexOutOfBoundsException if the Square is not on the Board
      */
     public Square getSquare(String squareString) {
         if (squareString.length() != 2)
             throw new IllegalArgumentException("Please provide a valid square on a chessboard");
-        // Convert the chars to file and rank ints using ASCII and getNumericValue
+        // Convert the chars to ints using ASCII value and getNumericValue
         int file = Character.toLowerCase(squareString.charAt(0)) - 97;
         int rank = Character.getNumericValue(squareString.charAt(1)) - 1;
         if (file < 0 || file > 7)
-            throw new ArrayIndexOutOfBoundsException("File index out of bounds");
+            throw new ArrayIndexOutOfBoundsException("File index [" + file + "]out of bounds");
         if (rank < 0 || rank > 7)
-            throw new ArrayIndexOutOfBoundsException("Rank index out of bounds");
+            throw new ArrayIndexOutOfBoundsException("Rank index [" + rank + "]out of bounds");
         return board[file][rank];
     }
 
     /**
-     * Convenience method to get a Piece from a Square directly using file and
-     * rank instead of having to call board.getSquare(file, rank).getPice()
+     * Convenience method to directly get the Piece on Square(file, rank)
      * @param file the file of the Square
      * @param rank the rank of the Square
      * @return the Piece on Square(file, rank)
@@ -72,8 +87,7 @@ public class Board {
     }
 
     /**
-     * Convenience method to get a piece from a Square directly using the String
-     * representation of the Square instead of having to call the board.getSquare.getPiece()
+     * Convenience method to directly get the Piece on Square(squareString)
      * @param squareString String representation of the Square
      * @return the Piece on the given Square
      */
@@ -82,33 +96,28 @@ public class Board {
     }
     
     /**
-     * Get an array of all Squares that have a Piece of the given Player
-     * Array length is 2 * boardSize = 16. If the Player has less than 16 Pieces
-     * the rest of the array is filled with null values
-     * @param playerColor char representation of the color of the Players Pieces
-     * @return a Square[] containing the Squares the Player has Pieces on
+     * Get a List of all Squares that have a Piece of the given playerColor
+     * @param playerColor color of the Players Pieces, either 'W' or 'B'
+     * @return a List<Square> containing the Squares the Player has Pieces on
      */
-    public Square[] getSquaresOfPlayerColor(char playerColor) {
-        Square[] squareArray = new Square[2 * boardSize];
-        int i = 0;
+    public List<Square> getSquaresOfPlayerColor(char playerColor) {
+        List<Square> squareList = new ArrayList<Square>();
         for(Square[] file : this.board) {
             for(Square square : file) {
                 Piece piece = square.getPiece();
-                if (piece != null && piece.getColor() == playerColor) {
-                    squareArray[i] = square;
-                    i++;
-                }
+                if (piece != null && piece.getColor() == playerColor)
+                    squareList.add(square);
             }
         }
-        return squareArray;
+        return squareList;
     }
 
     /**
-     * Initializes a new board with the default starting position
+     * Initializes the Board with the default starting position
      */
     void newBoard() {
         board = new Square[boardSize][boardSize];
-        // Initialize a1 through h1 with the white pieces
+        // Initialize a1 through h1 with the white Pieces
         board[0][0] = new Square(0, 0, new Rook('W'));
         board[1][0] = new Square(1, 0, new Knight('W'));
         board[2][0] = new Square(2, 0, new Bishop('W'));
@@ -117,21 +126,18 @@ public class Board {
         board[5][0] = new Square(5, 0, new Bishop('W'));
         board[6][0] = new Square(6, 0, new Knight('W'));
         board[7][0] = new Square(7, 0, new Rook('W'));
-        // Initialize a2 through h2 with the white pawns
-        for (int file = 0; file < boardSize; file++) {
+        // Initialize a2 through h2 with the white Pawns
+        for (int file = 0; file < boardSize; file++)
             board[file][1] = new Square(file, 1, new Pawn('W'));
-        }
-        // Initialize the 3rd, 4th, 5th and 6th rank without any pieces
+        // Initialize the 3rd, 4th, 5th and 6th rank without any Pieces
         for (int rank = 2; rank < 6; rank++) {
-            for(int file = 0; file < boardSize; file++) {
+            for(int file = 0; file < boardSize; file++)
                 board[file][rank] = new Square(file, rank);
-            }
         }
-        // Initialize a7 through h7 with the black pawns
-        for (int file = 0; file < boardSize; file++) {
+        // Initialize a7 through h7 with the black Pawns
+        for (int file = 0; file < boardSize; file++)
             board[file][6] = new Square(file, 6, new Pawn('B'));
-        }
-        // Initialize a8 through h8 with the black pieces
+        // Initialize a8 through h8 with the black Pieces
         board[0][7] = new Square(0, 7, new Rook('B'));
         board[1][7] = new Square(1, 7, new Knight('B'));
         board[2][7] = new Square(2, 7, new Bishop('B'));
@@ -143,10 +149,13 @@ public class Board {
     }
 
     /**
-     * Initializes a new board based on the given String.
-     * This String should contain only the first part of a FEN notation,
-     * the part that describes the position of the Pieces on the Board.
+     * Initializes a new board based on the given String. <p>
+     * This method initializes a new chessboard based on a String containing
+     * partial FEN notation of a position. This String should only contain the
+     * first part of a proper FEN notation. For the starting position, this
+     * would be rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR.
      * @param partialFenNotation a String containing the part of the FEN notation
+     * @throws IllegalArgumentException if the String contains an invalid character
      */
     void newBoard(String partialFenNotation) {
         // FEN notation moves backwards from rank 8 to rank 1
@@ -158,7 +167,6 @@ public class Board {
         char currentChar;
         int rank = 7;
         int file = 0;
-        
         for(int i = 0; i < partialFenNotation.length(); i++) {
             currentChar = partialFenNotation.charAt(i);
             // Go to next rank and reset file on '/' character
@@ -181,18 +189,17 @@ public class Board {
                 addPieceFromFenNotation(currentChar, 'W', file, rank);
                 file++;
             }
-            else {
+            else
                 throw new IllegalArgumentException("Unknown or extra character " + currentChar);
-            }
         }
     }
 
     /**
-     * Method used when constructing a new Board using FEN notation.
-     * This method adds a new Square with the piece corresponding to
+     * Adds a Piece to the Board based on previously given FEN notation. <p>
+     * This method adds a new Square with the Piece corresponding to
      * pieceChar and pieceColor to the board
-     * @param pieceChar char describing the type of Piece
-     * @param pieceColor char describing the Piece color
+     * @param pieceChar the kind of Piece to add
+     * @param pieceColor the color of the Piece
      * @param file the file of the new Square
      * @param rank the rank of the new Square
      * @throws IllegalArgumentException if pieceChar does not describe a valid Piece
