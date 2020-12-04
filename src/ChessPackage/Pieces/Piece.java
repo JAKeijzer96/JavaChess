@@ -42,7 +42,21 @@ public abstract class Piece {
      */
     public boolean isSameColor(Piece other) {
         return (this.color == other.color);
-    } 
+    }
+
+    /**
+     * Compares two Pieces, checks if they have the same color and name
+     * @return true if this Piece is equal to the Ojbect argument, false otherwise
+     */
+     @Override
+    public boolean equals(Object other) {
+        if (this == other)
+            return true;
+        if (!(other instanceof Piece))
+            return false;
+        Piece p = (Piece) other;
+        return (this.getColor() == p.getColor() && this.getName() == p.getName());
+    }
 
     /**
      * Get the char variable 'name' as a String
