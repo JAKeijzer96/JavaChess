@@ -3,3 +3,5 @@
 /img/sources.txt
 HelloFX.java
 JavaFX4.java
+# ignore test folder for now as it doesnt have any functional test yet
+/test
