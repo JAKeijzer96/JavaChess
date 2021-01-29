@@ -24,14 +24,17 @@ public class Move {
     Piece endPiece;
     boolean isCheck;
     boolean isMate;
+    boolean isCastlingMove;
 
-    public Move(Square startSquare, Piece startPiece, Square endSquare, Piece endPiece, boolean isCheck, boolean isMate) {
+    public Move(Square startSquare, Piece startPiece, Square endSquare, Piece endPiece, boolean isCheck, boolean isMate, boolean isCastlingMove) {
         this.startSquare = startSquare;
         this.startPiece = startPiece;
         this.endSquare = endSquare;
         this.endPiece = endPiece;
         this.isCheck = isCheck;
         this.isMate = isMate;
+        this.isCastlingMove = isCastlingMove; // use startsquare file and endsquare file to determine if it's O-O or O-O-O
+        // reverse castling move? nani??
     }
 
     /**
@@ -43,6 +46,8 @@ public class Move {
      */
     @Override
     public String toString() {
+        if (isCastlingMove)
+            return startSquare.getFile() < endSquare.getFile() ? "O-O" : "O-O-O";
         String piece = "";
         // Don't add Piece notation if the Piece is a Pawn ...
         if (!(this.startPiece instanceof Pawn))

@@ -125,32 +125,49 @@ public class Game {
         Piece startPiece = startSquare.getPiece();
         Piece endPiece = endSquare.getPiece();
         Square kingSquare = (currentTurn.equals(whitePlayer)) ? whiteKingSquare : blackKingSquare;
-        if (startPiece == null)
+        if (startPiece == null || startPiece.getColor() != currentTurn.getPlayerColor())
             return false;
-        if (startPiece.getColor() != currentTurn.getPlayerColor())
+        
+        // need to think of how to reverse castling move
+        // --> make new Move constructor?
+        // also figure out how to translate castling availability into string
+        // --> if king and rook firstmove, add that possibility. 
+        //      if king is normally able to castle but is in check/would move through check,
+        //      it still shows in FEN as being able to castle. this is so that
+        //      once check is removed without the king and/or rook moving, castling is still possible
+        // --> FEN castling notation for chess960 is different, shows files of rooks starting
+        //      squares instead. e.g. AHah instead of KQkq
+        boolean castled = false;
+        // Do easy checks before calling function
+        if (! isCheck && startPiece instanceof King &&
+          (Math.abs(startSquare.getFile() - endSquare.getFile()) >= 2
+            || endSquare.getPiece() instanceof Rook)) {
+            castled = calculateCastling(startSquare, endSquare, (King) startPiece);
+            if (! castled)
+                return false;
+            
+        } else if (!startPiece.legalMove(board, startSquare, endSquare)
+          || isPinned(kingSquare, startSquare, endSquare))
             return false;
-        if (!startPiece.legalMove(board, startSquare, endSquare))
-            return false;
-        if (isPinned(kingSquare, startSquare, endSquare))
-            return false;
-
         if (startPiece instanceof Pawn || endPiece != null)
             this.halfMoveCounter = 0;
         else
             this.halfMoveCounter++;
         // move the Piece
-        endSquare.setPiece(startPiece);
-        startSquare.setPiece(null);
-        // update King Square
-        if(startPiece instanceof King) {
-            if (currentTurn.equals(whitePlayer))
-                whiteKingSquare = endSquare;
-            if(currentTurn.equals(blackPlayer))
-                blackKingSquare = endSquare;
+        if (! castled) {
+            endSquare.setPiece(startPiece);
+            startSquare.setPiece(null);
+            // update King Square
+            if(startPiece instanceof King) {
+                if (currentTurn.equals(whitePlayer))
+                    whiteKingSquare = endSquare;
+                if(currentTurn.equals(blackPlayer))
+                    blackKingSquare = endSquare;
+            }
         }
         updateGameVariables();
 
-        Move move = new Move(startSquare, startPiece, endSquare, endPiece, isCheck, isMate);
+        Move move = new Move(startSquare, startPiece, endSquare, endPiece, isCheck, isMate, castled);
         this.moveList.add(move);
 
         switchTurn();
@@ -371,6 +388,129 @@ public class Game {
     }
 
     /**
+     * Calculate if a given King can castle from startSquare towards endSquare.
+     * Note that the endSquare is not necessarily the Square the King ends up on,
+     * but rather the Square the King has been told to move towards. The file of
+     * endSquare indicates if it's a queenside or kingside castling move.
+     * <p>
+     * This method assumes that the King is not currently in check.
+     * @param startSquare the starting Square with the King on it
+     * @param endSquare the end Square
+     * @param king the King
+     * @return true if castling is allowed, false otherwise
+     */
+    public boolean calculateCastling(Square startSquare, Square endSquare, King king) {
+        // Method is called from makeMove() after verifying that the startPiece
+        // is a King, the King is not in check and that
+        // (difference in file >= 2 OR endSquare has a rook on it)
+        int rank = startSquare.getRank();
+        if (rank != endSquare.getRank() || ! (rank == 0 || rank == 7) )
+            return false;
+        if (! king.isFirstMove())
+            return false;
+        int startFile = startSquare.getFile();
+        int endFile = endSquare.getFile();
+        int file = startFile;
+        Piece piece = null;
+        Square rookSquare = null;
+        Square rookDestinationSquare = null;
+        Rook rook = null;
+        Square newKingSquare = null;
+        Square tempSquare = null;
+
+        // Castling kingside
+        // Both in regular chess and chess960, the king ends up on the g-file
+        // when castling kingside while the rook ends up on the f-file.
+        // This means that index 5 (f-file) and index 6 (g-file) can be hardcoded
+        if (startFile < endFile) {
+            while(piece == null) {
+                file++;
+                piece = board.getPiece(file, rank);
+                tempSquare = board.getSquare(file, rank);
+                // Test if King would be in check on the current Square
+                if (file <= 6 && isPinned(startSquare, startSquare, tempSquare))
+                    return false;
+            }
+            if (piece instanceof Rook && piece.isSameColorAs(king)) {
+                rook = (Rook) piece;
+                rookSquare = board.getSquare(file, rank);
+                if (! rook.isFirstMove())
+                    return false;
+                // Test if the rook can move to its destination Square
+                rookDestinationSquare = board.getSquare(5, rank);
+                startSquare.setPiece(null);
+                if (! rook.legalMove(board, rookSquare, rookDestinationSquare)) {
+                    startSquare.setPiece(king);
+                    return false;
+                }
+                // Get the new kingSquare and place the Rook on its destination Square
+                newKingSquare = board.getSquare(6, rank);
+            } else
+                return false;
+        }
+        // Castling queenside
+        // Both in regular chess and chess960, the king ends up on the c-file
+        // when castling queenside while the rook ends up on the d-file.
+        // This means that index 2 (c-file) and index 3 (d-file) can be hardcoded
+        else {
+            // Edgecase in chess960 where the rook is on the a-file and the king on the b-file.
+            // Castling queenside is still possible by dragging the king left to the a-file,
+            // but the King will end up moving right to the c-file if castling is permitted.
+            int fileOffset = (startFile < 2) ? 1 : -1;
+            while (piece == null) {
+                file += fileOffset;
+                piece = board.getPiece(file, rank);
+                tempSquare = board.getSquare(file, rank);
+                // Test if King would be in check on the current Square
+                if (file != 2 && isPinned(startSquare, startSquare, tempSquare))
+                    return false;
+            }
+            if (fileOffset == -1 && piece instanceof Rook && piece.isSameColorAs(king)) {
+                rook = (Rook) piece;
+                rookSquare = board.getSquare(file, rank);
+                if (! rook.isFirstMove())
+                    return false;
+                // Test if the Rook can move to its destination Square
+                rookDestinationSquare = board.getSquare(3, rank);
+                startSquare.setPiece(null);
+                if (! rook.legalMove(board, rookSquare, rookDestinationSquare)) {
+                    startSquare.setPiece(king);
+                    return false;
+                }
+                newKingSquare = board.getSquare(2, rank);
+            
+            // In the edgecase as described above, if we find a rook on the c-file
+            // that's the wrong rook.
+            } else if (fileOffset == 1) {
+                rook = (Rook) endSquare.getPiece();
+                rookSquare = endSquare;
+                if (! (rook.isFirstMove() && rook.isSameColorAs(king)))
+                    return false;
+                // Test if the Rook can move to its destination Square
+                rookDestinationSquare = board.getSquare(3, rank);
+                startSquare.setPiece(null);
+                if (! rook.legalMove(board, rookSquare, rookDestinationSquare)) {
+                    startSquare.setPiece(king);
+                    return false;
+                }
+                newKingSquare = board.getSquare(2, rank);
+            } else
+                return false;
+        }
+        startSquare.setPiece(null);
+        newKingSquare.setPiece(king);
+        if (currentTurn.equals(whitePlayer))
+            whiteKingSquare = newKingSquare;
+        if (currentTurn.equals(blackPlayer))
+            blackKingSquare = newKingSquare;
+        rookSquare.setPiece(null);
+        rookDestinationSquare.setPiece(rook);
+        king.setFirstMove(false);
+        rook.setFirstMove(false);
+        return true;
+    }
+
+    /**
      * Reverses the last move made in the Game
      */
     public void reverseLastMove() {
@@ -391,7 +531,7 @@ public class Game {
             this.fullMoveCounter--;
         } else
             currentTurn = whitePlayer;
-        // update King Square, check currentTurn again after changing it
+        // update King Square, need to check currentTurn again after changing it
         if(startPiece instanceof King) {
             if (currentTurn.equals(whitePlayer))
                 whiteKingSquare = startSquare;
@@ -425,6 +565,7 @@ public class Game {
             + enPassant + " " + halfMoveCounter + " " + fullMoveCounter);
     }
 
+    // Remove unused getters and setters
     public Player getWhitePlayer() {
         return whitePlayer;
     }
@@ -496,4 +637,21 @@ public class Game {
     public void setEnPassantSquare(Square enPassantSquare) {
         this.enPassantSquare = enPassantSquare;
     }
+
+    public Square getWhiteKingSquare() {
+        return whiteKingSquare;
+    }
+
+    public void setWhiteKingSquare(Square whiteKingSquare) {
+        this.whiteKingSquare = whiteKingSquare;
+    }
+
+    public Square getBlackKingSquare() {
+        return blackKingSquare;
+    }
+
+    public void setBlackKingSquare(Square blackKingSquare) {
+        this.blackKingSquare = blackKingSquare;
+    }
+    
 }

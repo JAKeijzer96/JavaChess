@@ -217,7 +217,10 @@ public class Board {
                 board[file][rank] = new Square(file, rank, new Knight(pieceColor));
                 return;
             case 'P':
-                board[file][rank] = new Square(file, rank, new Pawn(pieceColor));
+                Pawn pawn = new Pawn(pieceColor);
+                if (! (rank == 1 || rank == 6) )
+                    pawn.setIsFirstMove(false);
+                board[file][rank] = new Square(file, rank, pawn);
                 return;
             case 'Q':
                 board[file][rank] = new Square(file, rank, new Queen(pieceColor));

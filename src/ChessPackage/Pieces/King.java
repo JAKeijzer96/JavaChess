@@ -4,7 +4,7 @@ import ChessPackage.Board;
 import ChessPackage.Square;
 
 public class King extends Piece {
-    boolean canCastle;
+    boolean isFirstMove;
 
     /**
      * King object for a game of Chess
@@ -13,7 +13,7 @@ public class King extends Piece {
     public King (char color) {
         super(color);
         this.name = (color == 'W') ? 'K' : 'k';
-        this.canCastle = true;
+        this.isFirstMove = true;
     }
 
     /**
@@ -31,9 +31,11 @@ public class King extends Piece {
         // Disallow 'moving' to the start square or to a square with a friendly piece
         if (startSquare.equals(endSquare) || (endPiece != null && this.color == endPiece.getColor()))
             return false;
-        if ( Math.abs(startSquare.getFile() - endSquare.getFile()) <= 1 &&
-             Math.abs(startSquare.getRank() - endSquare.getRank()) <= 1 )
+        if(Math.abs(startSquare.getFile() - endSquare.getFile()) <= 1 &&
+           Math.abs(startSquare.getRank() - endSquare.getRank()) <= 1 ) {
+            this.isFirstMove = false;
             return true;
+        }
         return false;
     }
 
@@ -46,5 +48,13 @@ public class King extends Piece {
      */
     public boolean legalMove(Board board, String start, String end) {
         return this.legalMove(board, board.getSquare(start), board.getSquare(end));
+    }
+
+    public void setFirstMove(boolean isFirstMove) {
+        this.isFirstMove = isFirstMove;
+    }
+
+    public boolean isFirstMove() {
+        return isFirstMove;
     }
 }

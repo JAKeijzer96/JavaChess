@@ -40,7 +40,7 @@ public abstract class Piece {
      * @param other the Piece to compare to
      * @return true if the color is the same, false otherwise
      */
-    public boolean isSameColor(Piece other) {
+    public boolean isSameColorAs(Piece other) {
         return (this.color == other.color);
     }
 

@@ -4,6 +4,7 @@ import ChessPackage.Board;
 import ChessPackage.Square;
 
 public class Rook extends Piece {
+    boolean isFirstMove;
 
     /**
      * Rook object for a game of Chess
@@ -12,6 +13,7 @@ public class Rook extends Piece {
     public Rook (char color) {
         super(color);
         this.name = (color == 'W') ? 'R' : 'r';
+        this.isFirstMove = true;
     }
 
     /**
@@ -33,17 +35,29 @@ public class Rook extends Piece {
         int endFile = endSquare.getFile();
         int endRank = endSquare.getRank();
         // Going up the board, check if there are any pieces in the way
-        if (startFile == endFile && endRank > startRank)
-            return checkForObstructions(board, startFile, startRank, endFile, endRank);
+        if (startFile == endFile && endRank > startRank &&
+          checkForObstructions(board, startFile, startRank, endFile, endRank)) {
+            this.isFirstMove = false;
+            return true;
+        }
         // Going down the board, check if there are any pieces in the way
-        if (startFile == endFile && startRank > endRank)
-            return checkForObstructions(board, startFile, endRank, endFile, startRank);
+        if (startFile == endFile && startRank > endRank &&
+          checkForObstructions(board, startFile, endRank, endFile, startRank)) {
+            this.isFirstMove = false;
+            return true;
+        }
         // Going right on the board, check if there are any pieces in the way
-        if (startRank == endRank && endFile > startFile)
-            return checkForObstructions(board, startFile, startRank, endFile, endRank);
+        if (startRank == endRank && endFile > startFile &&
+          checkForObstructions(board, startFile, startRank, endFile, endRank)) {
+            this.isFirstMove = false;
+            return true;
+        }
         // Going left on the board, check if there are any pieces in the way
-        if (startRank == endRank && startFile > endFile)
-            return checkForObstructions(board, endFile, startRank, startFile, endRank);
+        if (startRank == endRank && startFile > endFile &&
+          checkForObstructions(board, endFile, startRank, startFile, endRank)) {
+            this.isFirstMove = false;
+            return true;
+        }
         return false;
     }
 
@@ -86,5 +100,13 @@ public class Rook extends Piece {
                 return false;
         }
         return true;
+    }
+
+    public boolean isFirstMove() {
+        return isFirstMove;
+    }
+
+    public void setFirstMove(boolean isFirstMove) {
+        this.isFirstMove = isFirstMove;
     }
 }
