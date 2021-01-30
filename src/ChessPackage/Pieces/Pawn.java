@@ -18,6 +18,17 @@ public class Pawn extends Piece {
     }
 
     /**
+     * Pawn object for a game of Chess
+     * @param color the color of the Pawn, either 'W' or 'B'
+     * @param isFirstMove true if the Pawn hasn't moved yet, false otherwise
+     */
+    public Pawn (char color, boolean isFirstMove) {
+        super(color);
+        this.name = (color == 'W') ? 'P' : 'p';
+        this.isFirstMove = isFirstMove;
+    }
+
+    /**
      * Checks if a move from startSquare to endSquare is legal for a Pawn. <p>
      * This method only checks the color of the Pawn, then calls the
      * pawnMove method, adding an extra argument 'direction' which helps

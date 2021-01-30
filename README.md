@@ -7,3 +7,5 @@ Dear diary...
 Project currently on hold while I focus on school and learn JavaFX
 2020-11-26
 Decided to (try to) implement check and checkmate before doing GUI stuff
+2021-01-29
+One week of vacation means more chess coding! Aim to properly code castling for both standard and fischer random chess.

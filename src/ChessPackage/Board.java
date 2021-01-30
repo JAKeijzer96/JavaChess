@@ -7,7 +7,7 @@ import ChessPackage.Pieces.*;
 
 public class Board {
     Square[][] board;
-    public static final int boardSize = 8;
+    public static final int BOARDSIZE = 8;
     // 2D array with all 8 possible offsets to find the surrounding Squares
     // that a Knight can be on to attack the current Square
     public static final byte[][] knightOffsets = {{1, 2}, {2, 1}, {2, -1},
@@ -116,7 +116,7 @@ public class Board {
      * Initializes the Board with the default starting position
      */
     void newBoard() {
-        board = new Square[boardSize][boardSize];
+        board = new Square[BOARDSIZE][BOARDSIZE];
         // Initialize a1 through h1 with the white Pieces
         board[0][0] = new Square(0, 0, new Rook('W'));
         board[1][0] = new Square(1, 0, new Knight('W'));
@@ -127,15 +127,15 @@ public class Board {
         board[6][0] = new Square(6, 0, new Knight('W'));
         board[7][0] = new Square(7, 0, new Rook('W'));
         // Initialize a2 through h2 with the white Pawns
-        for (int file = 0; file < boardSize; file++)
+        for (int file = 0; file < BOARDSIZE; file++)
             board[file][1] = new Square(file, 1, new Pawn('W'));
         // Initialize the 3rd, 4th, 5th and 6th rank without any Pieces
         for (int rank = 2; rank < 6; rank++) {
-            for(int file = 0; file < boardSize; file++)
+            for(int file = 0; file < BOARDSIZE; file++)
                 board[file][rank] = new Square(file, rank);
         }
         // Initialize a7 through h7 with the black Pawns
-        for (int file = 0; file < boardSize; file++)
+        for (int file = 0; file < BOARDSIZE; file++)
             board[file][6] = new Square(file, 6, new Pawn('B'));
         // Initialize a8 through h8 with the black Pieces
         board[0][7] = new Square(0, 7, new Rook('B'));
@@ -154,6 +154,8 @@ public class Board {
      * partial FEN notation of a position. This String should only contain the
      * first part of a proper FEN notation. For the starting position, this
      * would be rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR.
+     * As the partialFenNotation does not hold info regarding castling,
+     * castling availability is not handled here. See Game(String fenNotation) instead.
      * @param partialFenNotation a String containing the part of the FEN notation
      * @throws IllegalArgumentException if the String contains an invalid character
      */
@@ -163,7 +165,7 @@ public class Board {
         // Uppercase letters are white pieces, lowercase == black
         // Numbers are used to describe the amount of empty squares
         // To seperate ranks, '/' is used
-        board = new Square[boardSize][boardSize];
+        board = new Square[BOARDSIZE][BOARDSIZE];
         char currentChar;
         int rank = 7;
         int file = 0;
@@ -217,9 +219,8 @@ public class Board {
                 board[file][rank] = new Square(file, rank, new Knight(pieceColor));
                 return;
             case 'P':
-                Pawn pawn = new Pawn(pieceColor);
-                if (! (rank == 1 || rank == 6) )
-                    pawn.setIsFirstMove(false);
+                boolean isFirstMove = (rank == 1 || rank == 6);
+                Pawn pawn = new Pawn(pieceColor, isFirstMove);
                 board[file][rank] = new Square(file, rank, pawn);
                 return;
             case 'Q':
@@ -244,10 +245,10 @@ public class Board {
         String rankString = "";
         String endString = "";
         int emptySquares;
-        for(int rank = boardSize - 1; rank >= 0; rank--) {
+        for(int rank = BOARDSIZE - 1; rank >= 0; rank--) {
             emptySquares = 0;
             rankString = "";
-            for(int file = 0; file < boardSize; file++) {
+            for(int file = 0; file < BOARDSIZE; file++) {
                 Piece piece = this.getPiece(file, rank);
                 if (piece == null)
                     emptySquares++;

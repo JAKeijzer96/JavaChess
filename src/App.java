@@ -41,6 +41,7 @@ public class App {
         blackCastleQueenside.makeMove("e8", "b8");
         System.out.println(blackCastleQueenside.getMoveList());
         System.out.println(blackCastleQueenside.getBlackKingSquare());
+        System.out.println(blackCastleQueenside);
         Game whiteCastleThroughCheck = new Game("r3k2r/pppppppp/8/8/3q4/8/PPPPP1PP/R3K2R w KQkq - 0 1");
         whiteCastleThroughCheck.makeMove("e1", "h1");
         System.out.println(whiteCastleThroughCheck.getMoveList());
