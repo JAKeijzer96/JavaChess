@@ -1,0 +1,18 @@
+.button {
+    -fx-background-radius : 0;
+}
+
+.button:hover {
+    -fx-background-color: red;
+}
+
+.black_square {
+    -fx-background-color: grey;
+}
+
+.white_square {
+    -fx-background-color: white;
+}
+
+
+
