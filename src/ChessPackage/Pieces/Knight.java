@@ -11,16 +11,17 @@ public class Knight extends Piece {
      */
     public Knight (char color) {
         super(color);
-        this.name = (color == 'W') ? 'N' : 'n';
+        this.name = (this.color == 'W') ? 'N' : 'n';
     }
 
     /**
-     * Checks if a move from startSquare to endSquare is legal for a Knight. <p>
-     * Knights can move two Squares horizontally and one Square vertically,
+     * <p> Checks if a move from startSquare to endSquare is legal for a Knight. </p>
+     * 
+     * <p> Knights can move two Squares horizontally and one Square vertically,
      * or two Squares vertically and one Square Horizontally, in the shape of
      * an L. Knights are the only Pieces that can jump over other Pieces, so
      * there is no need for collision checking. A Knight move is legal if
-     * Math.abs(difference in file * difference in rank) == 2
+     * Math.abs(difference in file * difference in rank) == 2 </p>
      * @param board the Board the game is played on
      * @param startSquare the Square the Knight is on
      * @param endSquare the Square the Knight tries to move to

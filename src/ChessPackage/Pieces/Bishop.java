@@ -11,13 +11,14 @@ public class Bishop extends Piece {
      */
     public Bishop (char color) {
         super(color);
-        this.name = (color == 'W') ? 'B' : 'b';
+        this.name = (this.color == 'W') ? 'B' : 'b';
     }
     
     /**
-     * Checks if a move from startSquare to endSquare is legal for a Bishop. <p>
-     * Bishops move diagonally. A Bishop move is legal if
-     * Math.abs( (difference in file) / (difference in rank) ) == 1
+     * <p> Checks if a move from startSquare to endSquare is legal for a Bishop. </p>
+     * 
+     * <p> Bishops move diagonally. A Bishop move is legal if
+     * Math.abs( (difference in file) / (difference in rank) ) == 1 </p>
      * @param board the Board the game is played on
      * @param startSquare the Square the Bishop is on
      * @param endSquare the Square the Bishop tries to move to
@@ -62,10 +63,11 @@ public class Bishop extends Piece {
     }
 
     /**
-     * Checks if there are any Pieces in between the in the way <p>
-     * Loop over the Board from left to right, meaning from lowRank to highRank.
+     * <p> Checks if there are any Pieces in between the in the way </p>
+     * 
+     * <p> Loop over the Board from left to right, meaning from lowRank to highRank.
      * Loop from lowFile to highFile if fileIncrement == 1, loop from highFile
-     * to lowFile if fileIncrement == -1
+     * to lowFile if fileIncrement == -1 </p>
      * @param board the Board the Game is played on
      * @param lowFile the moves file with the lowest numerical value
      * @param lowRank the moves rank with the lowest numerical value

@@ -8,17 +8,23 @@ import ChessPackage.Pieces.*;
 public class Board {
     Square[][] board;
     public static final int BOARDSIZE = 8;
-    // 2D array with all 8 possible offsets to find the surrounding Squares
-    // that a Knight can be on to attack the current Square
-    public static final byte[][] knightOffsets = {{1, 2}, {2, 1}, {2, -1},
+    /**
+     * 2D array with all 8 possible offsets to find the surrounding Squares
+     * that a Knight can be on to attack the current Square. The first offset is
+     * up two and one to the right, subsequent offsets move clockwise.
+     */
+    public static final byte[][] KNIGHT_OFFSETS = {{1, 2}, {2, 1}, {2, -1},
         {1, -2}, {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}};
-    // 2D array with all 8 possible offsets of the surrounding Squares
-    // compared to the current Square
-    public static final byte[][] squareOffsets = {{1, 1}, {1, 0}, {1, -1},
+    /**
+     * 2D array with all 8 possible offsets of the surrounding Squares
+     * compared to the current Square. The first offset is up and to the right,
+     * subsequent offsets move clockwise.
+     */
+    public static final byte[][] SQUARE_OFFSETS = {{1, 1}, {1, 0}, {1, -1},
         {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}, {0, 1}};
 
     /**
-     * Board object on which a game of Chess can be played <p>
+     * <p> Board object on which a game of Chess can be played </p>
      * This constructor creates a new chessboard with the default starting
      * position. The Board is a 2D 8x8 Array of Squares. Pieces on the Board
      * can be accessed through the Squares they are on.
@@ -28,7 +34,7 @@ public class Board {
     }
 
     /**
-     * Board object on which a game of Chess can be played <p>
+     * <p> Board object on which a game of Chess can be played </p>
      * This constructor creates a new chessboard based on a String containing
      * partial FEN notation of a position. This String should only contain the
      * first part of a proper FEN notation. For the starting position, this
@@ -149,7 +155,7 @@ public class Board {
     }
 
     /**
-     * Initializes a new board based on the given String. <p>
+     * <p> Initializes a new board based on the given String. </p>
      * This method initializes a new chessboard based on a String containing
      * partial FEN notation of a position. This String should only contain the
      * first part of a proper FEN notation. For the starting position, this
@@ -197,7 +203,7 @@ public class Board {
     }
 
     /**
-     * Adds a Piece to the Board based on previously given FEN notation. <p>
+     * <p> Adds a Piece to the Board based on previously given FEN notation. </p>
      * This method adds a new Square with the Piece corresponding to
      * pieceChar and pieceColor to the board
      * @param pieceChar the kind of Piece to add

@@ -12,15 +12,17 @@ public class King extends Piece {
      */
     public King (char color) {
         super(color);
-        this.name = (color == 'W') ? 'K' : 'k';
+        this.name = (this.color == 'W') ? 'K' : 'k';
         this.isFirstMove = true;
     }
 
     /**
-     * Checks if a move from startSquare to endSquare is legal for a King. <p>
-     * Kings can move along diagonals, files and ranks, but only one Square at
+     * <p> Checks if a move from startSquare to endSquare is legal for a King. </p>
+     * 
+     * <p> Kings can move along diagonals, files and ranks, but only one Square at
      * a time. A King move is legal if the difference in file is 0 or 1 and
-     * the difference in rank is 0 or 1
+     * the difference in rank is 0 or 1. Castling is handled in the ChessGame class
+     * or any of its subclasses </p>
      * @param board the Board the game is played on
      * @param startSquare the Square the Rook is on
      * @param endSquare the Square the Rook tries to move to

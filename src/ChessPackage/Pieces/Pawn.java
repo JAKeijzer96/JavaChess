@@ -13,7 +13,7 @@ public class Pawn extends Piece {
      */
     public Pawn (char color) {
         super(color);
-        this.name = (color == 'W') ? 'P' : 'p';
+        this.name = (this.color == 'W') ? 'P' : 'p';
         this.isFirstMove = true;
     }
 
@@ -29,11 +29,13 @@ public class Pawn extends Piece {
     }
 
     /**
-     * Checks if a move from startSquare to endSquare is legal for a Pawn. <p>
-     * This method only checks the color of the Pawn, then calls the
+     * <p> Checks if a move from startSquare to endSquare is legal for a Pawn. </p>
+     * 
+     * <p> This method only checks the color of the Pawn, then calls the
      * pawnMove method, adding an extra argument 'direction' which helps
      * calculate if the Pawn moves up or down the Board. This direction
-     * is based on the color of the Pawn
+     * is based on the color of the Pawn. En passant is handled in the ChessGame
+     * class or any of its subclasses </p>
      * @param board the Board the game is played on
      * @param startSquare the Square the Pawn is on
      * @param endSquare the Square the Pawn tries to move to
@@ -62,7 +64,7 @@ public class Pawn extends Piece {
 
     /**
      * A Pawn can move one Square ahead, two Squares ahead if it's the first
-     * move, or one Square diagonally ahead by capturing an opponents Piece
+     * move, or one Square diagonally ahead by capturing an opponents Piece.
      * @param board the Board the game is played on
      * @param startSquare the Square the Pawn is on
      * @param endSquare the Square the Pawn tries to move to
@@ -74,7 +76,6 @@ public class Pawn extends Piece {
         // Disallow 'moving' to the start Square or to a Square with a friendly Piece
         if (startSquare.equals(endSquare) || (endPiece != null && this.color == endPiece.getColor()))
             return false;
-        // we leave en passant for later
         int startFile = startSquare.getFile();
         int startRank = startSquare.getRank();
         int endFile = endSquare.getFile();

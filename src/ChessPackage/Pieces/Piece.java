@@ -25,7 +25,7 @@ public abstract class Piece {
     public abstract boolean legalMove(Board board, Square startSquare, Square endSquare);
 
     /**
-     * Abstract method to check if a move from startSquare to endSquare is legal <p>
+     * <p> Abstract method to check if a move from startSquare to endSquare is legal </p>
      * This convenience method gets the Squares described by the Strings,
      * then calls legalMove(Board, Square, Square)
      * @param board the Board the piece is on

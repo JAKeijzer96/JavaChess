@@ -12,14 +12,15 @@ public class Rook extends Piece {
      */
     public Rook (char color) {
         super(color);
-        this.name = (color == 'W') ? 'R' : 'r';
+        this.name = (this.color == 'W') ? 'R' : 'r';
         this.isFirstMove = true;
     }
 
     /**
-     * Checks if a move from startSquare to endSquare is legal for a Rook. <p>
-     * Rooks move horizontally along ranks and vertically along files
-     * A Rook move is legal if startFile == endFile or startRank == endRank
+     * <p> Checks if a move from startSquare to endSquare is legal for a Rook. </p>
+     * 
+     * <p> Rooks move horizontally along ranks and vertically along files
+     * A Rook move is legal if startFile == endFile or startRank == endRank </p>
      * @param board the Board the game is played on
      * @param startSquare the Square the Rook is on
      * @param endSquare the Square the Rook tries to move to
@@ -73,10 +74,11 @@ public class Rook extends Piece {
     }
 
     /**
-     * Check if there are any Pieces in the way <p>
-     * Loop from the Square closest to a1 to the Square closest to h8. This method
+     * <p> Check if there are any Pieces in the way </p>
+     * 
+     * <p> Loop from the Square closest to a1 to the Square closest to h8. This method
      * doesn't check the startSquare and endSquare as that is already handled in
-     * legalMove, instead it checks all the Squares in between them.
+     * legalMove, instead it checks all the Squares in between them. </p>
      * @param board the Board the Game is played on
      * @param lowFile the moves file with the lowest numerical value
      * @param lowRank the moves rank with the lowest numerical value

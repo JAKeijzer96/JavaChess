@@ -11,13 +11,14 @@ public class Queen extends Piece {
      */
     public Queen (char color) {
         super(color);
-        this.name = (color == 'W') ? 'Q' : 'q';
+        this.name = (this.color == 'W') ? 'Q' : 'q';
     }
 
     /**
-     * Checks if a move from startSquare to endSquare is legal for a Queen. <p>
-     * Queens move along diagonals, ranks and files.
-     * If a move is legal for a Rook or Bishop, it's legal for a Queen
+     * <p> Checks if a move from startSquare to endSquare is legal for a Queen. </p>
+     * 
+     * <p> Queens move along diagonals, ranks and files.
+     * If a move is legal for a Rook or Bishop, it's legal for a Queen </p>
      * @param board the Board the game is played on
      * @param startSquare the Square the Queen is on
      * @param endSquare the Square the Queen tries to move to
@@ -32,16 +33,16 @@ public class Queen extends Piece {
         int endFile = endSquare.getFile();
         int endRank = endSquare.getRank();
         // Check for Rook-like moves
-        // Going up the board, check if there are any pieces in the way
+        // Moving up
         if (startFile == endFile && endRank > startRank)
             return Rook.checkForObstructions(board, startFile, startRank, endFile, endRank);
-        // Going down the board, check if there are any pieces in the way
+        // Moving down
         if (startFile == endFile && startRank > endRank)
             return Rook.checkForObstructions(board, startFile, endRank, endFile, startRank);
-        // Going right on the board, check if there are any pieces in the way
+        // Moving right
         if (startRank == endRank && endFile > startFile)
             return Rook.checkForObstructions(board, startFile, startRank, endFile, endRank);
-        // Going left on the board, check if there are any pieces in the way
+        // Moving left
         if (startRank == endRank && startFile > endFile)
             return Rook.checkForObstructions(board, endFile, startRank, startFile, endRank);
         // Check for Bishop-like moves

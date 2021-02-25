@@ -3,21 +3,20 @@ package ChessPackage;
 import ChessPackage.Pieces.Pawn;
 import ChessPackage.Pieces.Piece;
 
+/**
+ * This class is mainly used to keep track of the moves done in the game
+ * Logic for checking if a move is allowed is located in classes that
+ * extend the abstract Piece class
+ * 
+ * Properties:
+ * Player making the move (keep track in game?)
+ * Start position
+ * End position
+ * Piece that's moving?
+ * Piece that's captured?
+ * ...
+ */
 public class Move {
-    /**
-     * This class is mainly used to keep track of the moves done in the game
-     * Logic for checking if a move is allowed is located in classes that
-     * extend the abstract Piece class
-     * 
-     * Properties:
-     * Player making the move (keep track in game?)
-     * Start position
-     * End position
-     * Piece that's moving?
-     * Piece that's captured?
-     */
-
-    // Don't think keeping track of Player here is necessary
     Square startSquare;
     Square endSquare;
     Piece startPiece;
@@ -33,15 +32,15 @@ public class Move {
         this.endPiece = endPiece;
         this.isCheck = isCheck;
         this.isMate = isMate;
-        this.isCastlingMove = isCastlingMove; // use startsquare file and endsquare file to determine if it's O-O or O-O-O
-        // reverse castling move? nani??
+        this.isCastlingMove = isCastlingMove;
     }
 
     /**
-     * Get the standard chess notation of a chess move. <p>
-     * Generally speaking this includes the Piece that's moving,
+     * <p> Get the standard chess notation of a chess move. </p>
+     * 
+     * <p> Generally speaking this includes the Piece that's moving,
      * the Square it's moving to, and extra characters to indicate if it has
-     * captured a Piece (x), given check (+) or delivered checkmate (#)
+     * captured a Piece (x), given check (+) or delivered checkmate (#) </p>
      * @return String containing standard chess notation of the Move
      */
     @Override
