@@ -5,3 +5,4 @@ src/test
 castling.txt
 .idea
 target
+*.iml
