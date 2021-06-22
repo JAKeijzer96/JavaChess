@@ -107,4 +107,8 @@ public class Move {
     public void setEndPiece(Piece endPiece) {
         this.endPiece = endPiece;
     }
+
+    public boolean isCastlingMove() {
+        return isCastlingMove;
+    }
 }

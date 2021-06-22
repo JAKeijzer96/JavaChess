@@ -1,9 +1,7 @@
-*.class
-/img/*.zip
-/img/sources.txt
-HelloFX.java
-JavaFX4.java
+/src/main/resources/img/*.zip
+/src/main/resources/img/sources.txt
 # ignore test folder for now as it doesnt have any functional test yet
-/test
+src/test
 castling.txt
-src/ChessPackage/Castling.java
+.idea
+target

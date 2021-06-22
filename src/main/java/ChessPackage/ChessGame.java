@@ -9,7 +9,7 @@ import ChessPackage.Pieces.*;
 Castling works in standard ChessGames
 Castling doesn't work yet in ChessGame960
 
-TODO:
+TODO list:
 - Fix castling in ChessGame960
 - Implement en passant
 - Find a proper way to reverse move which allows for setting firstMove property

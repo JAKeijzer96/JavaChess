@@ -1,11 +1,12 @@
 import ChessPackage.ChessGame;
+import ChessPackage.Move;
 import ChessPackage.Square;
 import ChessPackage.Pieces.Piece;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -16,6 +17,7 @@ public class GUI extends Application {
 
     Stage stage;
     Scene scene;
+    GridPane grid;
     // find a better solution than this
     Button currentButton = null;
     Square currentSquare = null;
@@ -33,7 +35,7 @@ public class GUI extends Application {
         stage = primaryStage;
         stage.setTitle("GUI test");
 
-        GridPane grid = new GridPane();
+        grid = new GridPane();
         grid.setPadding(new Insets(10));
         
         for (int file = 0; file < 8; file++) {
@@ -62,19 +64,52 @@ public class GUI extends Application {
     }
 
     private void handleClickEvent(Button button) {
+        
         int file = GridPane.getColumnIndex(button);
         int rank = Math.abs(GridPane.getRowIndex(button)-7);
         if (currentButton == null && currentSquare == null) {
-            currentButton = button;
             currentSquare = game.getBoard().getSquare(file, rank);
+            if (currentSquare.getPiece() == null) {
+                currentSquare = null;
+                return;
+            }
+            currentButton = button;
         } else if (game.makeMove(currentSquare, game.getBoard().getSquare(file, rank))) {
-            button.setGraphic(currentButton.getGraphic());
-            currentButton.setGraphic(null);
+            Move move = game.getMoveList().get(game.getMoveList().size() - 1);
+            // Convert chess rank back to grid row
+            int gridRow = Math.abs(move.getStartSquare().getRank()-7);
+            // Move Pieces on castling move. Wonky ass code. TODO: fix this
+            if (move.toString().equals("O-O")) {
+                // Move rook
+                Button b = ((Button) getNodeByIndex(7, gridRow));
+                ((Button) getNodeByIndex(5, gridRow)).setGraphic(b.getGraphic());
+                b.setGraphic(null);
+                // Move king
+                ((Button) getNodeByIndex(6, gridRow)).setGraphic(currentButton.getGraphic());
+                currentButton.setGraphic(null);
+            } else if (move.toString().equals("O-O-O")) {
+                // Move rook
+                Button b = ((Button) getNodeByIndex(0, gridRow));
+                ((Button) getNodeByIndex(3, gridRow)).setGraphic(b.getGraphic());
+                b.setGraphic(null);
+                // Move king
+                ((Button) getNodeByIndex(2, gridRow)).setGraphic(currentButton.getGraphic());
+                currentButton.setGraphic(null);
+            } else {
+                button.setGraphic(currentButton.getGraphic());
+                currentButton.setGraphic(null);
+            }
+            // System.out.println(move);
             currentButton = null;
             currentSquare = null;
-            System.out.println(game.getMoveList());
-            if (game.isMate())
+
+
+
+            if (game.isMate()) {
                 System.out.println("Mate!");
+                System.out.println("FEN: " + game);
+                System.out.println("Movelist: " + game.getMoveList());
+            }
         } else {
             currentButton = null;
             currentSquare = null;
@@ -93,7 +128,6 @@ public class GUI extends Application {
         else
             return;
         
-        ImageView imageView = new ImageView();
         if (piece.getUpperCaseName() == 'P')
             pieceString += "Pawn";
         else {
@@ -111,10 +145,18 @@ public class GUI extends Application {
                 return;
         }
 
-        imageView.setImage(new Image("file:D:/Coding projects/Chess/img/merida/" + pieceString + ".png"));
+        ImageView imageView = new ImageView("img/merida/" + pieceString + ".png");
         imageView.setFitHeight(80);
         imageView.setPreserveRatio(true);
         button.setGraphic(imageView);
+    }
+
+    private Node getNodeByIndex(int colIndex, int rowIndex) {
+        for(Node node : grid.getChildren()) {
+            if (GridPane.getColumnIndex(node) == colIndex && GridPane.getRowIndex(node) == rowIndex)
+                return node;
+        }
+        return null;
     }
 
 }
