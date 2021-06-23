@@ -1,9 +1,9 @@
-package ChessPackage;
+package Chess;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ChessPackage.Pieces.*;
+import Pieces.*;
 
 /*
 Castling works in standard ChessGames
@@ -55,7 +55,7 @@ public class ChessGame {
     public ChessGame() {
         this.whitePlayer = new Player('W', "White");
         this.blackPlayer = new Player('B', "Black");
-        this.moveList = new ArrayList<Move>();
+        this.moveList = new ArrayList<>();
         this.board = new Board();
         this.enPassantSquare = null;
         this.halfMoveCounter = 0;
@@ -74,7 +74,7 @@ public class ChessGame {
     public ChessGame(Player white, Player black) {
         this.whitePlayer = white;
         this.blackPlayer = black;
-        this.moveList = new ArrayList<Move>();
+        this.moveList = new ArrayList<>();
         this.board = new Board();
         this.enPassantSquare = null;
         this.halfMoveCounter = 0;
@@ -98,7 +98,7 @@ public class ChessGame {
                 "too many or too few spaces");
         this.whitePlayer = new Player('W', "White");
         this.blackPlayer = new Player('B', "Black");
-        this.moveList = new ArrayList<Move>();
+        this.moveList = new ArrayList<>();
         this.board = new Board(arrOfStr[0]);
         String turn = arrOfStr[1].toLowerCase();
         if (turn.equals("w"))
@@ -377,8 +377,6 @@ public class ChessGame {
      *+---+---+---+
      * </pre>
      * @param kingSquare the Square the King is on
-     * @param file the file of the kingSquare
-     * @param rank the rank of the kingSquare
      * @param fileOffset the amount to offset the file by every iteration
      * @param rankOffset the amount to offset the rank by every iteration
      * @return the Square of the checking Piece if there is one, null otherwise
@@ -429,7 +427,6 @@ public class ChessGame {
         if (! (rank == endSquare.getRank() && (rank == 0 || rank == 7) ))
             return false;
         int file = startSquare.getFile();
-        Piece piece = null;
         // Default values for castling kingside
         int kingEndFile = 6;
         int rookStartFile = 7;
@@ -443,7 +440,7 @@ public class ChessGame {
             offset = -1;
         }
         // Get Rook information
-        piece = board.getPiece(rookStartFile, rank);
+        Piece piece = board.getPiece(rookStartFile, rank);
         if( ! (piece instanceof Rook && piece.isSameColorAs(king) && ((Rook) piece).isFirstMove()))
             return false;
         // Loop towards destination Square while checking for checks and obstructions
@@ -605,22 +602,6 @@ public class ChessGame {
         }
     }
 
-    public Player getWhitePlayer() {
-        return whitePlayer;
-    }
-
-    public void setWhitePlayer(Player whitePlayer) {
-        this.whitePlayer = whitePlayer;
-    }
-
-    public Player getBlackPlayer() {
-        return blackPlayer;
-    }
-
-    public void setBlackPlayer(Player blackPlayer) {
-        this.blackPlayer = blackPlayer;
-    }
-
     public Board getBoard() {
         return board;
     }
@@ -633,56 +614,12 @@ public class ChessGame {
         return moveList;
     }
 
-    public void setMoveList(List<Move> moves) {
-        this.moveList = moves;
-    }
-
-    public Player getCurrentTurn() {
-        return currentTurn;
-    }
-
-    public void setCurrentTurn(Player currentTurn) {
-        this.currentTurn = currentTurn;
-    }
-
-    public int getHalfMoveCounter() {
-        return halfMoveCounter;
-    }
-
-    public void setHalfMoveCounter(int halfMoveCounter) {
-        this.halfMoveCounter = halfMoveCounter;
-    }
-
-    public int getFullMoveCounter() {
-        return fullMoveCounter;
-    }
-
-    public void setFullMoveCounter(int fullMoveCounter) {
-        this.fullMoveCounter = fullMoveCounter;
-    }
-
-    public Square getEnPassantSquare() {
-        return enPassantSquare;
-    }
-
-    public void setEnPassantSquare(Square enPassantSquare) {
-        this.enPassantSquare = enPassantSquare;
-    }
-
     public Square getWhiteKingSquare() {
         return whiteKingSquare;
     }
 
-    public void setWhiteKingSquare(Square whiteKingSquare) {
-        this.whiteKingSquare = whiteKingSquare;
-    }
-
     public Square getBlackKingSquare() {
         return blackKingSquare;
-    }
-
-    public void setBlackKingSquare(Square blackKingSquare) {
-        this.blackKingSquare = blackKingSquare;
     }
 
     public boolean isMate() {
@@ -692,5 +629,5 @@ public class ChessGame {
     public void setMate(boolean isMate) {
         this.isMate = isMate;
     }
-    
+
 }

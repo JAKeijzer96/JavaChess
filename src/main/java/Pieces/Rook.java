@@ -1,7 +1,7 @@
-package ChessPackage.Pieces;
+package Pieces;
 
-import ChessPackage.Board;
-import ChessPackage.Square;
+import Chess.Board;
+import Chess.Square;
 
 public class Rook extends Piece {
     boolean isFirstMove;

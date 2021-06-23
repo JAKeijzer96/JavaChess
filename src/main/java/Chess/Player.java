@@ -1,4 +1,4 @@
-package ChessPackage;
+package Chess;
 
 public class Player {
     char playerColor; // 'W' or 'B'
@@ -32,7 +32,7 @@ public class Player {
             return false;
         Player p = (Player) other;
         return ( (this.getPlayerColor() == p.getPlayerColor())
-            && (this.getPlayerName() == p.getPlayerName()) );
+            && (this.getPlayerName().equals(p.getPlayerName())) );
     }
 
     @Override
@@ -44,15 +44,7 @@ public class Player {
         return playerColor;
     }
 
-    public void setPlayerColor(char playerColor) {
-        this.playerColor = playerColor;
-    }
-
     public String getPlayerName() {
         return playerName;
-    }
-
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
     }
 }

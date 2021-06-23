@@ -1,7 +1,9 @@
-import ChessPackage.ChessGame;
-import ChessPackage.Move;
-import ChessPackage.Square;
-import ChessPackage.Pieces.Piece;
+package Main;
+
+import Chess.ChessGame;
+import Chess.Move;
+import Chess.Square;
+import Pieces.Piece;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -12,8 +14,6 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class GUI extends Application {
-
-    // javac --module-path "C:\\Program Files\\JavaFX\\javafx-sdk-11.0.2\\lib" --add-modules javafx.controls GUI.java | java --module-path "C:\\Program Files\\JavaFX\\javafx-sdk-11.0.2\\lib" --add-modules javafx.controls GUI
 
     Stage stage;
     Scene scene;
@@ -59,7 +59,7 @@ public class GUI extends Application {
         // size: 8 * squareSize + 2 * padding
         scene = new Scene(grid, 660, 660);
         stage.setScene(scene);
-        scene.getStylesheets().add(GUI.class.getResource("GUI.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getClassLoader().getResource("GUI.css").toExternalForm());
         stage.show();
     }
 

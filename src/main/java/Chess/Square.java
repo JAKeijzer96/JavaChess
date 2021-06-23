@@ -1,6 +1,6 @@
-package ChessPackage;
+package Chess;
 
-import ChessPackage.Pieces.Piece;
+import Pieces.Piece;
 
 public class Square {
     // No color variable as that's for GUI only, might add later if necessary
@@ -65,7 +65,7 @@ public class Square {
     public char getPieceColor() throws NullPointerException{
         if(this.piece != null)
             return this.piece.getColor();
-        throw new NullPointerException("Square " + this.toString()
+        throw new NullPointerException("Square " + this
             + " has no Piece to get the color of");
     }
 

@@ -1,7 +1,7 @@
-package ChessPackage.Pieces;
+package Pieces;
 
-import ChessPackage.Board;
-import ChessPackage.Square;
+import Chess.Board;
+import Chess.Square;
 
 public class Pawn extends Piece {
 
@@ -100,10 +100,6 @@ public class Pawn extends Piece {
             return true;
         }
         return false;
-    }
-
-    public void setIsFirstMove(boolean isFirstMove) {
-        this.isFirstMove = isFirstMove;
     }
 
 }

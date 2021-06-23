@@ -1,13 +1,13 @@
-package ChessPackage;
+package Chess;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import ChessPackage.Pieces.*;
+import Pieces.*;
 // Credit for regex-related code: https://rosettacode.org/wiki/Generate_Chess960_starting_position#Java
 
 public class ChessGame960 extends ChessGame {
-    private static List<Character> pieces = Arrays.asList('R','B','N','Q','K','N','B','R');
+    private static final List<Character> pieces = Arrays.asList('R','B','N','Q','K','N','B','R');
     /**
      * Lowercase String of length 2, containing the files on which the Rooks
      * were placed in the starting position.
@@ -78,7 +78,6 @@ public class ChessGame960 extends ChessGame {
         if (! (rank == endSquare.getRank() && (rank == 0 || rank == 7) ))
             return false;
         int file = startSquare.getFile();
-        Piece piece = null;
         // Default values for castling kingside
         int kingEndFile = 6;
         int rookStartFile = initialRookPositions.charAt(1) - 97;
@@ -93,7 +92,7 @@ public class ChessGame960 extends ChessGame {
             offset = (endSquare.getFile() == 1) ? 1 : -1;
         }
         // Get Rook information
-        piece = board.getPiece(rookStartFile, rank);
+        Piece piece = board.getPiece(rookStartFile, rank);
         if( ! (piece instanceof Rook && piece.isSameColorAs(king) && ((Rook) piece).isFirstMove()))
             return false;
         // Loop towards destination Square while checking for checks and obstructions

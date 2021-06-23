@@ -1,7 +1,7 @@
-package ChessPackage.Pieces;
+package Pieces;
 
-import ChessPackage.Board;
-import ChessPackage.Square;
+import Chess.Board;
+import Chess.Square;
 
 public abstract class Piece {
     char color;
@@ -83,7 +83,4 @@ public abstract class Piece {
         return Character.toUpperCase(name);
     }
 
-    public void setName(char name) {
-        this.name = name;
-    }
 }

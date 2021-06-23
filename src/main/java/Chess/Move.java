@@ -1,7 +1,7 @@
-package ChessPackage;
+package Chess;
 
-import ChessPackage.Pieces.Pawn;
-import ChessPackage.Pieces.Piece;
+import Pieces.Pawn;
+import Pieces.Piece;
 
 /**
  * This class is mainly used to keep track of the moves done in the game
@@ -52,7 +52,7 @@ public class Move {
         if (!(this.startPiece instanceof Pawn))
             piece = Character.toString(this.startPiece.getName()).toUpperCase();
         // .. except when the Pawn captures a Piece, in that case add file
-        else if (this.startPiece instanceof Pawn && this.endPiece != null)
+        else if (this.endPiece != null)
             piece = Character.toString(this.startSquare.getFile() + 'a');
         String takes = (this.endPiece != null) ? "x" : "";
         String check = (this.isCheck) ? "+" : "";
@@ -96,19 +96,7 @@ public class Move {
         return startPiece;
     }
 
-    public void setStartPiece(Piece startPiece) {
-        this.startPiece = startPiece;
-    }
-
     public Piece getEndPiece() {
         return endPiece;
-    }
-
-    public void setEndPiece(Piece endPiece) {
-        this.endPiece = endPiece;
-    }
-
-    public boolean isCastlingMove() {
-        return isCastlingMove;
     }
 }

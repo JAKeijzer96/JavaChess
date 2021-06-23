@@ -1,7 +1,7 @@
-package ChessPackage.Pieces;
+package Pieces;
 
-import ChessPackage.Board;
-import ChessPackage.Square;
+import Chess.Board;
+import Chess.Square;
 
 public class King extends Piece {
     boolean isFirstMove;
@@ -45,8 +45,8 @@ public class King extends Piece {
      * Convenience method, gets the Squares indicated by the Strings,
      * then calls legalMove(Board, Square, Square)
      * @param board the Board the game is played on
-     * @param startString String representation of the Square the King is on
-     * @param endString String representation of the Square the King tries to move to
+     * @param start String representation of the Square the King is on
+     * @param end String representation of the Square the King tries to move to
      */
     public boolean legalMove(Board board, String start, String end) {
         return this.legalMove(board, board.getSquare(start), board.getSquare(end));

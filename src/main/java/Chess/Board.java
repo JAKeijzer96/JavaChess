@@ -1,9 +1,9 @@
-package ChessPackage;
+package Chess;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ChessPackage.Pieces.*;
+import Pieces.*;
 
 public class Board {
     Square[][] board;

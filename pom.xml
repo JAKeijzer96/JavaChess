@@ -48,7 +48,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>App.Launcher</mainClass>
+                            <mainClass>Main.Launcher</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

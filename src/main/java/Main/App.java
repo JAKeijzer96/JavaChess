@@ -1,10 +1,10 @@
-// Inspiration: https://www.geeksforgeeks.org/design-a-chess-game/
+package Main;// Inspiration: https://www.geeksforgeeks.org/design-a-chess-game/
 
-import ChessPackage.*;
+import Chess.*;
 public class App {
 
     public static void main(String[] args) {
-        System.out.println("Main function of App");
+        System.out.println("Main function of Main.App");
 
         // ChessGame game = new ChessGame("r3k2r/p4ppp/1pN5/n2P4/8/7P/P4qPB/R2R3K w - - 0 1");
         // game.makeMove("d1", "e1");
@@ -70,7 +70,7 @@ public class App {
 
 
         // Expected output:
-        // Main function of App
+        // Main function of Main.App
         // [O-O]
         // g1
         // [O-O-O]
