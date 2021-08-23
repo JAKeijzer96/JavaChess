@@ -70,8 +70,8 @@ public class Square {
         throw new EmptySquareException("Square " + this + " is empty");
     }
 
-    public boolean isEmpty() {
-        return this.piece == null;
+    public boolean isOccupied() {
+        return this.piece != null;
     }
 
     public int getRank() {
