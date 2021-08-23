@@ -1,30 +1,24 @@
 package Chess;
 
+import Exceptions.EmptySquareException;
 import Pieces.Piece;
 
+/**
+ * Square object to be used in a game of Chess.
+ * A Square is contained in a Board and has a file (a-h) and rank (1-8)
+ * A Square can have either 0 or 1 Pieces on it.
+ */
 public class Square {
-    // No color variable as that's for GUI only, might add later if necessary
-    int file;
-    int rank;
-    Piece piece;
+    private int file;
+    private int rank;
+    private Piece piece;
 
-    /**
-     * Square object to be used in a game of Chess with no Piece on it
-     * @param file int index of the Boards file the Square is on
-     * @param rank int index of the Boards rank the Square is on
-     */
     public Square(int file, int rank) {
         this.file = file;
         this.rank = rank;
         this.piece = null;
     }
 
-    /**
-     * Square object to be used in a game of Chess with the given Piece on it
-     * @param file int index of the Boards file the Square is on
-     * @param rank int index of the Boards rank the Square is on
-     * @param piece the Piece that's on the Square
-     */
     public Square(int file, int rank, Piece piece) {
         this.file = file;
         this.rank = rank;
@@ -60,13 +54,24 @@ public class Square {
     /**
      * Get the color of the Piece on the Square
      * @return the color of the Piece
-     * @throws NullPointerException if there is no Piece on the Square
+     * @throws EmptySquareException if there is no Piece on the Square
      */
-    public char getPieceColor() throws NullPointerException{
-        if(this.piece != null)
+    public char getPieceColor() throws EmptySquareException {
+        if(this.piece != null) {
             return this.piece.getColor();
-        throw new NullPointerException("Square " + this
-            + " has no Piece to get the color of");
+        }
+        throw new EmptySquareException("Square " + this + " is empty");
+    }
+
+    public char getPieceName() throws EmptySquareException {
+        if (this.piece != null) {
+            return this.piece.getColor();
+        }
+        throw new EmptySquareException("Square " + this + " is empty");
+    }
+
+    public boolean isEmpty() {
+        return this.piece == null;
     }
 
     public int getRank() {
