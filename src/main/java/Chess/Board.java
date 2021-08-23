@@ -110,8 +110,7 @@ public class Board {
         List<Square> squareList = new ArrayList<Square>();
         for(Square[] file : this.board) {
             for(Square square : file) {
-                Piece piece = square.getPiece();
-                if (piece != null && piece.getColor() == playerColor)
+                if (square.isOccupied() && square.getPieceColor() == playerColor)
                     squareList.add(square);
             }
         }
@@ -121,7 +120,7 @@ public class Board {
     /**
      * Initializes the Board with the default starting position
      */
-    void newBoard() {
+    private void newBoard() {
         board = new Square[BOARDSIZE][BOARDSIZE];
         // Initialize a1 through h1 with the white Pieces
         board[0][0] = new Square(0, 0, new Rook('W'));
@@ -165,7 +164,7 @@ public class Board {
      * @param partialFenNotation a String containing the part of the FEN notation
      * @throws IllegalArgumentException if the String contains an invalid character
      */
-    void newBoard(String partialFenNotation) {
+    private void newBoard(String partialFenNotation) {
         // FEN notation moves backwards from rank 8 to rank 1
         // Each rank is described from the a-file through the h-file
         // Uppercase letters are white pieces, lowercase == black

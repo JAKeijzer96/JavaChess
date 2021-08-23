@@ -113,13 +113,13 @@ public class ChessGame {
         this.fullMoveCounter = Integer.parseInt(arrOfStr[5]);
         this.updatePieceLists();
         for(Square square : whitePiecesSquares) {
-            if(square.getPiece().getName() == 'K') {
+            if(square.getPieceName() == 'K') {
                 this.whiteKingSquare = square;
                 break;
             }
         }
         for(Square square : blackPiecesSquares) {
-            if(square.getPiece().getName() == 'k') {
+            if(square.getPieceName() == 'k') {
                 this.blackKingSquare = square;
                 break;
             }
