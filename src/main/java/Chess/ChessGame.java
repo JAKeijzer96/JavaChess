@@ -113,13 +113,13 @@ public class ChessGame {
         this.fullMoveCounter = Integer.parseInt(arrOfStr[5]);
         this.updatePieceLists();
         for(Square square : whitePiecesSquares) {
-            if(square.getPiece().getName() == 'K') {
+            if(square.getPieceName() == 'K') {
                 this.whiteKingSquare = square;
                 break;
             }
         }
         for(Square square : blackPiecesSquares) {
-            if(square.getPiece().getName() == 'k') {
+            if(square.getPieceName() == 'k') {
                 this.blackKingSquare = square;
                 break;
             }
@@ -574,31 +574,19 @@ public class ChessGame {
         // Setting Rook firstMoves
         Piece piece = board.getPiece(7, 0);
         if (piece instanceof Rook && piece.getColor() == 'W') {
-            if (castlingAvailability.contains("K"))
-                ((Rook) piece).setFirstMove(true);
-            else
-                ((Rook) piece).setFirstMove(false);
+            ((Rook) piece).setFirstMove(castlingAvailability.contains("K"));
         }
         piece = board.getPiece(0, 0);
         if (piece instanceof Rook && piece.getColor() == 'W') {
-            if (castlingAvailability.contains("Q"))
-                ((Rook) piece).setFirstMove(true);
-            else
-                ((Rook) piece).setFirstMove(false);
+            ((Rook) piece).setFirstMove(castlingAvailability.contains("Q"));
         }
         piece = board.getPiece(7, 7);
         if (piece instanceof Rook && piece.getColor() == 'B') {
-            if (castlingAvailability.contains("k"))
-                ((Rook) piece).setFirstMove(true);
-            else
-                ((Rook) piece).setFirstMove(false);
+            ((Rook) piece).setFirstMove(castlingAvailability.contains("k"));
         }
         piece = board.getPiece(0, 7);
         if (piece instanceof Rook && piece.getColor() == 'B') {
-            if (castlingAvailability.contains("q"))
-                ((Rook) piece).setFirstMove(true);
-            else
-                ((Rook) piece).setFirstMove(false);
+            ((Rook) piece).setFirstMove(castlingAvailability.contains("q"));
         }
     }
 
