@@ -29,8 +29,7 @@ public class Knight extends Piece {
      */
     public boolean legalMove(Board board, Square startSquare, Square endSquare) {
         // Disallow 'moving' to the start square or to a square with a friendly piece
-        if (startSquare.equals(endSquare)
-          || (endSquare.getPiece() != null && this.color == endSquare.getPiece().getColor()))
+        if (startSquare.equals(endSquare) || (!endSquare.isEmpty() && this.color == endSquare.getPieceColor()))
             return false;
         return Math.abs(
             (startSquare.getFile() - endSquare.getFile()) *
