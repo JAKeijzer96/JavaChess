@@ -1,10 +1,15 @@
 package Chess;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import Pieces.*;
 
+/**
+ * <p> Board object on which a game of Chess can be played </p>
+ * A Board is a 2D 8x8 Array of Squares. Pieces on the Board
+ * can be accessed through the Squares they are on.
+ *
+ */
 public class Board {
     Square[][] board;
     public static final int BOARDSIZE = 8;
@@ -23,24 +28,19 @@ public class Board {
     public static final byte[][] SQUARE_OFFSETS = {{1, 1}, {1, 0}, {1, -1},
         {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}, {0, 1}};
 
+
     /**
-     * <p> Board object on which a game of Chess can be played </p>
-     * This constructor creates a new chessboard with the default starting
-     * position. The Board is a 2D 8x8 Array of Squares. Pieces on the Board
-     * can be accessed through the Squares they are on.
+     * Constructs a new chessboard with the default starting position.
      */
     public Board() {
         this.newBoard();
     }
 
     /**
-     * <p> Board object on which a game of Chess can be played </p>
-     * This constructor creates a new chessboard based on a String containing
+     * Constructs a new chessboard based on a String containing
      * partial FEN notation of a position. This String should only contain the
      * first part of a proper FEN notation. For the starting position, this
      * would be rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR.
-     * The Board is a 2D 8x8 Array of Squares. Pieces on the Board can be
-     * accessed through the Squares they are on
      * @param partialFenNotation a String containing the part of the FEN notation
      */
     public Board(String partialFenNotation) {
@@ -67,7 +67,6 @@ public class Board {
      * @param squareString the String representation of the Square
      * @return the Boards Square described by squareString
      * @throws IllegalArgumentException if the String is not of length 2
-     * @throws ArrayIndexOutOfBoundsException if the Square is not on the Board
      */
     public Square getSquare(String squareString) {
         if (squareString.length() != 2)
@@ -75,11 +74,7 @@ public class Board {
         // Convert the chars to ints using ASCII value and getNumericValue
         int file = Character.toLowerCase(squareString.charAt(0)) - 97;
         int rank = Character.getNumericValue(squareString.charAt(1)) - 1;
-        if (file < 0 || file > 7)
-            throw new ArrayIndexOutOfBoundsException("File index [" + file + "]out of bounds");
-        if (rank < 0 || rank > 7)
-            throw new ArrayIndexOutOfBoundsException("Rank index [" + rank + "]out of bounds");
-        return board[file][rank];
+        return this.getSquare(file, rank);
     }
 
     /**
@@ -102,12 +97,12 @@ public class Board {
     }
     
     /**
-     * Get a List of all Squares that have a Piece of the given playerColor
+     * Get an ArrayList of all Squares that have a Piece of the given playerColor
      * @param playerColor color of the Players Pieces, either 'W' or 'B'
-     * @return a List<Square> containing the Squares the Player has Pieces on
+     * @return an ArrayList<Square> containing the Squares the Player has Pieces on
      */
-    public List<Square> getSquaresOfPlayerColor(char playerColor) {
-        List<Square> squareList = new ArrayList<Square>();
+    public ArrayList<Square> getSquaresOfPlayerColor(char playerColor) {
+        ArrayList<Square> squareList = new ArrayList<>();
         for(Square[] file : this.board) {
             for(Square square : file) {
                 if (square.isOccupied() && square.getPieceColor() == playerColor)

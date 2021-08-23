@@ -35,12 +35,12 @@ Things to think about
 
 public class ChessGame {
     Board board;
-    List<Move> moveList;
+    ArrayList<Move> moveList;
     Player whitePlayer;
     Player blackPlayer;
     Player currentTurn;
-    List<Square> whitePiecesSquares; // list of all Squares with white Pieces
-    List<Square> blackPiecesSquares; // list of all Squares with black Pieces
+    ArrayList<Square> whitePiecesSquares; // list of all Squares with white Pieces
+    ArrayList<Square> blackPiecesSquares; // list of all Squares with black Pieces
     Square whiteKingSquare;
     Square blackKingSquare;
     boolean isCheck;
@@ -259,7 +259,7 @@ public class ChessGame {
         if (checkingSquare.equals(kingSquare))
             return false;
         // Calculate if the checking Piece can be captured
-        List<Square> friendlyPiecesSquares =
+        ArrayList<Square> friendlyPiecesSquares =
             (currentTurn.equals(whitePlayer)) ? blackPiecesSquares: whitePiecesSquares;
         for(Square friendlySquare : friendlyPiecesSquares) {
             if (friendlySquare.getPiece().legalMove(board, friendlySquare, checkingSquare)) {
@@ -340,19 +340,22 @@ public class ChessGame {
         Square currentSquare;
         for (byte[] offsets : Board.SQUARE_OFFSETS) {
             currentSquare = checkLoop(kingSquare, offsets[0], offsets[1]);
-            if (attackerSquare == null && currentSquare != null)
+            if (attackerSquare == null && currentSquare != null) {
                 attackerSquare = currentSquare;
+            }
             // If attackerSquare != null and currentSquare != null, return kingSquare
-            else if (currentSquare != null)
+            else if (currentSquare != null) {
                 return kingSquare;
+            }
         }
         // check for any Knights giving check
         int file = kingSquare.getFile();
         int rank = kingSquare.getRank();
         for(byte[] offset : Board.KNIGHT_OFFSETS) {
             if (file + offset[0] < 0 || file + offset[0] > 7
-                || rank + offset[1] < 0 || rank + offset[1] > 7)
+                || rank + offset[1] < 0 || rank + offset[1] > 7) {
                 continue;
+            }
             currentSquare = board.getSquare(file+offset[0], rank+offset[1]);
             Piece p = currentSquare.getPiece();
             // There can only be one Knight at a time giving check. Because we
@@ -487,19 +490,22 @@ public class ChessGame {
         // move the Pieces back
         startSquare.setPiece(startPiece);
         endSquare.setPiece(endPiece);
-        if (this.halfMoveCounter > 0)
+        if (this.halfMoveCounter > 0) {
             this.halfMoveCounter--;
+        }
         if (currentTurn.equals(whitePlayer)) {
             currentTurn = blackPlayer;
             this.fullMoveCounter--;
-        } else
+        } else {
             currentTurn = whitePlayer;
+        }
         // update King Square, need to check currentTurn again after changing it
         if(startPiece instanceof King) {
-            if (currentTurn.equals(whitePlayer))
+            if (currentTurn.equals(whitePlayer)) {
                 whiteKingSquare = startSquare;
-            else
+            } else {
                 blackKingSquare = startSquare;
+            }
         }
         updatePieceLists();
         updateCheck();
@@ -598,7 +604,7 @@ public class ChessGame {
         this.board = board;
     }
 
-    public List<Move> getMoveList() {
+    public ArrayList<Move> getMoveList() {
         return moveList;
     }
 
