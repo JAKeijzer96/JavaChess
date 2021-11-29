@@ -1,9 +1,9 @@
-package Main;
+package main;
 
-import Chess.ChessGame;
-import Chess.Move;
-import Chess.Square;
-import Pieces.Piece;
+import chess.ChessGame;
+import chess.Move;
+import chess.Square;
+import piece.Piece;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Node;

@@ -1,7 +1,7 @@
-package Chess;
+package chess;
 
-import Pieces.Pawn;
-import Pieces.Piece;
+import piece.Pawn;
+import piece.Piece;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

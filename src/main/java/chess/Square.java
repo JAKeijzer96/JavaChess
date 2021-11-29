@@ -1,7 +1,7 @@
-package Chess;
+package chess;
 
-import Exceptions.EmptySquareException;
-import Pieces.Piece;
+import exception.EmptySquareException;
+import piece.Piece;
 
 /**
  * Square object to be used in a game of Chess.

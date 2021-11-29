@@ -1,7 +1,7 @@
-package Pieces;
+package piece;
 
-import Chess.Board;
-import Chess.Square;
+import chess.Board;
+import chess.Square;
 
 public class Queen extends Piece {
 

@@ -1,15 +1,15 @@
-package Chess;
+package chess;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import Pieces.*;
+import piece.*;
 import lombok.Getter;
 
 /*
 Castling works in standard ChessGames
 
 TODO list:
+- REFACTOR
 - Implement en passant
 - Find a proper way to reverse move which allows for setting firstMove property
   to the previous value.

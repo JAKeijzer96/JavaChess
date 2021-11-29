@@ -1,8 +1,8 @@
-package Chess;
+package chess;
 
 import java.util.ArrayList;
 
-import Pieces.*;
+import piece.*;
 import lombok.Getter;
 
 /**

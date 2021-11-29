@@ -1,6 +1,6 @@
-package Main;// Inspiration: https://www.geeksforgeeks.org/design-a-chess-game/
+package main;// Inspiration: https://www.geeksforgeeks.org/design-a-chess-game/
 
-import Chess.*;
+import chess.*;
 public class App {
 
     public static void main(String[] args) {
