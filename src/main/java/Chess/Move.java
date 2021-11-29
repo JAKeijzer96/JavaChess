@@ -2,6 +2,8 @@ package Chess;
 
 import Pieces.Pawn;
 import Pieces.Piece;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * This class is mainly used to keep track of the moves done in the game
@@ -16,24 +18,16 @@ import Pieces.Piece;
  * Piece that's captured?
  * ...
  */
+@Getter
+@AllArgsConstructor
 public class Move {
-    Square startSquare;
-    Square endSquare;
-    Piece startPiece;
-    Piece endPiece;
-    boolean isCheck;
-    boolean isMate;
-    boolean isCastlingMove;
-
-    public Move(Square startSquare, Piece startPiece, Square endSquare, Piece endPiece, boolean isCheck, boolean isMate, boolean isCastlingMove) {
-        this.startSquare = startSquare;
-        this.startPiece = startPiece;
-        this.endSquare = endSquare;
-        this.endPiece = endPiece;
-        this.isCheck = isCheck;
-        this.isMate = isMate;
-        this.isCastlingMove = isCastlingMove;
-    }
+    private Square startSquare;
+    private Piece startPiece;
+    private Square endSquare;
+    private Piece endPiece;
+    private boolean isCheck;
+    private boolean isMate;
+    private boolean isCastlingMove;
 
     /**
      * <p> Get the standard chess notation of a chess move. </p>
@@ -58,45 +52,5 @@ public class Move {
         String check = (this.isCheck) ? "+" : "";
         String mate = (this.isMate) ? "#" : "";
         return piece + takes + this.endSquare + check + mate;
-    }
-
-    public Square getStartSquare() {
-        return startSquare;
-    }
-
-    public void setStartSquare(Square startSquare) {
-        this.startSquare = startSquare;
-    }
-
-    public Square getEndSquare() {
-        return endSquare;
-    }
-
-    public void setEndSquare(Square endSquare) {
-        this.endSquare = endSquare;
-    }
-
-    public boolean isCheck() {
-        return isCheck;
-    }
-
-    public void setCheck(boolean isCheck) {
-        this.isCheck = isCheck;
-    }
-
-    public boolean isMate() {
-        return isMate;
-    }
-
-    public void setMate(boolean isMate) {
-        this.isMate = isMate;
-    }
-
-    public Piece getStartPiece() {
-        return startPiece;
-    }
-
-    public Piece getEndPiece() {
-        return endPiece;
     }
 }

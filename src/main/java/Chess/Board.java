@@ -3,6 +3,7 @@ package Chess;
 import java.util.ArrayList;
 
 import Pieces.*;
+import lombok.Getter;
 
 /**
  * <p> Board object on which a game of Chess can be played </p>
@@ -10,8 +11,9 @@ import Pieces.*;
  * can be accessed through the Squares they are on.
  *
  */
+@Getter
 public class Board {
-    Square[][] board;
+    private Square[][] board;
     public static final int BOARDSIZE = 8;
     /**
      * 2D array with all 8 possible offsets to find the surrounding Squares
@@ -268,13 +270,5 @@ public class Board {
                 endString += "/" + rankString;
         }
         return endString;
-    }
-
-    public Square[][] getBoard() {
-        return board;
-    }
-
-    public void setBoard(Square[][] board) {
-        this.board = board;
     }
 }

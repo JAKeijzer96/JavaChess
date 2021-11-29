@@ -1,8 +1,11 @@
 package Chess;
 
+import lombok.Getter;
+
+@Getter
 public class Player {
-    char playerColor; // 'W' or 'B'
-    String playerName;
+    private final char playerColor; // 'W' or 'B'
+    private final String playerName;
 
     /**
      * Player object to be used in a game of Chess
@@ -38,13 +41,5 @@ public class Player {
     @Override
     public String toString() {
         return Character.toString(this.getPlayerColor());
-    }
-
-    public char getPlayerColor() {
-        return playerColor;
-    }
-
-    public String getPlayerName() {
-        return playerName;
     }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import Pieces.*;
 // Credit for regex-related code: https://rosettacode.org/wiki/Generate_Chess960_starting_position#Java
 
+@Deprecated
 public class ChessGame960 extends ChessGame {
     private static final List<Character> pieces = Arrays.asList('R','B','N','Q','K','N','B','R');
     /**

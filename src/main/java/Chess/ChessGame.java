@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Pieces.*;
+import lombok.Getter;
 
 /*
 Castling works in standard ChessGames
@@ -32,7 +33,7 @@ Things to think about
 */
 
 
-
+@Getter
 public class ChessGame {
     Board board;
     ArrayList<Move> moveList;
@@ -600,10 +601,6 @@ public class ChessGame {
         return board;
     }
 
-    public void setBoard(Board board) {
-        this.board = board;
-    }
-
     public ArrayList<Move> getMoveList() {
         return moveList;
     }
@@ -618,10 +615,6 @@ public class ChessGame {
 
     public boolean isMate() {
         return isMate;
-    }
-
-    public void setMate(boolean isMate) {
-        this.isMate = isMate;
     }
 
 }

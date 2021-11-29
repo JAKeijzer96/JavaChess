@@ -2,7 +2,9 @@ package Pieces;
 
 import Chess.Board;
 import Chess.Square;
+import lombok.Getter;
 
+@Getter
 public abstract class Piece {
     char color;
     char name;
@@ -65,18 +67,6 @@ public abstract class Piece {
     @Override
     public String toString() {
         return Character.toString(name);
-    }
-
-    public char getColor() {
-        return color;
-    }
-
-    public void setColor(char color) {
-        this.color = color;
-    }
-
-    public char getName() {
-        return name;
     }
     
     public char getUpperCaseName() {
