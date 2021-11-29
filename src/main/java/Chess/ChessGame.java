@@ -8,10 +8,8 @@ import lombok.Getter;
 
 /*
 Castling works in standard ChessGames
-Castling doesn't work yet in ChessGame960
 
 TODO list:
-- Fix castling in ChessGame960
 - Implement en passant
 - Find a proper way to reverse move which allows for setting firstMove property
   to the previous value.
@@ -35,20 +33,20 @@ Things to think about
 
 @Getter
 public class ChessGame {
-    Board board;
-    ArrayList<Move> moveList;
-    Player whitePlayer;
-    Player blackPlayer;
-    Player currentTurn;
-    ArrayList<Square> whitePiecesSquares; // list of all Squares with white Pieces
-    ArrayList<Square> blackPiecesSquares; // list of all Squares with black Pieces
-    Square whiteKingSquare;
-    Square blackKingSquare;
-    boolean isCheck;
-    boolean isMate;
-    int halfMoveCounter; // halfMoveCounter used for fifty-move rule
-    int fullMoveCounter; // fullMoveCounter to track amount of full Moves
-    Square enPassantSquare; // For FEN notation
+    private final Board board;
+    private final ArrayList<Move> moveList;
+    private final Player whitePlayer;
+    private final Player blackPlayer;
+    private Player currentTurn;
+    private ArrayList<Square> whitePiecesSquares; // list of all Squares with white Pieces
+    private ArrayList<Square> blackPiecesSquares; // list of all Squares with black Pieces
+    private Square whiteKingSquare;
+    private Square blackKingSquare;
+    private boolean isCheck;
+    private boolean isMate;
+    private int halfMoveCounter; // halfMoveCounter used for fifty-move rule
+    private int fullMoveCounter; // fullMoveCounter to track amount of full Moves
+    private Square enPassantSquare; // For FEN notation
 
     /**
      * Constructs a ChessGame with default Players and starting position
