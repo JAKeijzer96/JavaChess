@@ -1,7 +1,5 @@
 *.zip
 /src/main/resources/img/sources.txt
-# ignore test folder for now as it doesnt have any functional test yet
-src/test
 castling.txt
 .idea
 target

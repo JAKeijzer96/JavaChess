@@ -1,5 +1,3 @@
-package main;// Inspiration: https://www.geeksforgeeks.org/design-a-chess-game/
-
 import chess.*;
 public class App {
 
