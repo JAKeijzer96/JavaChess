@@ -59,7 +59,7 @@ public class GUI extends Application {
         // size: 8 * squareSize + 2 * padding
         scene = new Scene(grid, 660, 660);
         stage.setScene(scene);
-        scene.getStylesheets().add(getClass().getClassLoader().getResource("GUI.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getClassLoader().getResource("css/GUI.css").toExternalForm());
         stage.show();
     }
 
