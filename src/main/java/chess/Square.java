@@ -1,6 +1,9 @@
 package chess;
 
 import exception.EmptySquareException;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import piece.Piece;
 
 /**
@@ -8,22 +11,14 @@ import piece.Piece;
  * A Square is contained in a Board and has a file (a-h) and rank (1-8)
  * A Square can have either 0 or 1 Pieces on it.
  */
+@Getter
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Square {
-    private int file;
-    private int rank;
+
+    private final int file;
+    private final int rank;
     private Piece piece;
-
-    public Square(int file, int rank) {
-        this.file = file;
-        this.rank = rank;
-        this.piece = null;
-    }
-
-    public Square(int file, int rank, Piece piece) {
-        this.file = file;
-        this.rank = rank;
-        this.piece = piece;
-    }
 
     /**
      * Compares two Squares, they are equal if they have the same file and rank
@@ -72,26 +67,6 @@ public class Square {
 
     public boolean isOccupied() {
         return this.piece != null;
-    }
-
-    public int getRank() {
-        return rank;
-    }
-
-    public void setRank(int rank) {
-        this.rank = rank;
-    }
-
-    public int getFile() {
-        return file;
-    }
-
-    public void setFile(int file) {
-        this.file = file;
-    }
-
-    public Piece getPiece() {
-        return piece;
     }
 
     public void setPiece(Piece piece) {

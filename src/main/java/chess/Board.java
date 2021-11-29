@@ -57,9 +57,9 @@ public class Board {
      * @throws ArrayIndexOutOfBoundsException if the Square is not on the Board
      */
     public Square getSquare(int file, int rank) throws ArrayIndexOutOfBoundsException {
-        if (file < 0 || file > 7)
+        if (file < 0 || file > BOARDSIZE - 1)
             throw new ArrayIndexOutOfBoundsException("File index [" + file + "]out of bounds");
-        if (rank < 0 || rank > 7)
+        if (rank < 0 || rank > BOARDSIZE - 1)
             throw new ArrayIndexOutOfBoundsException("Rank index [" + rank + "]out of bounds");
         return board[file][rank];
     }
@@ -74,7 +74,8 @@ public class Board {
         if (squareString.length() != 2)
             throw new IllegalArgumentException("Please provide a valid square on a chessboard");
         // Convert the chars to ints using ASCII value and getNumericValue
-        int file = Character.toLowerCase(squareString.charAt(0)) - 97;
+        int asciiValueFor_a = 97;
+        int file = Character.toLowerCase(squareString.charAt(0)) - asciiValueFor_a;
         int rank = Character.getNumericValue(squareString.charAt(1)) - 1;
         return this.getSquare(file, rank);
     }
@@ -211,30 +212,19 @@ public class Board {
     private void addPieceFromFenNotation(char pieceChar, char pieceColor,
       int file, int rank) throws IllegalArgumentException{
         switch (Character.toUpperCase(pieceChar)) {
-            case 'B':
-                board[file][rank] = new Square(file, rank, new Bishop(pieceColor));
-                return;
-            case 'K':
-                board[file][rank] = new Square(file, rank, new King(pieceColor));
-                return;
-            case 'N':
-                board[file][rank] = new Square(file, rank, new Knight(pieceColor));
-                return;
-            case 'P':
+            case 'B' -> board[file][rank] = new Square(file, rank, new Bishop(pieceColor));
+            case 'K' -> board[file][rank] = new Square(file, rank, new King(pieceColor));
+            case 'N' -> board[file][rank] = new Square(file, rank, new Knight(pieceColor));
+            case 'P' -> {
                 boolean isFirstMove = (rank == 1 || rank == 6);
                 Pawn pawn = new Pawn(pieceColor, isFirstMove);
                 board[file][rank] = new Square(file, rank, pawn);
-                return;
-            case 'Q':
-                board[file][rank] = new Square(file, rank, new Queen(pieceColor));
-                return;
-            case 'R':
-                board[file][rank] = new Square(file, rank, new Rook(pieceColor));
-                return;
-            default:
-                throw new IllegalArgumentException(
+            }
+            case 'Q' -> board[file][rank] = new Square(file, rank, new Queen(pieceColor));
+            case 'R' -> board[file][rank] = new Square(file, rank, new Rook(pieceColor));
+            default -> throw new IllegalArgumentException(
                     "Invalid letter " + pieceChar + " in FEN notation at rank " +
-                    (rank+1) + " and file " + (file+1));
+                            (rank + 1) + " and file " + (file + 1));
         }
     }
 
@@ -244,31 +234,31 @@ public class Board {
      */
     @Override
     public String toString() {
-        String rankString = "";
-        String endString = "";
+        final StringBuilder rankStringBuilder = new StringBuilder();
+        StringBuilder endStringBuilder = new StringBuilder();
         int emptySquares;
         for(int rank = BOARDSIZE - 1; rank >= 0; rank--) {
             emptySquares = 0;
-            rankString = "";
+            rankStringBuilder.setLength(0);
             for(int file = 0; file < BOARDSIZE; file++) {
                 Piece piece = this.getPiece(file, rank);
                 if (piece == null)
                     emptySquares++;
                 else {
                     if (emptySquares > 0) {
-                        rankString += emptySquares;
+                        rankStringBuilder.append(emptySquares);
                         emptySquares = 0;
                     }
-                    rankString += piece;
+                    rankStringBuilder.append(piece);
                 }
             }
             if (emptySquares > 0)
-                rankString += emptySquares;
+                rankStringBuilder.append(emptySquares);
             if (rank == 7)
-                endString = rankString;
+                endStringBuilder = new StringBuilder(rankStringBuilder.toString());
             else
-                endString += "/" + rankString;
+                endStringBuilder.append("/").append(rankStringBuilder);
         }
-        return endString;
+        return endStringBuilder.toString();
     }
 }
