@@ -10,6 +10,8 @@ Castling works in standard ChessGames
 
 TODO list:
 - REFACTOR
+- Bug: When going for fastest possible mate (2..Qh4#) the FEN doesn't properly add KQ (only kq) casting availability
+    This is due to it calling King.legalMove() which changes the King.firstMove property
 - Implement en passant
 - Find a proper way to reverse move which allows for setting firstMove property
   to the previous value.
@@ -22,9 +24,6 @@ Things to think about
 - is the current way of calculating checks efficient or not? Feels like it's
   only slightly more efficient than checking every opponent Piece in the opening,
   while being drastically more inefficient in the endgame
-- GUI: Do we integrate it into the Chess classes, or keep it completely seperate?
-  Both have their pros and cons
-
 
 
 
@@ -249,6 +248,9 @@ public class ChessGame {
                 continue;
             Square tempSquare = board.getSquare(kingFile+offsets[0], kingRank+offsets[1]);
             if (king.legalMove(board, kingSquare, tempSquare)) {
+                // Can add "((King) king).setFirstMove(true);" here to fix minor
+                // FEN notation bug after mate where King hasn't moved. Need to find a proper
+                // way though. This comment just serves as documentation for the future
                 if (isPinned(kingSquare, kingSquare, tempSquare))
                     continue;
                 return true;
