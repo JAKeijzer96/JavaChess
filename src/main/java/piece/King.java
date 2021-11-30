@@ -1,7 +1,7 @@
 package piece;
 
-import chess.Board;
-import chess.Square;
+import board.Board;
+import board.Square;
 
 public class King extends Piece {
     boolean isFirstMove;

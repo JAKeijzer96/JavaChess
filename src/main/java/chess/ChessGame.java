@@ -2,6 +2,10 @@ package chess;
 
 import java.util.ArrayList;
 
+import board.Board;
+import board.Offsets;
+import board.Square;
+import move.Move;
 import piece.*;
 import lombok.Getter;
 
@@ -242,7 +246,7 @@ public class ChessGame {
         int kingFile = kingSquare.getFile();
         int kingRank = kingSquare.getRank();
         // Calculate if the King can move to a different Square
-        for (byte[] offsets : Board.SQUARE_OFFSETS) {
+        for (byte[] offsets : Offsets.forKing) {
             if (kingFile + offsets[0] < 0 || kingFile + offsets[0] > 7
             || kingRank + offsets[1] < 0 || kingRank + offsets[1] > 7)
                 continue;
@@ -339,7 +343,7 @@ public class ChessGame {
         // and moving clockwise
         Square attackerSquare = null;
         Square currentSquare;
-        for (byte[] offsets : Board.SQUARE_OFFSETS) {
+        for (byte[] offsets : Offsets.forKing) {
             currentSquare = checkLoop(kingSquare, offsets[0], offsets[1]);
             if (attackerSquare == null && currentSquare != null) {
                 attackerSquare = currentSquare;
@@ -352,7 +356,7 @@ public class ChessGame {
         // check for any Knights giving check
         int file = kingSquare.getFile();
         int rank = kingSquare.getRank();
-        for(byte[] offset : Board.KNIGHT_OFFSETS) {
+        for(byte[] offset : Offsets.forKnight) {
             if (file + offset[0] < 0 || file + offset[0] > 7
                 || rank + offset[1] < 0 || rank + offset[1] > 7) {
                 continue;

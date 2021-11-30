@@ -1,5 +1,6 @@
-package chess;
+package move;
 
+import board.Square;
 import piece.Pawn;
 import piece.Piece;
 import lombok.AllArgsConstructor;

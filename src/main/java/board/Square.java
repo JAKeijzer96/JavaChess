@@ -1,4 +1,4 @@
-package chess;
+package board;
 
 import exception.EmptySquareException;
 import lombok.AllArgsConstructor;

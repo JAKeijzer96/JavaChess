@@ -1,4 +1,4 @@
-package chess;
+package board;
 
 import java.util.ArrayList;
 
@@ -15,21 +15,6 @@ import lombok.Getter;
 public class Board {
     private Square[][] board;
     public static final int BOARDSIZE = 8;
-    /**
-     * 2D array with all 8 possible offsets to find the surrounding Squares
-     * that a Knight can be on to attack the current Square. The first offset is
-     * up two and one to the right, subsequent offsets move clockwise.
-     */
-    public static final byte[][] KNIGHT_OFFSETS = {{1, 2}, {2, 1}, {2, -1},
-        {1, -2}, {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}};
-    /**
-     * 2D array with all 8 possible offsets of the surrounding Squares
-     * compared to the current Square. The first offset is up and to the right,
-     * subsequent offsets move clockwise.
-     */
-    public static final byte[][] SQUARE_OFFSETS = {{1, 1}, {1, 0}, {1, -1},
-        {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}, {0, 1}};
-
 
     /**
      * Constructs a new chessboard with the default starting position.

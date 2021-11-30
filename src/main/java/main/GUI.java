@@ -1,8 +1,8 @@
 package main;
 
 import chess.ChessGame;
-import chess.Move;
-import chess.Square;
+import move.Move;
+import board.Square;
 import piece.Piece;
 import javafx.application.Application;
 import javafx.geometry.Insets;
